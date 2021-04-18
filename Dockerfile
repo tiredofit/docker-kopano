@@ -162,7 +162,7 @@ RUN set -x && \
     ##### Unpack Core
     tar xaf /usr/src/kopano-core/kopano-core.tar.zst -C / && \
     \
-    ##### Unpack WebApp
+    ##### Unpack Webservices
     tar xaf /usr/src/kopano-webservices/kopano-webservices.tar.zst -C / && \
     \
     ### Build Assets Override
