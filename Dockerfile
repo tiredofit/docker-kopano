@@ -141,7 +141,7 @@ RUN set -x && \
     apt-get install -y \
                      apache2 \
                      crudini \
-                     libapache2-mod-php \
+                     libapache2-mod-php7.3 \
                      sqlite \
                      && \
     rm -rf /etc/apache2/sites-enabled/* && \
