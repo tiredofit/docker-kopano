@@ -1,5 +1,5 @@
 FROM tiredofit/kopano-core:2.0.0 as kopano-core
-FROM tiredofit/kopano-webservices:2.0.0 as kopano-webservices
+FROM tiredofit/kopano-webservices:2.1.0 as kopano-webservices
 ##
 
 FROM tiredofit/nginx-php-fpm:debian-7.3-buster
@@ -120,6 +120,7 @@ RUN set -x && \
                 python3-urllib3 \
                 python3-wheel \
                 python3-xapian \
+                rsync \
                 sqlite3 \
                 unzip \
                 ' && \
@@ -138,7 +139,7 @@ RUN set -x && \
 ### KDAV Install
     ### Temporary Hack for KDAV - Using Apache along side of Nginx is not what I want to do, but see issues
     ### posted at https://forum.kopano.io/topic/3433/kdav-with-nginx
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
                      apache2 \
                      crudini \
                      libapache2-mod-php7.3 \

@@ -977,7 +977,7 @@ configure_kdav() {
 <?php
 // Custom Generated KDav Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('MAPI_SERVER', '${KDAV_SOCKET_SERVER}');
 define('SABRE_AUTH_REALM', '${KDAV_REALM}');
@@ -1561,7 +1561,7 @@ configure_webapp() {
 <?php
 // Custom Generated Kopano Webapp Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
     define("CONFIG_CHECK", ${WEBAPP_CONFIG_CHECK});
     define("CONFIG_CHECK_COOKIES_HTTP", ${WEBAPP_CONFIG_CHECK_COOKIES_HTTP});
@@ -1675,12 +1675,14 @@ configure_webapp_plugins() {
         configure_webapp_plugin_htmleditor_jodit
         configure_webapp_plugin_htmleditor_quill
         configure_webapp_plugin_intranet
+        configure_webapp_plugin_jitsimeet
         configure_webapp_plugin_mattermost
         configure_webapp_plugin_mdm
         configure_webapp_plugin_meet
         configure_webapp_plugin_pim_folder
         configure_webapp_plugin_rocketchat
         configure_webapp_plugin_smime
+        configure_webapp_plugin_texttemplates
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/kopano-webapp/plugins
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" "${CONFIG_PATH}"/webapp
     fi
@@ -1695,7 +1697,7 @@ configure_webapp_plugin_contact_fax() {
 <?php
 // Custom Generated Kopano Webapp Contact Fax Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('PLUGIN_CONTACTFAXPLUGIN_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_CONTACT_FAX_DOMAIN_USER});
 define('PLUGIN_CONTACTFAXPLUGIN_FAX_DOMAIN_NAME', '${WEBAPP_PLUGIN_CONTACT_FAX_DOMAIN_NAME}');
@@ -1758,7 +1760,7 @@ EOF
 <?php
 // Custom Generated Kopano Webapp Files Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('PLUGIN_FILES_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_FILES_DEFAULT_USER});
 define('PLUGIN_FILES_ASK_BEFORE_DELETE', ${WEBAPP_PLUGIN_FILES_ASK_BEFORE_DELETE});
@@ -1790,7 +1792,7 @@ configure_webapp_plugin_files_backend_seafile() {
 <?php
 // Custom Generated Kopano Webapp Files SeaFile Backend Notification Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('PLUGIN_FILESBACKENDSEAFILE_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_FILES_BACKEND_SEAFILE_DEFAULT_USER});
 ?>
@@ -1829,7 +1831,7 @@ configure_webapp_plugin_intranet () {
 <?php
 // Custom Generated Kopano Webapp Intranet Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 \$intranet_items = array();
 EOF
@@ -1904,6 +1906,47 @@ EOD
     fi
 }
 
+configure_webapp_plugin_jitsimeet() {
+    if var_true "${WEBAPP_PLUGIN_ENABLE_JITSIMEET}" ; then
+        cp -Rp /assets/kopano/plugins/webapp/jitsimeet /usr/share/kopano-webapp/plugins
+        if [ "$SETUP_TYPE" = "AUTO" ]; then
+            print_notice "Webapp Plugin: Jitsi Meet - Auto Configuring"
+            if [ ! -f ${CONFIG_PATH}/webapp/jistimeet-invite.template ] ; then
+                print_debug "No Jitsi Meet Invite Template, Creating.."
+                cat <<EOF > "${CONFIG_PATH}/webapp/jistimeet-invite.template"
+I prepared a webmeeting i\'d like you to join. To do so, just use the link below:
+%url%
+
+Webmeetings work with every HTML-5 capable browser. We recommend Chrome for the best results.
+Don\'t forget to check your camera and microphone settings.
+EOF
+            fi
+
+            cat <<EOF > "${CONFIG_PATH}"webapp/config-jitsimeet.php
+// Custom Generated Kopano Webapp Jitsi Meet Configuration! Do not edit, instead set ENV Vars
+// If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
+
+<?php
+define('SIN_JITSI_DEFAULTS', Array(
+'server' => '${WEBAPP_PLUGIN_JITSIMEET_HOSTNAME}',
+'enable' => ${WEBAPP_PLUGIN_JITSIMEET_DEFAULT_USER},
+'openin' => '${WEBAPP_PLUGIN_JITSIMEET_DEFAULT_OPEN}',
+'hidetabbarbutton' => ${WEBAPP_PLUGIN_JITSIMEET_DEFAULT_HIDE_MAINTOOLBAR},
+'locationoverride' => ${WEBAPP_PLUGIN_JITSIMEET_DISABLE_LOCATION_ADDITION},
+'nolocationfix' => ${WEBAPP_PLUGIN_JITSIMEET_DISABLE_LOCATION_REMOVAL_PROTECTION},
+'noinvitation' => ${WEBAPP_PLUGIN_JITSIMEET_DISABLE_MSG_TEMPLATE},
+'invitationmessage' => '
+$(cat ${CONFIG_PATH}/webapp/jistimeet-invite.template)
+',
+
+));
+?>
+EOF
+        fi
+    fi
+}
+
 configure_webapp_plugin_mattermost () {
     if var_true "${WEBAPP_PLUGIN_ENABLE_MATTERMOST}" ; then
         cp -Rp /assets/kopano/plugins/webapp/mattermost /usr/share/kopano-webapp/plugins
@@ -1913,7 +1956,7 @@ configure_webapp_plugin_mattermost () {
 <?php
 // Custom Generated Kopano Webapp Mattermost Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('PLUGIN_MATTERMOST_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_MATTERMOST_DEFAULT_USER});
 define('PLUGIN_MATTERMOST_URL', '${WEBAPP_PLUGIN_MATTERMOST_HOST}');
@@ -1933,7 +1976,7 @@ configure_webapp_plugin_mdm() {
 <?php
 // Custom Generated Kopano Webapp Manual Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('PLUGIN_MDM_USER_DEFAULT_ENABLE_MDM', ${WEBAPP_PLUGIN_MDM_DEFAULT_USER});
 define('PLUGIN_MDM_SERVER', '${ZPUSH_HOSTNAME}');
@@ -1952,7 +1995,7 @@ configure_webapp_plugin_meet() {
             cat <<EOF > "${CONFIG_PATH}"webapp/config-meet.php
 // Custom Generated Kopano Webapp Meet Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 <?php
 define('PLUGIN_MEET_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_MEET_DEFAULT_USER});
@@ -1974,7 +2017,7 @@ configure_webapp_plugin_pim_folder() {
 <?php
 // Custom Generated Kopano Webapp PIM Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('PLUGIN_PIMFOLDER_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_PIM_FOLDER_DEFAULT_USER});
 ?>
@@ -2012,7 +2055,7 @@ configure_webapp_plugin_smime() {
 <?php
 // Custom Generated Kopano Webapp S/MIME Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 DEFINE('PLUGIN_SMIME_USER_DEFAULT_ENABLE_SMIME', ${WEBAPP_PLUGIN_SMIME_DEFAULT_USER});
 DEFINE('PLUGIN_SMIME_CACERTS', '${WEBAPP_PLUGIN_SMIME_CACERTS_LOCATION}');
@@ -2022,6 +2065,12 @@ DEFINE('PLUGIN_SMIME_ENABLE_OCSP', ${WEBAPP_PLUGIN_SMIME_ENABLE_OCSP});
 ?>
 EOF
         fi
+    fi
+}
+
+configure_webapp_plugin_texttemplates() {
+    if var_true "${WEBAPP_PLUGIN_ENABLE_TEXTTEMPLATES}" ; then
+        cp -Rp /assets/kopano/plugins/webapp/texttemplates /usr/share/kopano-webapp/plugins
     fi
 }
 
@@ -2059,7 +2108,7 @@ configure_zpush() {
 <?php
 // Custom Generated ZPush Kopano Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('MEMCACHED_SERVERS','${ZPUSH_MEMCACHED_HOST}:${ZPUSH_MEMCACHED_PORT}');
 define('MEMCACHED_DOWN_LOCK_FILE', '/tmp/z-push-memcache-down');
@@ -2109,7 +2158,7 @@ EOF
 <?php
 // Custom Generated ZPush Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
     define('TIMEZONE', '${TIMEZONE}');
     define('BASE_PATH', dirname(\$_SERVER['SCRIPT_FILENAME']). '/');
@@ -2247,7 +2296,7 @@ EOF
 <?php
 // Custom Generated ZPush Kopano Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('MAPI_SERVER', '${ZPUSH_SOCKET_SERVER}');
 
@@ -2278,7 +2327,7 @@ EOF
 <?php
 // Custom Generated ZPush Kopano Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('HASHFIELD', 'account');
 define('CONTACTWORKER', 'Kopano');
@@ -2319,7 +2368,7 @@ EOF
 <?php
 // Custom Generated ZPush GAB Sync Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
 define('HASHFIELD', 'account');
 define('AMOUNT_OF_CHUNKS', 10);
@@ -2359,7 +2408,7 @@ EOF
 <?php
 // Custom Generated ZPush AutoDiscover Configuration! Do not edit, instead set ENV Vars
 // If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-// Last Generated on $(TZ=${TIMEZONE} date -d @${script_start_time} '+%Y-%m-%d %H:%M:%S')
+// Last Generated on $(TZ=${TIMEZONE} date +'%Y-%m-%d %H:%M:%S %Z')
 
     define('ZPUSH_HOST', '${ZPUSH_HOSTNAME}');
     define('TIMEZONE', '${TIMEZONE}');

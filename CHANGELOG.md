@@ -1,3 +1,11 @@
+## 2.1.0 2021-05-01 <dave at tiredofit dot ca>
+
+   ### Added
+      - Added support for Webapp Plugin Jitsi Meet
+      - Added support for Webapp Plugin Text Templates
+   ### Changed
+      - tiredofit/kopano-webservices: 2.1.0
+
 ## 2.0.0 2021-04-18 <dave at tiredofit dot ca>
 
    ### Changed

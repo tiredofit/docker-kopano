@@ -743,6 +743,23 @@ Add multiple Intranet Tabs by adding WEBAPP_PLUGIN_INTRANET(x)_*
 | `WEBAPP_PLUGIN_INTRANET1_AUTOSTART`   | Auto start service upon login        |         |
 | `WEBAPP_PLUGIN_INTRANET1_ICON`        | Icon to load for service             |         |
 
+###### Webapp Plugin: Jitsi Meet Options
+
+| Parameter                                                     | Description                                          | Default               |
+| ------------------------------------------------------------- | ---------------------------------------------------- | --------------------- |
+| `WEBAPP_PLUGIN_JITSIMEET_HOSTNAME`                            | Host where to find Jitsi Meet implementation         | `https://meet.jit.si` |
+| `WEBAPP_PLUGIN_ENABLE_JITSIMEET`                              | Enable Plugin                                        | `FALSE`               |
+| `WEBAPP_PLUGIN_JITSIMEET_DEFAULT_USER`                        | Auto Enable for new users                            | `TRUE`                |
+| `WEBAPP_PLUGIN_JITSIMEET_DEFAULT_OPEN`                        | Default opening behaviour `webapp` `browser` `popup` | `popup`               |
+| `WEBAPP_PLUGIN_JITSIMEET_DEFAULT_HIDE_MAINTOOLBAR`            | Hide the Main Toolbar by default                     | `FALSE`               |
+| `WEBAPP_PLUGIN_JITSIMEET_DISABLE_LOCATION_ADDITION`           | Disable Appending Meeting URL to locaton bar         | `FALSE`               |
+| `WEBAPP_PLUGIN_JITSIMEET_DISABLE_LOCATION_REMOVAL_PROTECTION` | Disable Meeting URL location removal protection      | `FALSE`               |
+| `WEBAPP_PLUGIN_JITSIMEET_DISABLE_MSG_TEMPLATE`                | Disable Sending Message Template                     | `FALSE`               |
+
+Message template will be auto generated for you and saved in ${CONFIG_PATH}/webapp/jitsimeet.template
+
+
+
 ###### Webapp Plugin: Mattermost Options
 
 | Parameter                               | Description                         | Default |
@@ -799,6 +816,11 @@ Add multiple Intranet Tabs by adding WEBAPP_PLUGIN_INTRANET(x)_*
 | `WEBAPP_PLUGIN_SMIME_BROWSER_REMEMBER_PASSPHRASE` | Allow browser to remember Passphrase | `FALSE`                      |
 | `WEBAPP_PLUGIN_SMIME_ENABLE_OCSP`                 | Utilize OCSP Stapling                | `TRUE`                       |
 
+###### Webapp Plugin: Text Templates Options
+
+| Parameter                            | Description   | Default |
+| ------------------------------------ | ------------- | ------- |
+| `WEBAPP_PLUGIN_ENABLE_TEXTTEMPLATES` | Enable Plugin | `FALSE` |
 
 #### Meet Video Conferencing
 
