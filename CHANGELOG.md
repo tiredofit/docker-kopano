@@ -1,3 +1,13 @@
+## 2.2.0 2021-05-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Support inhibiting auto reply or forwarding based on specific message headers
+
+   ### Changed
+      - tiredofit/kopano-webservices:2.1.1 base
+      - Fix for PHP Mapi extension being loaded twice
+
+
 ## 2.1.0 2021-05-01 <dave at tiredofit dot ca>
 
    ### Added

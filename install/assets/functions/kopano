@@ -372,6 +372,8 @@ plugin_path = ${DAGENT_PATH_PLUGIN}
 set_rule_headers = ${DAGENT_SET_RULE_HEADERS}
 no_double_forward = ${DAGENT_NO_DOUBLE_FORWARD}
 insecure_html_join = ${DAGENT_INSECURE_HTML_JOIN}
+inhibit_forward_headers = ${DAGENT_INHIBIT_FORWARD_HEADERS}
+inhibit_auto_reply_headers= ${DAGENT_INHIBIT_AUTOREPLY_HEADERS}
 ${dagent_forward_whitelist}
 ${dagent_spam_header_value}
 EOF
