@@ -18,3 +18,5 @@ DAGENT_SET_RULE_HEADERS=${DAGENT_SET_RULE_HEADERS:-"FALSE"}
 DAGENT_SPAM_HEADER_NAME=${DAGENT_SPAM_HEADER_NAME:-"X-Spam-Status"}
 DAGENT_SSL_CERT_FILE=${DAGENT_SSL_CERT_FILE:-"/certs/core/dagent.crt"}
 DAGENT_SSL_KEY_FILE=${DAGENT_SSL_KEY_FILE:-"/certs/core/dagent.pem"}
+DAGENT_INHIBIT_FORWARD_HEADERS=${DAGENT_INHIBIT_FORWARD_HEADERS:-"X-Kopano-Vacation Auto-Submitted"}
+DAGENT_INHIBIT_AUTOREPLY_HEADERS=${DAGENT_INHIBIT_AUTOREPLY_HEADERS:-'X-Kopano-Vacation Auto-Submitted Precedence List-Id List-Help List-Subscribe List-Unsubscribe List-Post List-Owner List-Archive "X-Spam-Flag: YES" "X-Is-Junk: YES" X-AMAZON* X-LinkedIn*'}
