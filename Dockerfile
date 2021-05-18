@@ -1,5 +1,5 @@
-FROM tiredofit/kopano-core:2.1.0 as kopano-core
-FROM tiredofit/kopano-webservices:2.1.1 as kopano-webservices
+FROM tiredofit/kopano-core:2.1.1 as kopano-core
+FROM tiredofit/kopano-webservices:2.1.2 as kopano-webservices
 ##
 
 FROM tiredofit/nginx-php-fpm:debian-7.3-buster
