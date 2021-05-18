@@ -1,3 +1,9 @@
+## 2.3.1 2021-05-17 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for enabling themes and iconsets inside of the webapp
+
+
 ## 2.3.0 2021-05-16 <dave at tiredofit dot ca>
 
    ### Changed
