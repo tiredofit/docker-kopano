@@ -1,3 +1,8 @@
+## 2.3.3 2021-05-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - tiredofit/kopano-core:2.1.2 base
+
 ## 2.3.2 2021-05-17 <dave at tiredofit dot ca>
 
    ### Changed

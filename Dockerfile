@@ -1,4 +1,4 @@
-FROM tiredofit/kopano-core:2.1.1 as kopano-core
+FROM tiredofit/kopano-core:2.1.2 as kopano-core
 FROM tiredofit/kopano-webservices:2.1.2 as kopano-webservices
 ##
 
