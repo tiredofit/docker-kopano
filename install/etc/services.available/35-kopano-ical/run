@@ -10,5 +10,5 @@ liftoff
 wait_for_server ical
 sleep 3
 
-print_info "Starting Kopano ICAL Server"
+print_start "Starting Kopano ICAL Server"
 kopano-ical "${ICAL_ADDITIONAL_ARGS}"

@@ -1,3 +1,8 @@
+## 2.3.4 2021-07-08 <dave at tiredofit dot ca>
+
+   ### Changed
+      - tiredofit/kopano-webservices:2.2.0 base
+
 ## 2.3.3 2021-05-18 <dave at tiredofit dot ca>
 
    ### Changed

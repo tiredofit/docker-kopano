@@ -1,9 +1,9 @@
 FROM tiredofit/kopano-core:2.1.2 as kopano-core
-FROM tiredofit/kopano-webservices:2.1.2 as kopano-webservices
+FROM tiredofit/kopano-webservices:2.2.0 as kopano-webservices
 ##
 
 FROM tiredofit/nginx-php-fpm:debian-7.3-buster
-LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
+LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ADD build-assets/ /build-assets
 

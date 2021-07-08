@@ -12,5 +12,5 @@ rm -rf /var/run/kopano/spooler.pid
 wait_for_server spooler
 sleep 3
 
-print_info "Starting Kopano Spooler"
+print_start "Starting Kopano Spooler"
 kopano-spooler
