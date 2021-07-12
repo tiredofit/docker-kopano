@@ -1,3 +1,8 @@
+## 2.3.5 2021-07-12 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change the way that LLNG Authentication works
+
 ## 2.3.4 2021-07-08 <dave at tiredofit dot ca>
 
    ### Changed

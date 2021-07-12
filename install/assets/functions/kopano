@@ -1496,29 +1496,10 @@ configure_webapp() {
         sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/webapp.template
         case "$NGINX_AUTHENTICATION_TYPE" in
           "LLNG")
-              sed -i "s#<LLNG_HANDLER_HOST>#$NGINX_AUTHENTICATION_LLNG_HANDLER_HOST#g" /etc/nginx/nginx.conf.d/authentication/llng
-              sed -i "s#<LLNG_HANDLER_PORT>#$NGINX_AUTHENTICATION_LLNG_HANDLER_PORT#g" /etc/nginx/nginx.conf.d/authentication/llng
-              print_notice "Setting LLNG Authentication"
-
-              header_num=$(printenv | sort | grep -c '\NGINX_AUTHENTICATION_LLNG_ATTRIBUTE.*')
-                for (( i = 1; i <= header_num; i++ ))
-                    do
-                      headers=NGINX_AUTHENTICATION_LLNG_ATTRIBUTE${i}
-                      IFS=',' read -r -a array <<< "${!headers}"
-
-                      print_notice "Updating Nginx to support recieving attribute from LLNG: '${array[0]}'"
-
-                      echo "fastcgi_param ${array[0]} \$${array[1]};" >> /etc/nginx/nginx.conf.d/authentication/llng_params
-                      echo "auth_request_set \$${array[1]} \$${array[2]};" >> /etc/nginx/nginx.conf.d/authentication/llng_auth_request
-                done
+              print_notice "Setting Webapp LLNG Authentication"
 
               sed -i '/server {/a\ \ \ \ \  include /etc/nginx/nginx.conf.d/authentication/llng;' /etc/nginx/conf.available/webapp.template
               sed -i '/server {/a\ \ \ \ \  ### LLNG Authentication handler' /etc/nginx/conf.available/webapp.template
-              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ include /etc/nginx/nginx.conf.d/authentication/llng_auth_request;' /etc/nginx/conf.available/webapp.template
-              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ ### LLNG Authentication handler' /etc/nginx/conf.available/webapp.template
-              sed -i '/ fastcgi_index/a\ \ \ \ \ \ \ \ \ \ include \/etc\/nginx\/nginx.conf.d\/authentication\/llng_auth_request;' /etc/nginx/conf.available/webapp.template
-              sed -i '/ fastcgi_index/a\ \ \ \ \ \ \ \ \ \ include \/etc\/nginx\/nginx.conf.d\/authentication\/llng_params;' /etc/nginx/conf.available/webapp.template
-              sed -i '/ fastcgi_index/a\ \ \ \ \ \ \ \ \ \ ### LLNG Authentication handler' /etc/nginx/conf.available/webapp.template
               ;;
           "NONE")
             :
