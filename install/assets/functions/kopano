@@ -1517,9 +1517,15 @@ configure_spooler() {
             chown -R kopano: "${SPOOLER_PATH_RAW_MESSAGES}"
         fi
 
-        truefalse_yesno SPOOLER_PLUGIN_ENABLED
-        truefalse_yesno SPOOLER_LOG_RAW_MESSAGE_STAGE1
+        truefalse_yesno SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST
+        truefalse_yesno SPOOLER_ALLOW_REDIRECT_SPOOFING
+        truefalse_yesno SPOOLER_ALLOW_SEND_TO_EVERYONE
+        truefalse_yesno SPOOLER_ALWAYS_SEND_DELEGATES
         truefalse_yesno SPOOLER_ENABLE_DSN
+        truefalse_yesno SPOOLER_EXPAND_GROUPS
+        truefalse_yesno SPOOLER_LOG_RAW_MESSAGE_STAGE1
+        truefalse_yesno SPOOLER_PLUGIN_ENABLED
+
         if [ "$SETUP_TYPE" = "AUTO" ]; then
             print_notice "Spooler: Auto Configuring"
 
@@ -1556,6 +1562,10 @@ max_threads = ${SPOOLER_MAX_THREADS}
 plugin_enabled = ${SPOOLER_PLUGIN_ENABLED}
 plugin_path = ${SPOOLER_PATH_PLUGIN}
 enable_dsn = ${SPOOLER_ENABLE_DSN}
+always_send_delegates = ${SPOOLER_ALWAYS_SEND_DELEGATES}
+allow_redirect_spoofing = ${SPOOLER_ALLOW_REDIRECT_SPOOFING}
+allow_delegate_meeting_request = ${SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST}
+allow_send_to_everyone = ${SPOOLER_ALLOW_SEND_TO_EVERYONE}
 EOF
         else
             print_info "Skipping Spooler Configuration"

@@ -626,22 +626,27 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 
 ##### Spooler Options (needs work)
 
-| Parameter                        | Description                                                       | Default                       |
-| -------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
-| `ENABLE_SPOOLER`                 | Enable Service                                                    | `TRUE`                        |
-| `LOG_FILE_SPOOLER`               | Logfile Name                                                      | `spooler.log`                 |
-| `SPOOLER_ENABLE_DSN`             |                                                                   | `TRUE`                        |
-| `SPOOLER_LOG_LEVEL`              | Override master `LOG_LEVEL` environment for this specific service |                               |
-| `SPOOLER_LOG_RAW_MESSAGE_STAGE1` |                                                                   | `FALSE`                       |
-| `SPOOLER_MAX_THREADS`            | Maximum Threads to use for Spooler                                | `5`                           |
-| `SPOOLER_PATH_PLUGIN`            | Path for Spooler Plugins                                          | `/data/spooler/plugins/`      |
-| `SPOOLER_PATH_RAW_MESSAGES`      | Path for Raw Message logging                                      | `/data/spooler/raw_messages/` |
-| `SPOOLER_PLUGIN_ENABLED`         | Enable Spooler Plugin Support                                     | `FALSE`                       |
-| `SPOOLER_SMTP_HOST`              | Host that can provide outbound MTA functionality                  | `localhost`                   |
-| `SPOOLER_SMTP_PORT`              | Port to connect to on `SMTP_HOST`                                 | 25                            |
-| `SPOOLER_SOCKET_SERVER`          | What should service use to contact server                         | `${SOCKET_SERVER}`            |
-| `SPOOLER_SSL_CERT_FILE`          | Spooler SSL Certificate File                                      | `/certs/core/spooler.crt`     |
-| `SPOOLER_SSL_KEY_FILE`           | Spooler SSL Key File                                              | `/certs/core/spooler.pem`     |
+| Parameter                                | Description                                                       | Default                       |
+| ---------------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| `ENABLE_SPOOLER`                         | Enable Service                                                    | `TRUE`                        |
+| `LOG_FILE_SPOOLER`                       | Logfile Name                                                      | `spooler.log`                 |
+| `SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST` | Allow delegates to send meeting requests                          | `TRUE`                        |
+| `SPOOLER_ALLOW_REDIRECT_SPOOFING`        | Allow redirect rule to change from email address                  | `TRUE`                        |
+| `SPOOLER_ALLOW_SEND_TO_EVERYONE`         | Allow to send to everyone group                                   | `TRUE`                        |
+| `SPOOLER_ALWAYS_SEND_DELEGATES`          | Always send delegate "On behalf of" headers                       | `FALSE`                       |
+| `SPOOLER_ENABLE_DSN`                     | Allow fo forward upstream MTA Delivery Status Notes               | `TRUE`                        |
+| `SPOOLER_EXPAND_GROUPS`                  | Expand group members inside of headers                            | `FALSE`                       |
+| `SPOOLER_LOG_LEVEL`                      | Override master `LOG_LEVEL` environment for this specific service |                               |
+| `SPOOLER_LOG_RAW_MESSAGE_STAGE1`         |                                                                   | `FALSE`                       |
+| `SPOOLER_MAX_THREADS`                    | Maximum Threads to use for Spooler                                | `5`                           |
+| `SPOOLER_PATH_PLUGIN`                    | Path for Spooler Plugins                                          | `/data/spooler/plugins/`      |
+| `SPOOLER_PATH_RAW_MESSAGES`              | Path for Raw Message logging                                      | `/data/spooler/raw_messages/` |
+| `SPOOLER_PLUGIN_ENABLED`                 | Enable Spooler Plugin Support                                     | `FALSE`                       |
+| `SPOOLER_SMTP_HOST`                      | Host that can provide outbound MTA functionality                  | `localhost`                   |
+| `SPOOLER_SMTP_PORT`                      | Port to connect to on `SMTP_HOST`                                 | 25                            |
+| `SPOOLER_SOCKET_SERVER`                  | What should service use to contact server                         | `${SOCKET_SERVER}`            |
+| `SPOOLER_SSL_CERT_FILE`                  | Spooler SSL Certificate File                                      | `/certs/core/spooler.crt`     |
+| `SPOOLER_SSL_KEY_FILE`                   | Spooler SSL Key File                                              | `/certs/core/spooler.pem`     |
 
 ##### Webapp Options (needs work)
 
