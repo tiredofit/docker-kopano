@@ -1018,7 +1018,7 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 | `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                                                   | `%H:%M:%S`                                            |
 | `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                                                   | `Your data`                                           |
 | `ZPUSH_SEARCH_MAX_RESULTS`                 |                                                                   | `10`                                                  |
-| `ZPUSH_SEARCH_PROVIDER`                    |                                                                   | `kopano`                                              |
+| `ZPUSH_SEARCH_PROVIDER`                    |                                                                   | `BackendKopano`                                       |
 | `ZPUSH_SEARCH_TIME`                        |                                                                   | `10`                                                  |
 | `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                         | `${SOCKET_SERVER}`                                    |
 | `ZPUSH_STATE_FILE_PATH`                    |                                                                   | `/data/zpush/`                                        |
