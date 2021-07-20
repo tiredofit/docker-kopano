@@ -320,8 +320,8 @@ EOF
             if var_true DAGENT_ENABLE_FORWARD_WHITELIST ; then
                 dagent_forward_whitelist=$(cat <<EOF
 forward_whitelist_domains = ${DAGENT_FORWARD_WHITELIST_DOMAINS}
-forward_whitelist_domain_subject = ${DAGENT_FORWARD_WHITELIST_DOMAINS_SUBJECT}
-forward_whitelist_domain_message = ${DAGENT_FORWARD_WHITELIST_DOMAINS_MESSAGE}
+forward_whitelist_domain_subject = "${DAGENT_FORWARD_WHITELIST_DOMAINS_SUBJECT}"
+forward_whitelist_domain_message = "${DAGENT_FORWARD_WHITELIST_DOMAINS_MESSAGE}"
 EOF
                                         )
 
