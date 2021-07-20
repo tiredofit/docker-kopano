@@ -1,3 +1,9 @@
+## 2.4.0 2021-07-20 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add independent (SERVICE)_LOG_LEVEL override capabilities from LOG_LEVEL
+
+
 ## 2.3.5 2021-07-12 <dave at tiredofit dot ca>
 
    ### Changed

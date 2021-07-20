@@ -344,13 +344,14 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 
 ##### Backup Options
 
-| Parameter                 | Description                               | Default                  |
-| ------------------------- | ----------------------------------------- | ------------------------ |
-| `BACKUP_SOCKET_SERVER`    | What should service use to contact server | `${SOCKET_SERVER}`       |
-| `BACKUP_SSL_CERT_FILE`    | Backup SSL Certificate File               | `/certs/core/backup.crt` |
-| `BACKUP_SSL_KEY_FILE`     | Backup SSL Key File                       | `/certs/core/backup.pem` |
-| `BACKUP_WORKER_PROCESSES` | Amount of processes for backup            | `1`                      |
-| `LOG_FILE_BACKUP`         | Logfile Name                              | `backup.log`             |
+| Parameter                 | Description                                                       | Default                  |
+| ------------------------- | ----------------------------------------------------------------- | ------------------------ |
+| `BACKUP_LOG_LEVEL`        | Override master `LOG_LEVEL` environment for this specific service |                          |
+| `BACKUP_SOCKET_SERVER`    | What should service use to contact server                         | `${SOCKET_SERVER}`       |
+| `BACKUP_SSL_CERT_FILE`    | Backup SSL Certificate File                                       | `/certs/core/backup.crt` |
+| `BACKUP_SSL_KEY_FILE`     | Backup SSL Key File                                               | `/certs/core/backup.pem` |
+| `BACKUP_WORKER_PROCESSES` | Amount of processes for backup                                    | `1`                      |
+| `LOG_FILE_BACKUP`         | Logfile Name                                                      | `backup.log`             |
 
 ##### Calendar Options (needs work)
 
@@ -373,6 +374,7 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 | `DAGENT_LISTEN_HOST`                       | LMTP Listen address (insecure)                                                                                 | `*`                                                                                                                                                                                                                                                          |
 | `DAGENT_LISTEN_PORT`                       | LMTP Listen port (insecure)                                                                                    | `2003`                                                                                                                                                                                                                                                       |
 | `DAGENT_LMTP_MAX_THREADS`                  |                                                                                                                | `20`                                                                                                                                                                                                                                                         |
+| `DAGENT_LOG_LEVEL`                         | Override master `LOG_LEVEL` environment for this specific service                                              |                                                                                                                                                                                                                                                              |
 | `DAGENT_LOG_RAW_MESSAGES`                  |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
 | `DAGENT_NO_DOUBLE_FORWARD`                 |                                                                                                                | `TRUE`                                                                                                                                                                                                                                                       |
 | `DAGENT_PATH_PLUGIN`                       |                                                                                                                | `/data/dagent/plugins/`                                                                                                                                                                                                                                      |
@@ -383,7 +385,7 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 | `DAGENT_SSL_CERT_FILE`                     | DAgent SSL Certificate File                                                                                    | `/certs/core/dagent.crt`                                                                                                                                                                                                                                     |
 | `DAGENT_SSL_KEY_FILE`                      | DAgent SSL Key File                                                                                            | `/certs/core/dagent.pem`                                                                                                                                                                                                                                     |
 | `DAGENT_INHIBIT_FORWARD_HEADERS`           | Inhibit forwarding with these headers seperated by space                                                       | `X-Kopano-Vacation Auto-Submitted`                                                                                                                                                                                                                           |
-| `DAGENT_INHIBIT_AUTOREPLY_HEADERS`          | Inhibit Autoreply with these headers message                                                                   | See Below                                                                                                                                                                                                                                                    |
+| `DAGENT_INHIBIT_AUTOREPLY_HEADERS`         | Inhibit Autoreply with these headers message                                                                   | See Below                                                                                                                                                                                                                                                    |
 |                                            | `X-Kopano-Vacation Auto-Submitted Precedence List-Id List-Help List-Subscribe`                                 |
 |                                            | `List-Unsubscribe List-Post List-Owner List-Archive "X-Spam-Flag: YES" "X-Is-Junk: YES" X-AMAZON* X-LinkedIn*` |
 
@@ -399,34 +401,35 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 
 ##### Gateway Options (needs work)
 
-| Parameter                             | Description                                      | Default                   |
-| ------------------------------------- | ------------------------------------------------ | ------------------------- |
-| `ENABLE_GATEWAY`                      | Enable Service                                   | `TRUE`                    |
-| `GATEWAY_BYPASS_AUTHENTICATION_ADMIN` | Bypass authentication for Admins on local socket | `FALSE`                   |
-| `GATEWAY_ENABLE_IMAP_SECURE`          | Enable IMAP (secure)                             | `TRUE`                    |
-| `GATEWAY_ENABLE_IMAP`                 | Enable IMAP (insecure)                           | `FALSE`                   |
-| `GATEWAY_ENABLE_POP3`                 | Enable POP3 (insecure)                           | `FALSE`                   |
-| `GATEWAY_ENABLE_POP3S`                | Enable POP3 (secure)                             | `TRUE`                    |
-| `GATEWAY_GREETING_SHOW_HOSTNAME`      | Show hostiname in greeting                       | `FALSE`                   |
-| `GATEWAY_HOSTNAME`                    | Greeting Hostname                                | `example.com`             |
-| `GATEWAY_IMAP_MAX_MESSAGE_SIZE`       | Maximum Message Size to Process for POP3/IMAP    | `25M`                     |
-| `GATEWAY_IMAP_MAX_FAIL_COMMANDS`      |                                                  | `5`                       |
-| `GATEWAY_IMAP_ONLY_MAIL_FOLDERS`      |                                                  | `TRUE`                    |
-| `GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS`    |                                                  | `TRUE`                    |
-| `GATEWAY_LISTEN_HOST_IMAP_SECURE`     | Listen address (secure)                          | `*`                       |
-| `GATEWAY_LISTEN_HOST_IMAP`            | Listen address (insecure)                        | `*`                       |
-| `GATEWAY_LISTEN_HOST_POP3_SECURE`     | Listen address (secure)                          | `*`                       |
-| `GATEWAY_LISTEN_HOST_POP3`            | Listen address (insecure)                        | `*`                       |
-| `GATEWAY_LISTEN_PORT_IMAP_SECURE`     | Listen port (insecure)                           | `993`                     |
-| `GATEWAY_LISTEN_PORT_IMAP`            | Listen port (insecure)                           | `143`                     |
-| `GATEWAY_LISTEN_PORT_POP3_SECURE`     | Listen port (insecure)                           | `995`                     |
-| `GATEWAY_LISTEN_PORT_POP3`            | Listen port (insecure)                           | `143`                     |
-| `GATEWAY_SOCKET_SERVER`               | What should service use to contact server        | `${SOCKET_SERVER}`        |
-| `GATEWAY_SSL_CERT_FILE`               | Gateway SSL Certificate File                     | `/certs/core/gateway.crt` |
-| `GATEWAY_SSL_KEY_FILE`                | Gateway SSL Key File                             | `/certs/core/gateway.pem` |
-| `GATEWAY_SSL_PREFER_SERVER_CIPHERS`   | Prefer Server Ciphers when using SSL             | `TRUE`                    |
-| `GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH`  | Require SSL when using AUTHPLAIN                 | `TRUE`                    |
-| `LOG_FILE_GATEWAY`                    | Logfile Name                                     | `gateway.log`             |
+| Parameter                             | Description                                                       | Default                   |
+| ------------------------------------- | ----------------------------------------------------------------- | ------------------------- |
+| `ENABLE_GATEWAY`                      | Enable Service                                                    | `TRUE`                    |
+| `GATEWAY_BYPASS_AUTHENTICATION_ADMIN` | Bypass authentication for Admins on local socket                  | `FALSE`                   |
+| `GATEWAY_ENABLE_IMAP_SECURE`          | Enable IMAP (secure)                                              | `TRUE`                    |
+| `GATEWAY_ENABLE_IMAP`                 | Enable IMAP (insecure)                                            | `FALSE`                   |
+| `GATEWAY_ENABLE_POP3`                 | Enable POP3 (insecure)                                            | `FALSE`                   |
+| `GATEWAY_ENABLE_POP3S`                | Enable POP3 (secure)                                              | `TRUE`                    |
+| `GATEWAY_GREETING_SHOW_HOSTNAME`      | Show hostiname in greeting                                        | `FALSE`                   |
+| `GATEWAY_HOSTNAME`                    | Greeting Hostname                                                 | `example.com`             |
+| `GATEWAY_IMAP_MAX_MESSAGE_SIZE`       | Maximum Message Size to Process for POP3/IMAP                     | `25M`                     |
+| `GATEWAY_IMAP_MAX_FAIL_COMMANDS`      |                                                                   | `5`                       |
+| `GATEWAY_IMAP_ONLY_MAIL_FOLDERS`      |                                                                   | `TRUE`                    |
+| `GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS`    |                                                                   | `TRUE`                    |
+| `GATEWAY_LISTEN_HOST_IMAP_SECURE`     | Listen address (secure)                                           | `*`                       |
+| `GATEWAY_LISTEN_HOST_IMAP`            | Listen address (insecure)                                         | `*`                       |
+| `GATEWAY_LISTEN_HOST_POP3_SECURE`     | Listen address (secure)                                           | `*`                       |
+| `GATEWAY_LISTEN_HOST_POP3`            | Listen address (insecure)                                         | `*`                       |
+| `GATEWAY_LISTEN_PORT_IMAP_SECURE`     | Listen port (insecure)                                            | `993`                     |
+| `GATEWAY_LISTEN_PORT_IMAP`            | Listen port (insecure)                                            | `143`                     |
+| `GATEWAY_LISTEN_PORT_POP3_SECURE`     | Listen port (insecure)                                            | `995`                     |
+| `GATEWAY_LISTEN_PORT_POP3`            | Listen port (insecure)                                            | `143`                     |
+| `GATEWAY_LOG_LEVEL`                   | Override master `LOG_LEVEL` environment for this specific service |                           |
+| `GATEWAY_SOCKET_SERVER`               | What should service use to contact server                         | `${SOCKET_SERVER}`        |
+| `GATEWAY_SSL_CERT_FILE`               | Gateway SSL Certificate File                                      | `/certs/core/gateway.crt` |
+| `GATEWAY_SSL_KEY_FILE`                | Gateway SSL Key File                                              | `/certs/core/gateway.pem` |
+| `GATEWAY_SSL_PREFER_SERVER_CIPHERS`   | Prefer Server Ciphers when using SSL                              | `TRUE`                    |
+| `GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH`  | Require SSL when using AUTHPLAIN                                  | `TRUE`                    |
+| `LOG_FILE_GATEWAY`                    | Logfile Name                                                      | `gateway.log`             |
 
 ##### Gateway Migrator Mode Options
 
@@ -443,53 +446,56 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 
 ##### ICAL Options (needs work)
 
-| Parameter                 | Description                               | Default                |
-| ------------------------- | ----------------------------------------- | ---------------------- |
-| `ENABLE_ICAL`             |                                           | `TRUE`                 |
-| `ICAL_ENABLE_HTTP`        |                                           | `TRUE`                 |
-| `ICAL_ENABLE_HTTPS`       |                                           | `TRUE`                 |
-| `ICAL_ENABLE_ICAL_GET`    |                                           | `TRUE`                 |
-| `ICAL_LISTEN_HOST`        | Listen address (insecure)                 | `*`                    |
-| `ICAL_LISTEN_HOST_SECURE` | Listen address (secure)                   | `*`                    |
-| `ICAL_LISTEN_PORT`        | Listen port (insecure)                    | `8080`                 |
-| `ICAL_LISTEN_PORT_SECURE` | Listen port (insecure)                    | `8443`                 |
-| `ICAL_SOCKET_SERVER`      | What should service use to contact server | `${SOCKET_SERVER}`     |
-| `ICAL_SSL_CERT_FILE`      | ICAL SSL Certificate File                 | `/certs/core/ical.crt` |
-| `ICAL_SSL_KEY_FILE`       | ICAL SSL Key File                         | `/certs/core/ical.pem` |
-| `LOG_FILE_ICAL`           | Logfile Name                              | `ical.log`             |
+| Parameter                 | Description                                                       | Default                |
+| ------------------------- | ----------------------------------------------------------------- | ---------------------- |
+| `ENABLE_ICAL`             |                                                                   | `TRUE`                 |
+| `ICAL_ENABLE_HTTP`        |                                                                   | `TRUE`                 |
+| `ICAL_ENABLE_HTTPS`       |                                                                   | `TRUE`                 |
+| `ICAL_ENABLE_ICAL_GET`    |                                                                   | `TRUE`                 |
+| `ICAL_LISTEN_HOST`        | Listen address (insecure)                                         | `*`                    |
+| `ICAL_LISTEN_HOST_SECURE` | Listen address (secure)                                           | `*`                    |
+| `ICAL_LISTEN_PORT`        | Listen port (insecure)                                            | `8080`                 |
+| `ICAL_LISTEN_PORT_SECURE` | Listen port (insecure)                                            | `8443`                 |
+| `ICAL_LOG_LEVEL`          | Override master `LOG_LEVEL` environment for this specific service |                        |
+| `ICAL_SOCKET_SERVER`      | What should service use to contact server                         | `${SOCKET_SERVER}`     |
+| `ICAL_SSL_CERT_FILE`      | ICAL SSL Certificate File                                         | `/certs/core/ical.crt` |
+| `ICAL_SSL_KEY_FILE`       | ICAL SSL Key File                                                 | `/certs/core/ical.pem` |
+| `LOG_FILE_ICAL`           | Logfile Name                                                      | `ical.log`             |
 
 ##### KDAV Options (needs work)
 
-| Parameter             | Description                               | Default            |
-| --------------------- | ----------------------------------------- | ------------------ |
-| `ENABLE_KDAV`         | Enable Service                            | `TRUE`             |
-| `KDAV_CONFIG_FILE`    | Configuration File                        | `kdav.php`         |
-| `KDAV_DEVELOPER_MODE` |                                           | `TRUE`             |
-| `KDAV_HOSTNAME`       | DAV Service Hostname                      | `dav.example.com`  |
-| `KDAV_MAX_SYNC_ITEMS` |                                           | `1000`             |
-| `KDAV_PATH`           |                                           | `/data/kdav/`      |
-| `KDAV_REALM`          | KDAV Realm                                | `Kopano DAV`       |
-| `KDAV_ROOT_URI`       |                                           | `/`                |
-| `KDAV_SOCKET_SERVER`  | What should service use to contact server | `${SOCKET_SERVER}` |
-| `KDAV_SYNC_DB`        |                                           | `syncdate.db`      |
-| `LOG_FILE_KDAV`       | Logfile Name                              | `kdav.log`         |
+| Parameter             | Description                                                       | Default            |
+| --------------------- | ----------------------------------------------------------------- | ------------------ |
+| `ENABLE_KDAV`         | Enable Service                                                    | `TRUE`             |
+| `KDAV_CONFIG_FILE`    | Configuration File                                                | `kdav.php`         |
+| `KDAV_DEVELOPER_MODE` |                                                                   | `TRUE`             |
+| `KDAV_HOSTNAME`       | DAV Service Hostname                                              | `dav.example.com`  |
+| `KDAV_LOG_LEVEL`      | Override master `LOG_LEVEL` environment for this specific service |                    |
+| `KDAV_MAX_SYNC_ITEMS` |                                                                   | `1000`             |
+| `KDAV_PATH`           |                                                                   | `/data/kdav/`      |
+| `KDAV_REALM`          | KDAV Realm                                                        | `Kopano DAV`       |
+| `KDAV_ROOT_URI`       |                                                                   | `/`                |
+| `KDAV_SOCKET_SERVER`  | What should service use to contact server                         | `${SOCKET_SERVER}` |
+| `KDAV_SYNC_DB`        |                                                                   | `syncdate.db`      |
+| `LOG_FILE_KDAV`       | Logfile Name                                                      | `kdav.log`         |
 
 ##### Monitor Options
 
-| Parameter                          | Description                               | Default                   |
-| ---------------------------------- | ----------------------------------------- | ------------------------- |
-| `ENABLE_MONITOR`                   | Enable Service                            | `TRUE`                    |
-| `MONITOR_QUOTA_CHECK_INTERVAL`     | Check Quotas in minutes interval          | `15`                      |
-| `MONITOR_QUOTA_RESEND_INTERVAL`    | Resend Notifications in dats interval     | `1`                       |
-| `MONITOR_SSL_CERT_FILE`            | Monitor SSL Certificate File              | `/certs/core/monitor.crt` |
-| `MONTIOR_SSL_KEY_FILE`             | Monitor SSL Key File                      | `/certs/core/monitor.pem` |
-| `MONITOR_SOCKET_SERVER`            | What should service use to contact server | `${SOCKET_SERVER}`        |
-| `LOG_FILE_MONITOR`                 | Logfile Name                              | `monitor.log`             |
-| `TEMPLATE_MONITOR_COMPANY_QUOTA`   | Template: Company exceeded Quota          | `companywarning.mail`     |
-| `TEMPLATE_MONITOR_PATH`            | Where to find templates                   | `/data/templates/quotas`  |
-| `TEMPLATE_MONITOR_USER_QUOTA`      | Template: User exceeded Quota             | `userwarning.mail`        |
-| `TEMPLATE_MONITOR_USER_HARD_QUOTA` | Template: User exceeded Quota Hard        | `userhard.mail`           |
-| `TEMPLATE_MONITOR_USER_SOFT_QUOTA` | Template: User exceeded Quota Soft        | `usersoft.mail`           |
+| Parameter                          | Description                                                       | Default                   |
+| ---------------------------------- | ----------------------------------------------------------------- | ------------------------- |
+| `ENABLE_MONITOR`                   | Enable Service                                                    | `TRUE`                    |
+| `MONITOR_LOG_LEVEL`                | Override master `LOG_LEVEL` environment for this specific service |                           |
+| `MONITOR_QUOTA_CHECK_INTERVAL`     | Check Quotas in minutes interval                                  | `15`                      |
+| `MONITOR_QUOTA_RESEND_INTERVAL`    | Resend Notifications in dats interval                             | `1`                       |
+| `MONITOR_SSL_CERT_FILE`            | Monitor SSL Certificate File                                      | `/certs/core/monitor.crt` |
+| `MONTIOR_SSL_KEY_FILE`             | Monitor SSL Key File                                              | `/certs/core/monitor.pem` |
+| `MONITOR_SOCKET_SERVER`            | What should service use to contact server                         | `${SOCKET_SERVER}`        |
+| `LOG_FILE_MONITOR`                 | Logfile Name                                                      | `monitor.log`             |
+| `TEMPLATE_MONITOR_COMPANY_QUOTA`   | Template: Company exceeded Quota                                  | `companywarning.mail`     |
+| `TEMPLATE_MONITOR_PATH`            | Where to find templates                                           | `/data/templates/quotas`  |
+| `TEMPLATE_MONITOR_USER_QUOTA`      | Template: User exceeded Quota                                     | `userwarning.mail`        |
+| `TEMPLATE_MONITOR_USER_HARD_QUOTA` | Template: User exceeded Quota Hard                                | `userhard.mail`           |
+| `TEMPLATE_MONITOR_USER_SOFT_QUOTA` | Template: User exceeded Quota Soft                                | `usersoft.mail`           |
 
 ##### Search Options
 
@@ -509,6 +515,7 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `SEARCH_LIMIT_RESULTS`              | Limit Results returned                                                                      | `1000`                          |
 | `SEARCH_LISTEN_HOST`                | Listen address                                                                              | `0.0.0.0`                       |
 | `SEARCH_LISTEN_PORT`                | Listen address                                                                              | `1238`                          |
+| `SEARCH_LOG_LEVEL`                  | Override master `LOG_LEVEL` environment for this specific service                           |                                 |
 | `SEARCH_SOCKET_SERVER`              | What should service use to contact server                                                   | `${SOCKET_SERVER}`              |
 | `SEARCH_SSL_CERT_FILE`              | Search SSL Certificate File                                                                 | `/certs/core/search.crt`        |
 | `SEARCH_SSL_KEY_FILE`               | Search SSL Key File                                                                         | `/certs/core/search.pem`        |
@@ -524,176 +531,179 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 
 ##### Server Options (needs work)
 
-| Parameter                                | Description                                                    | Default                       |
-| ---------------------------------------- | -------------------------------------------------------------- | ----------------------------- |
-| `ENABLE_SERVER`                          | Enable Service                                                 | `TRUE`                        |
-| `LOG_FILE_SERVER`                        | Logfile Name                                                   | `server.log`                  |
-| `SERVER_ALLOW_LOCAL_USERS`               |                                                                | `TRUE`                        |
-| `SERVER_ATTACHMENT_BACKEND_FILES_FSYNC`  |                                                                | `TRUE`                        |
-| `SERVER_ATTACHMENT_BACKEND_FILES_PATH`   | Where to store attachments                                     | `/data/attachments/`          |
-| `SERVER_ATTACHMENT_BACKEND_S3_PATH`      | Path on S3 Bucket to store attachments                         | `attachments`                 |
-| `SERVER_ATTACHMENT_BACKEND`              | Files Backend `FILES` `FILES_V2` `S3`                          | `files_v2`                    |
-| `SERVER_ATTACHMENT_COMPRESSION`          | Level of Gzip Compression for Attachments                      | `6`                           |
-| `SERVER_ATTACHMENT_S3_PROTOCOL`          | Protocol to use for connecting to S3 service                   | `HTTPS`                       |
-|                                          |
-| `SERVER_CACHE_ACL`                       | Access Control List Values                                     | `1M`                          |
-| `SERVER_CACHE_CELL`                      | Main Cache in Kopano                                           | `256M`                        |
-| `SERVER_CACHE_INDEXED_OBJECT`            | Unique IDs of Objects                                          | `16M`                         |
-| `SERVER_CACHE_OBJECT`                    | Objects and Folder Hierarchy                                   | `5M`                          |
-| `SERVER_CACHE_QUOTA_LIFETIME`            | Lifetime for Quota Details                                     | `1`                           |
-| `SERVER_CACHE_QUOTA`                     | Quota Values of Users                                          | `1M`                          |
-| `SERVER_CACHE_SERVER_LIFETIME`           | Lifetime for Server Locations                                  | `30`                          |
-| `SERVER_CACHE_SERVER`                    | Multiserver Only - Server Locations                            | `1M`                          |
-| `SERVER_CACHE_STORE`                     | ID Values                                                      | `1M`                          |
-| `SERVER_CACHE_USERDETAILS_LIFETIME`      | Lifetime for User Details                                      | `0`                           |
-| `SERVER_CACHE_USERDETAILS`               | User Details Values                                            | `3M`                          |
-| `SERVER_CACHE_USER`                      | User ID Values                                                 | `1M`                          |
-| `SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY` |                                                                | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_CREATEGROUP`   |                                                                | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_CREATEUSER`    |                                                                | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY` |                                                                | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_DELETEGROUP`   |                                                                | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_DELETEUSER`    |                                                                | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_PATH`          | Where to find user scripts for performing add/del user actions | `/etc/kopano/userscripts/`    |
-| `SERVER_DISABLED_FEATURES`               |                                                                |                               |
-| `SERVER_ENABLE_CUSTOM_USERSCRIPTS`       | Enable Custom Userscripts in /config/userscripts               | `TRUE`                        |
-| `SERVER_ENABLE_GAB`                      | Enable Global Address Book                                     | `TRUE`                        |
-| `SERVER_ENABLE_HTTPS`                    | Enable TLS Communications to Server Socket                     | `FALSE`                       |
-| `SERVER_ENABLE_HTTP`                     | Enable HTTP Communications to Server Socket                    | `FALSE`                       |
-| `SERVER_ENABLE_MULTI_TENANT`             | Enable Multi Server Mode                                       | `FALSE`                       |
-| `SERVER_ENABLE_MULTI_TENANT`             | Enable Multi Tenant Mode                                       | `FALSE`                       |
-| `SERVER_ENABLE_OPTIMIZED_SQL`            | Use Optimized MariaDB statements                               | `TRUE`                        |
-| `SERVER_ENABLE_SEARCH`                   | Enable Search Functionality                                    | `TRUE`                        |
-| `SERVER_ENABLE_SSO`                      | Enable SSO Functionality w/Server                              | `FALSE`                       |
-| `SERVER_GAB_HIDE_EVERYONE`               | Hide everyone from GAB                                         | `FALSE`                       |
-| `SERVER_GAB_HIDE_SYSTEM`                 | Hide System Account from GAB                                   | `FALSE`                       |
-| `SERVER_GAB_SYNC_REALTIME`               |                                                                | `TRUE`                        |
-| `SERVER_HOSTNAME`                        | Server Hostname (multi tenant)                                 | ``                            |
-| `SERVER_LISTEN_HOST`                     | Listen Interface for Server                                    | `*%lo`                        |
-| `SERVER_LISTEN_PORT_SECURE`              | Listen Interface for Secure Server                             | `237`                         |
-| `SERVER_LISTEN_PORT`                     | Listen Port for Server                                         | `236`                         |
-| `SERVER_LOCAL_ADMIN_USERS`               | Admin users on console that do not require authentication      | `root kopano`                 |
-| `SERVER_MULTI_TENANT_LOGINNAME_FORMAT`   |                                                                | `%u`                          |
-| `SERVER_MULTI_TENANT_STORENAME_FORMAT`   |                                                                | `%f_%c`                       |
-| `SERVER_OIDC_DISABLE_TLS_VALIDATION`     |                                                                | `FALSE`                       |
-| `SERVER_OIDC_IDENTIFIER`                 | URL to OIDC Provider                                           |                               |
-| `SERVER_OIDC_TIMEOUT_INITIALIZE`         |                                                                | `60`                          |
-| `SERVER_PIPE_NAME`                       | Server Pipe Name                                               | `/var/run/kopano/server.sock` |
-| `SERVER_PIPE_PRIORITY_NAME`              | Prioritized Server Pipe Name                                   | `/var/run/kopano/prio.sock`   |
-| `SERVER_PURGE_SOFTDELETE`                |                                                                | `30`                          |
-| `SERVER_QUOTA_COMPANY_WARN`              |                                                                | `0`                           |
-| `SERVER_QUOTA_HARD`                      |                                                                | `1024`                        |
-| `SERVER_QUOTA_SOFT`                      |                                                                | `950`                         |
-| `SERVER_QUOTA_WARN`                      |                                                                | `900`                         |
-| `SERVER_SERVER_NAME`                     |                                                                | `Kopano`                      |
-| `SERVER_SSL_CERT_FILE`                   | Server SSL Certificate File                                    | `/certs/core/server.crt`      |
-| `SERVER_SSL_KEY_FILE`                    | Server SSL Key File                                            | `/certs/core/server.pem`      |
-| `SERVER_SSL_KEY_PASS`                    | Set password set on SSL Key                                    |                               |
-| `SERVER_SSL_PUBLIC_PATH`                 | Where to store public keys for SSL                             | `/certs/core/core/public/`    |
-| `SERVER_SYSTEM_EMAIL_ADDRESS`            |                                                                | `postmaster@example.com`      |
-| `SERVER_THREADS`                         | Amount of Threads Server should use                            | `8`                           |
-| `SERVER_TIMEOUT_RECIEVE`                 |                                                                | `5`                           |
-| `SERVER_TIMEOUT_SEND`                    |                                                                | `60`                          |
-| `SERVER_TLS_MIN_PROTOCOL`                | Minimum TLS Protocol accepted                                  | `tls1.2`                      |
-| `SERVER_USER_PLUGIN`                     | User backend selection                                         | `ldap`                        |
-| `SERVER_USER_SAFE_MODE`                  |                                                                | `FALSE`                       |
-| `SERVER_WATCHDOG_FREQUENCY`              |                                                                | `1`                           |
-| `SERVER_WATCHDOG_MAX_AGE`                |                                                                | `500`                         |
-| `SEVER_ADDITIONAL_ARGS`                  | Pass additional arguments to server process                    |                               |
+| Parameter                                | Description                                                       | Default                       |
+| ---------------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| `ENABLE_SERVER`                          | Enable Service                                                    | `TRUE`                        |
+| `LOG_FILE_SERVER`                        | Logfile Name                                                      | `server.log`                  |
+| `SERVER_ALLOW_LOCAL_USERS`               |                                                                   | `TRUE`                        |
+| `SERVER_ATTACHMENT_BACKEND_FILES_FSYNC`  |                                                                   | `TRUE`                        |
+| `SERVER_ATTACHMENT_BACKEND_FILES_PATH`   | Where to store attachments                                        | `/data/attachments/`          |
+| `SERVER_ATTACHMENT_BACKEND_S3_PATH`      | Path on S3 Bucket to store attachments                            | `attachments`                 |
+| `SERVER_ATTACHMENT_BACKEND`              | Files Backend `FILES` `FILES_V2` `S3`                             | `files_v2`                    |
+| `SERVER_ATTACHMENT_COMPRESSION`          | Level of Gzip Compression for Attachments                         | `6`                           |
+| `SERVER_ATTACHMENT_S3_PROTOCOL`          | Protocol to use for connecting to S3 service                      | `HTTPS`                       |
+| `SERVER_CACHE_ACL`                       | Access Control List Values                                        | `1M`                          |
+| `SERVER_CACHE_CELL`                      | Main Cache in Kopano                                              | `256M`                        |
+| `SERVER_CACHE_INDEXED_OBJECT`            | Unique IDs of Objects                                             | `16M`                         |
+| `SERVER_CACHE_OBJECT`                    | Objects and Folder Hierarchy                                      | `5M`                          |
+| `SERVER_CACHE_QUOTA_LIFETIME`            | Lifetime for Quota Details                                        | `1`                           |
+| `SERVER_CACHE_QUOTA`                     | Quota Values of Users                                             | `1M`                          |
+| `SERVER_CACHE_SERVER_LIFETIME`           | Lifetime for Server Locations                                     | `30`                          |
+| `SERVER_CACHE_SERVER`                    | Multiserver Only - Server Locations                               | `1M`                          |
+| `SERVER_CACHE_STORE`                     | ID Values                                                         | `1M`                          |
+| `SERVER_CACHE_USERDETAILS_LIFETIME`      | Lifetime for User Details                                         | `0`                           |
+| `SERVER_CACHE_USERDETAILS`               | User Details Values                                               | `3M`                          |
+| `SERVER_CACHE_USER`                      | User ID Values                                                    | `1M`                          |
+| `SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY` |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_CREATEGROUP`   |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_CREATEUSER`    |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY` |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_DELETEGROUP`   |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_DELETEUSER`    |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_PATH`          | Where to find user scripts for performing add/del user actions    | `/etc/kopano/userscripts/`    |
+| `SERVER_DISABLED_FEATURES`               |                                                                   |                               |
+| `SERVER_ENABLE_CUSTOM_USERSCRIPTS`       | Enable Custom Userscripts in /config/userscripts                  | `TRUE`                        |
+| `SERVER_ENABLE_GAB`                      | Enable Global Address Book                                        | `TRUE`                        |
+| `SERVER_ENABLE_HTTPS`                    | Enable TLS Communications to Server Socket                        | `FALSE`                       |
+| `SERVER_ENABLE_HTTP`                     | Enable HTTP Communications to Server Socket                       | `FALSE`                       |
+| `SERVER_ENABLE_MULTI_TENANT`             | Enable Multi Server Mode                                          | `FALSE`                       |
+| `SERVER_ENABLE_MULTI_TENANT`             | Enable Multi Tenant Mode                                          | `FALSE`                       |
+| `SERVER_ENABLE_OPTIMIZED_SQL`            | Use Optimized MariaDB statements                                  | `TRUE`                        |
+| `SERVER_ENABLE_SEARCH`                   | Enable Search Functionality                                       | `TRUE`                        |
+| `SERVER_ENABLE_SSO`                      | Enable SSO Functionality w/Server                                 | `FALSE`                       |
+| `SERVER_GAB_HIDE_EVERYONE`               | Hide everyone from GAB                                            | `FALSE`                       |
+| `SERVER_GAB_HIDE_SYSTEM`                 | Hide System Account from GAB                                      | `FALSE`                       |
+| `SERVER_GAB_SYNC_REALTIME`               |                                                                   | `TRUE`                        |
+| `SERVER_HOSTNAME`                        | Server Hostname (multi tenant)                                    | ``                            |
+| `SERVER_LISTEN_HOST`                     | Listen Interface for Server                                       | `*%lo`                        |
+| `SERVER_LISTEN_PORT_SECURE`              | Listen Interface for Secure Server                                | `237`                         |
+| `SERVER_LISTEN_PORT`                     | Listen Port for Server                                            | `236`                         |
+| `SERVER_LOG_LEVEL`                       | Override master `LOG_LEVEL` environment for this specific service |                               |
+| `SERVER_LOCAL_ADMIN_USERS`               | Admin users on console that do not require authentication         | `root kopano`                 |
+| `SERVER_MULTI_TENANT_LOGINNAME_FORMAT`   |                                                                   | `%u`                          |
+| `SERVER_MULTI_TENANT_STORENAME_FORMAT`   |                                                                   | `%f_%c`                       |
+| `SERVER_OIDC_DISABLE_TLS_VALIDATION`     |                                                                   | `FALSE`                       |
+| `SERVER_OIDC_IDENTIFIER`                 | URL to OIDC Provider                                              |                               |
+| `SERVER_OIDC_TIMEOUT_INITIALIZE`         |                                                                   | `60`                          |
+| `SERVER_PIPE_NAME`                       | Server Pipe Name                                                  | `/var/run/kopano/server.sock` |
+| `SERVER_PIPE_PRIORITY_NAME`              | Prioritized Server Pipe Name                                      | `/var/run/kopano/prio.sock`   |
+| `SERVER_PURGE_SOFTDELETE`                |                                                                   | `30`                          |
+| `SERVER_QUOTA_COMPANY_WARN`              |                                                                   | `0`                           |
+| `SERVER_QUOTA_HARD`                      |                                                                   | `1024`                        |
+| `SERVER_QUOTA_SOFT`                      |                                                                   | `950`                         |
+| `SERVER_QUOTA_WARN`                      |                                                                   | `900`                         |
+| `SERVER_SERVER_NAME`                     |                                                                   | `Kopano`                      |
+| `SERVER_SSL_CERT_FILE`                   | Server SSL Certificate File                                       | `/certs/core/server.crt`      |
+| `SERVER_SSL_KEY_FILE`                    | Server SSL Key File                                               | `/certs/core/server.pem`      |
+| `SERVER_SSL_KEY_PASS`                    | Set password set on SSL Key                                       |                               |
+| `SERVER_SSL_PUBLIC_PATH`                 | Where to store public keys for SSL                                | `/certs/core/core/public/`    |
+| `SERVER_SYSTEM_EMAIL_ADDRESS`            |                                                                   | `postmaster@example.com`      |
+| `SERVER_THREADS`                         | Amount of Threads Server should use                               | `8`                           |
+| `SERVER_TIMEOUT_RECIEVE`                 |                                                                   | `5`                           |
+| `SERVER_TIMEOUT_SEND`                    |                                                                   | `60`                          |
+| `SERVER_TLS_MIN_PROTOCOL`                | Minimum TLS Protocol accepted                                     | `tls1.2`                      |
+| `SERVER_USER_PLUGIN`                     | User backend selection                                            | `ldap`                        |
+| `SERVER_USER_SAFE_MODE`                  |                                                                   | `FALSE`                       |
+| `SERVER_WATCHDOG_FREQUENCY`              |                                                                   | `1`                           |
+| `SERVER_WATCHDOG_MAX_AGE`                |                                                                   | `500`                         |
+| `SEVER_ADDITIONAL_ARGS`                  | Pass additional arguments to server process                       |                               |
 
 ##### Spamd Options
 
-| Parameter               | Description                               | Default                 |
-| ----------------------- | ----------------------------------------- | ----------------------- |
-| `ENABLE_SPAMD`          | Enable Service                            | `TRUE`                  |
-| `LOG_FILE_SPAMD`        | Logfile Name                              | `spamd.log`             |
-| `SPAMD_FILES_HAM_PATH`  | Where to store HAM files for training     | `/data/spamd/ham/`      |
-| `SPAMD_FILES_SPAM_PATH` | Where to store SPAM files for training    | `/data/spamd/spam/`     |
-| `SPAMD_FILES_DB_PATH`   | Where to store learned SPAM DB            | `/data/spamd/`          |
-| `SPAMD_FILES_DB_FILE`   | Learned SPAM DB                           | `spam.db`               |
-| `SPAMD_SA_GROUP`        | Spamassassin Group                        | `kopano`                |
-| `SPAMD_SOCKET_SERVER`   | What should service use to contact server | `${SOCKET_SERVER}`      |
-| `SPAMD_SSL_CERT_FILE`   | SpamD SSL Certificate File                | `/certs/core/spamd.crt` |
-| `SPAMD_SSL_KEY_FILE`    | SpamD SSL Key File                        | `/certs/core/spamd.pem` |
+| Parameter               | Description                                                       | Default                 |
+| ----------------------- | ----------------------------------------------------------------- | ----------------------- |
+| `ENABLE_SPAMD`          | Enable Service                                                    | `TRUE`                  |
+| `LOG_FILE_SPAMD`        | Logfile Name                                                      | `spamd.log`             |
+| `SPAMD_FILES_HAM_PATH`  | Where to store HAM files for training                             | `/data/spamd/ham/`      |
+| `SPAMD_FILES_SPAM_PATH` | Where to store SPAM files for training                            | `/data/spamd/spam/`     |
+| `SPAMD_FILES_DB_PATH`   | Where to store learned SPAM DB                                    | `/data/spamd/`          |
+| `SPAMD_FILES_DB_FILE`   | Learned SPAM DB                                                   | `spam.db`               |
+| `SPAMD_LOG_LEVEL`       | Override master `LOG_LEVEL` environment for this specific service |
+| `SPAMD_SA_GROUP`        | Spamassassin Group                                                | `kopano`                |
+| `SPAMD_SOCKET_SERVER`   | What should service use to contact server                         | `${SOCKET_SERVER}`      |
+| `SPAMD_SSL_CERT_FILE`   | SpamD SSL Certificate File                                        | `/certs/core/spamd.crt` |
+| `SPAMD_SSL_KEY_FILE`    | SpamD SSL Key File                                                | `/certs/core/spamd.pem` |
 
 ##### Spooler Options (needs work)
 
-| Parameter                        | Description                                      | Default                       |
-| -------------------------------- | ------------------------------------------------ | ----------------------------- |
-| `ENABLE_SPOOLER`                 | Enable Service                                   | `TRUE`                        |
-| `LOG_FILE_SPOOLER`               | Logfile Name                                     | `spooler.log`                 |
-| `SPOOLER_ENABLE_DSN`             |                                                  | `TRUE`                        |
-| `SPOOLER_LOG_RAW_MESSAGE_STAGE1` |                                                  | `FALSE`                       |
-| `SPOOLER_MAX_THREADS`            | Maximum Threads to use for Spooler               | `5`                           |
-| `SPOOLER_PATH_PLUGIN`            | Path for Spooler Plugins                         | `/data/spooler/plugins/`      |
-| `SPOOLER_PATH_RAW_MESSAGES`      | Path for Raw Message logging                     | `/data/spooler/raw_messages/` |
-| `SPOOLER_PLUGIN_ENABLED`         | Enable Spooler Plugin Support                    | `FALSE`                       |
-| `SPOOLER_SMTP_HOST`              | Host that can provide outbound MTA functionality | `localhost`                   |
-| `SPOOLER_SMTP_PORT`              | Port to connect to on `SMTP_HOST`                | 25                            |
-| `SPOOLER_SOCKET_SERVER`          | What should service use to contact server        | `${SOCKET_SERVER}`            |
-| `SPOOLER_SSL_CERT_FILE`          | Spooler SSL Certificate File                     | `/certs/core/spooler.crt`     |
-| `SPOOLER_SSL_KEY_FILE`           | Spooler SSL Key File                             | `/certs/core/spooler.pem`     |
+| Parameter                        | Description                                                       | Default                       |
+| -------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| `ENABLE_SPOOLER`                 | Enable Service                                                    | `TRUE`                        |
+| `LOG_FILE_SPOOLER`               | Logfile Name                                                      | `spooler.log`                 |
+| `SPOOLER_ENABLE_DSN`             |                                                                   | `TRUE`                        |
+| `SPOOLER_LOG_LEVEL`              | Override master `LOG_LEVEL` environment for this specific service |                               |
+| `SPOOLER_LOG_RAW_MESSAGE_STAGE1` |                                                                   | `FALSE`                       |
+| `SPOOLER_MAX_THREADS`            | Maximum Threads to use for Spooler                                | `5`                           |
+| `SPOOLER_PATH_PLUGIN`            | Path for Spooler Plugins                                          | `/data/spooler/plugins/`      |
+| `SPOOLER_PATH_RAW_MESSAGES`      | Path for Raw Message logging                                      | `/data/spooler/raw_messages/` |
+| `SPOOLER_PLUGIN_ENABLED`         | Enable Spooler Plugin Support                                     | `FALSE`                       |
+| `SPOOLER_SMTP_HOST`              | Host that can provide outbound MTA functionality                  | `localhost`                   |
+| `SPOOLER_SMTP_PORT`              | Port to connect to on `SMTP_HOST`                                 | 25                            |
+| `SPOOLER_SOCKET_SERVER`          | What should service use to contact server                         | `${SOCKET_SERVER}`            |
+| `SPOOLER_SSL_CERT_FILE`          | Spooler SSL Certificate File                                      | `/certs/core/spooler.crt`     |
+| `SPOOLER_SSL_KEY_FILE`           | Spooler SSL Key File                                              | `/certs/core/spooler.pem`     |
 
 ##### Webapp Options (needs work)
 
-| Parameter                                            | Description                                                   | Default                                                                                                                   |
-| ---------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `WEBAPP_BLOCK_SIZE`                                  |                                                               | `1048576`                                                                                                                 |
-| `WEBAPP_CLIENT_TIMEOUT`                              |                                                               | `0`                                                                                                                       |
-| `WEBAPP_CONFIG_CHECK_COOKIES_HTTP`                   |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_CONFIG_CHECK_COOKIES_SSL`                    |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_CONFIG_CHECK`                                | Perform Configuration Sanity Check                            | `TRUE`                                                                                                                    |
-| `WEBAPP_COOKIE_NAME`                                 | Cookie Name                                                   | `KOPANO_WEBAPP`                                                                                                           |
-| `WEBAPP_CROSS_DOMAIN_AUTHENTICATION_ALLOWED_DOMAINS` | Cross Domain Authentication Domains                           |                                                                                                                           |
-| `WEBAPP_ENABLED_LANGUAGES`                           | Enabled Languages                                             | `cs_CZ;da_DK;de_DE;en_GB;en_US;es_CA;es_ES;fi_FI;fr_FR;hu_HU;it_IT;ja_JP;nb_NO;nl_NL;pl_PL;pt_BR;ru_RU;sl_SI;tr_TR;zh_TW` |
-| `WEBAPP_ENABLE_ADVANCED_SETTINGS`                    | Enable Advanced Settings                                      | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_DEFAULT_SOFT_DELETE`                  |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_DIRECT_BOOKING`                       | Enable Direct Booking or Meeting Requests                     | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_DOMPURIFY_FILTER`                     |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_FILE_PREVIEWER`                       | Enable File Previewer                                         | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_FULL_GAB`                             | Enable/Disable Global Address Book Display                    | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_ICONSETS`                             | Enable user selection of Iconsets                             | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_PLUGINS`                              | Enable Webapp Plugins                                         | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_PUBLIC_CONTACT_FOLDERS`               | Enable/Disable Public Contact Folders                         | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_PUBLIC_FOLDERS`                       | Enable Display of Public Folders                              | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_REMOTE_PASSWORD`                      | Perform hack to allow $_SERVER_REMOTE_PASS to auto login user | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_REMOTE_USER_LOGIN`                    | Allow REMOTE_USER header to login (SSO)                       | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_RESPONSE_COMPRESSION`                 | Enable GZIP Compression                                       | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_SHARED_CONTACT_FOLDERS`               | Enable/Disable Shared Contacts                                | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_SHARED_RULES`                         |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_THEMES`                               | Enable User Theme Selection                                   | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_WELCOME_SCREEN`                       | Show Welcome Screen on first login                            | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_WHATS_NEW_DIALOG`                     | Show What's New Dialog on login                               | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_WIDGETS`                              | Enable Today / Sidebar Widgets                                | `TRUE`                                                                                                                    |
-| `WEBAPP_EXPIRES_TIME`                                |                                                               | `60*60*24*7*13`                                                                                                           |
-| `WEBAPP_FREEBUSY_LOAD_END_OFFSET`                    |                                                               | `90`                                                                                                                      |
-| `WEBAPP_FREEBUSY_LOAD_START_OFFSET`                  |                                                               | `7`                                                                                                                       |
-| `WEBAPP_HOSTNAME`                                    | Hostname of Webmail service                                   | `webapp.example.com`                                                                                                      |
-| `WEBAPP_ICONSET`                                     | Set Default Icons                                             | `breeze`                                                                                                                  |
-| `WEBAPP_INSECURE_COOKIES`                            |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                              |                                                                                                                           |
-| `WEBAPP_LOG_SUCCESSFUL_LOGINS`                       |                                                               | `FALSE`                                                                                                                   |
-| `WEBAPP_LOG_USERS`                                   |                                                               |                                                                                                                           |
-| `WEBAPP_MANUAL_URL`                                  | URL to Load for Manual                                        | `https://documentation.kopano.io/user_manual_webapp/`                                                                     |
-| `WEBAPP_MAX_EML_FILES_IN_ZIP`                        |                                                               | `50`                                                                                                                      |
-| `WEBAPP_MAX_GAB_RESULTS`                             | Maximum results for Global Address Book `0` to disable        | `0`                                                                                                                       |
-| `WEBAPP_OIDC_CLIENT_ID`                              |                                                               |                                                                                                                           |
-| `WEBAPP_OIDC_ISS`                                    |                                                               |                                                                                                                           |
-| `WEBAPP_OIDC_SCOPE`                                  |                                                               | `openid profile email kopano/gc`                                                                                          |
-| `WEBAPP_PLUGIN_SMIME_ENABLE_OCSP`                    |                                                               | `TRUE`                                                                                                                    |
-| `WEBAPP_POWERPASTE_ALLOW_LOCAL_IMAGES`               |                                                               | `TRUE`                                                                                                                    |
-| `WEBAPP_POWERPASTE_HTML_IMPORT`                      |                                                               | `merge`                                                                                                                   |
-| `WEBAPP_POWERPASTE_WORD_IMPORT`                      |                                                               | `merge`                                                                                                                   |
-| `WEBAPP_PREFETCH_EMAIL_COUNT`                        |                                                               | `10`                                                                                                                      |
-| `WEBAPP_PREFETCH_EMAIL_INTERVAL`                     | How often to fetch new mail in seconds                        | `30`                                                                                                                      |
-| `WEBAPP_REDIRECT_ALLOWED_DOMAINS`                    |                                                               |                                                                                                                           |
-| `WEBAPP_SHARED_STORE_POLLING_INTERVAL`               |                                                               | `15`                                                                                                                      |
-| `WEBAPP_SOCKET_SERVER`                               | What should service use to contact server                     | `${SOCKET_SERVER}`                                                                                                        |
-| `WEBAPP_STATE_FILE_MAX_LIFETIME`                     |                                                               | `28*60*60`                                                                                                                |
-| `WEBAPP_THEME`                                       | Set Default Theme                                             |                                                                                                                           |
-| `WEBAPP_TITLE`                                       | Browser Title of WebApp                                       | `Kopano WebApp`                                                                                                           |
-| `WEBAPP_TMP_PATH`                                    | Temporary Files path                                          | `/var/lib/kopano-webapp/tmp`                                                                                              |
-| `WEBAPP_UPLOADED_ATTACHMENT_MAX_LIFETIME`            |                                                               | `6*60*60`                                                                                                                 |
+| Parameter                                            | Description                                                       | Default                                                                                                                   |
+| ---------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `WEBAPP_BLOCK_SIZE`                                  |                                                                   | `1048576`                                                                                                                 |
+| `WEBAPP_CLIENT_TIMEOUT`                              |                                                                   | `0`                                                                                                                       |
+| `WEBAPP_CONFIG_CHECK_COOKIES_HTTP`                   |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_CONFIG_CHECK_COOKIES_SSL`                    |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_CONFIG_CHECK`                                | Perform Configuration Sanity Check                                | `TRUE`                                                                                                                    |
+| `WEBAPP_COOKIE_NAME`                                 | Cookie Name                                                       | `KOPANO_WEBAPP`                                                                                                           |
+| `WEBAPP_CROSS_DOMAIN_AUTHENTICATION_ALLOWED_DOMAINS` | Cross Domain Authentication Domains                               |                                                                                                                           |
+| `WEBAPP_ENABLED_LANGUAGES`                           | Enabled Languages                                                 | `cs_CZ;da_DK;de_DE;en_GB;en_US;es_CA;es_ES;fi_FI;fr_FR;hu_HU;it_IT;ja_JP;nb_NO;nl_NL;pl_PL;pt_BR;ru_RU;sl_SI;tr_TR;zh_TW` |
+| `WEBAPP_ENABLE_ADVANCED_SETTINGS`                    | Enable Advanced Settings                                          | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_DEFAULT_SOFT_DELETE`                  |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_DIRECT_BOOKING`                       | Enable Direct Booking or Meeting Requests                         | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_DOMPURIFY_FILTER`                     |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_FILE_PREVIEWER`                       | Enable File Previewer                                             | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_FULL_GAB`                             | Enable/Disable Global Address Book Display                        | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_ICONSETS`                             | Enable user selection of Iconsets                                 | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_PLUGINS`                              | Enable Webapp Plugins                                             | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_PUBLIC_CONTACT_FOLDERS`               | Enable/Disable Public Contact Folders                             | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_PUBLIC_FOLDERS`                       | Enable Display of Public Folders                                  | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_REMOTE_PASSWORD`                      | Perform hack to allow $_SERVER_REMOTE_PASS to auto login user     | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_REMOTE_USER_LOGIN`                    | Allow REMOTE_USER header to login (SSO)                           | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_RESPONSE_COMPRESSION`                 | Enable GZIP Compression                                           | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_SHARED_CONTACT_FOLDERS`               | Enable/Disable Shared Contacts                                    | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_SHARED_RULES`                         |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_THEMES`                               | Enable User Theme Selection                                       | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_WELCOME_SCREEN`                       | Show Welcome Screen on first login                                | `TRUE`                                                                                                                    |
+| `WEBAPP_ENABLE_WHATS_NEW_DIALOG`                     | Show What's New Dialog on login                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_WIDGETS`                              | Enable Today / Sidebar Widgets                                    | `TRUE`                                                                                                                    |
+| `WEBAPP_EXPIRES_TIME`                                |                                                                   | `60*60*24*7*13`                                                                                                           |
+| `WEBAPP_FREEBUSY_LOAD_END_OFFSET`                    |                                                                   | `90`                                                                                                                      |
+| `WEBAPP_FREEBUSY_LOAD_START_OFFSET`                  |                                                                   | `7`                                                                                                                       |
+| `WEBAPP_HOSTNAME`                                    | Hostname of Webmail service                                       | `webapp.example.com`                                                                                                      |
+| `WEBAPP_ICONSET`                                     | Set Default Icons                                                 | `breeze`                                                                                                                  |
+| `WEBAPP_INSECURE_COOKIES`                            |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |                                                                                                                           |
+| `WEBAPP_LOG_LEVEL`                                   | Override master `LOG_LEVEL` environment for this specific service |                                                                                                                           |
+| `WEBAPP_LOG_SUCCESSFUL_LOGINS`                       |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_LOG_USERS`                                   |                                                                   |                                                                                                                           |
+| `WEBAPP_MANUAL_URL`                                  | URL to Load for Manual                                            | `https://documentation.kopano.io/user_manual_webapp/`                                                                     |
+| `WEBAPP_MAX_EML_FILES_IN_ZIP`                        |                                                                   | `50`                                                                                                                      |
+| `WEBAPP_MAX_GAB_RESULTS`                             | Maximum results for Global Address Book `0` to disable            | `0`                                                                                                                       |
+| `WEBAPP_OIDC_CLIENT_ID`                              |                                                                   |                                                                                                                           |
+| `WEBAPP_OIDC_ISS`                                    |                                                                   |                                                                                                                           |
+| `WEBAPP_OIDC_SCOPE`                                  |                                                                   | `openid profile email kopano/gc`                                                                                          |
+| `WEBAPP_PLUGIN_SMIME_ENABLE_OCSP`                    |                                                                   | `TRUE`                                                                                                                    |
+| `WEBAPP_POWERPASTE_ALLOW_LOCAL_IMAGES`               |                                                                   | `TRUE`                                                                                                                    |
+| `WEBAPP_POWERPASTE_HTML_IMPORT`                      |                                                                   | `merge`                                                                                                                   |
+| `WEBAPP_POWERPASTE_WORD_IMPORT`                      |                                                                   | `merge`                                                                                                                   |
+| `WEBAPP_PREFETCH_EMAIL_COUNT`                        |                                                                   | `10`                                                                                                                      |
+| `WEBAPP_PREFETCH_EMAIL_INTERVAL`                     | How often to fetch new mail in seconds                            | `30`                                                                                                                      |
+| `WEBAPP_REDIRECT_ALLOWED_DOMAINS`                    |                                                                   |                                                                                                                           |
+| `WEBAPP_SHARED_STORE_POLLING_INTERVAL`               |                                                                   | `15`                                                                                                                      |
+| `WEBAPP_SOCKET_SERVER`                               | What should service use to contact server                         | `${SOCKET_SERVER}`                                                                                                        |
+| `WEBAPP_STATE_FILE_MAX_LIFETIME`                     |                                                                   | `28*60*60`                                                                                                                |
+| `WEBAPP_THEME`                                       | Set Default Theme                                                 |                                                                                                                           |
+| `WEBAPP_TITLE`                                       | Browser Title of WebApp                                           | `Kopano WebApp`                                                                                                           |
+| `WEBAPP_TMP_PATH`                                    | Temporary Files path                                              | `/var/lib/kopano-webapp/tmp`                                                                                              |
+| `WEBAPP_UPLOADED_ATTACHMENT_MAX_LIFETIME`            |                                                                   | `6*60*60`                                                                                                                 |
 
 ##### Webapp Plugins
 
@@ -708,18 +718,19 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 
 This plugin requires an IV and Key (3.x) or Secret (> 4.x) to encrypt credentials for users to access services. If the env vars do not exist, a random 8 char IV and 16 char KEY or 24 char secret will be generated and stored in ${CONFIG_PATH}webapp/key-files and reloaded on each container start.
 
-| Parameter                                     | Description                     | Default                           |
-| --------------------------------------------- | ------------------------------- | --------------------------------- |
-| `WEBAPP_PLUGIN_ENABLE_FILES`                  | Enable Files Plugin             | `TRUE`                            |
-| `WEBAPP_PLUGIN_ENABLE_FILES_BACKEND_OWNCLOUD` | Enable Owncloud Backend Plugin  | `TRUE`                            |
-| `WEBAPP_PLUGIN_ENABLE_FILES_BACKEND_SEAFILE`  | Enable Seafile Backend Plugin   | `TRUE`                            |
-| `WEBAPP_PLUGIN_ENABLE_FILES_BACKEND_SMB`      | Enable SMB Backed Plugin        | `TRUE`                            |
-| `WEBAPP_PLUGIN_FILES_DEFAULT_USER`            | Auto Enable for new users       | `TRUE`                            |
-| `WEBAPP_PLUGIN_FILES_ASK_BEFORE_DELETE`       | Ask users before deleting files | `TRUE`                            |
-| `WEBAPP_PLUGIN_FILES_CACHE_DIR`               | Files cache directory           | `/data/cache/webapp/plugin_files` |
-| `WEBAPP_PLUGIN_FILES_PASSWORD_IV`             | 8 character IV (Legacy)         | (random)                          |
-| `WEBAPP_PLUGIN_FILES_PASSWORD_KEY`            | 16 character IV (Legacy         | (random)                          |
-| `WEBAPP_PLUGIN_FILES_PASSWORD_SECRET`         | 24 character Secret             | (random)                          |
+| Parameter                                     | Description                                                       | Default                           |
+| --------------------------------------------- | ----------------------------------------------------------------- | --------------------------------- |
+| `WEBAPP_PLUGIN_ENABLE_FILES`                  | Enable Files Plugin                                               | `TRUE`                            |
+| `WEBAPP_PLUGIN_ENABLE_FILES_BACKEND_OWNCLOUD` | Enable Owncloud Backend Plugin                                    | `TRUE`                            |
+| `WEBAPP_PLUGIN_ENABLE_FILES_BACKEND_SEAFILE`  | Enable Seafile Backend Plugin                                     | `TRUE`                            |
+| `WEBAPP_PLUGIN_ENABLE_FILES_BACKEND_SMB`      | Enable SMB Backed Plugin                                          | `TRUE`                            |
+| `WEBAPP_PLUGIN_FILES_DEFAULT_USER`            | Auto Enable for new users                                         | `TRUE`                            |
+| `WEBAPP_PLUGIN_FILES_ASK_BEFORE_DELETE`       | Ask users before deleting files                                   | `TRUE`                            |
+| `WEBAPP_PLUGIN_FILES_CACHE_DIR`               | Files cache directory                                             | `/data/cache/webapp/plugin_files` |
+| `WEBAPP_PLUGIN_FILES_LOG_LEVEL`               | Override master `LOG_LEVEL` environment for this specific service |                                   |
+| `WEBAPP_PLUGIN_FILES_PASSWORD_IV`             | 8 character IV (Legacy)                                           | (random)                          |
+| `WEBAPP_PLUGIN_FILES_PASSWORD_KEY`            | 16 character IV (Legacy                                           | (random)                          |
+| `WEBAPP_PLUGIN_FILES_PASSWORD_SECRET`         | 24 character Secret                                               | (random)                          |
 
 ###### Webapp Plugin: HTML Editor Jodit
 
@@ -938,82 +949,83 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 
 ##### Z-Push Options
 
-| Parameter                                  | Description                               | Default                                               |
-| ------------------------------------------ | ----------------------------------------- | ----------------------------------------------------- |
-| `ENABLE_ZPUSH`                             | Enable Service                            | `TRUE`                                                |
-| `LOG_FILE_ZPUSH`                           | Log File                                  | `zpush.log`                                           |
-| `LOG_FILE_ZPUSH_AUTODISCOVER`              | Autodiscover Log File                     | `autodiscover.log`                                    |
-| `LOG_FILE_ZPUSH_AUTODISCOVER_ERROR`        | Autodiscover Error Log File               | `autodiscover-error.log`                              |
-| `LOG_FILE_ZPUSH_ERROR`                     | Error Log File                            | `zpush-error.log`                                     |
-| `LOG_ZPUSH_AUTH_FAIL`                      | Log authentication errors                 | `TRUE`                                                |
-| `TEMPLATE_ZPUSH_NOTIFY`                    | Template: Notifications on errors         | `notify.mail`                                         |
-| `TEMPLATE_ZPUSH_PATH`                      | Where to find templates                   | `/data/templates/zpush/`                              |
-| `ZPUSH_AUTODISCOVER_LOGIN_TYPE`            |                                           | `AUTODISCOVER_LOGIN_EMAIL`                            |
-| `ZPUSH_BACKEND_PROVIDER`                   |                                           | `BackendKopano`                                       |
-| `ZPUSH_CONFIG_AUTODISCOVER_FILE`           |                                           | `zpush-config-autodiscover.php`                       |
-| `ZPUSH_CONFIG_FILE`                        |                                           | `zpush-config.php`                                    |
-| `ZPUSH_CONFIG_GAB2CONTACTS_FILE`           |                                           | `zpush-config-gab2contacts.php`                       |
-| `ZPUSH_CONFIG_GABSYNC_FILE`                |                                           | `zpush-config-gabsync.php`                            |
-| `ZPUSH_CONFIG_KOPANO_FILE`                 |                                           | `zpush-config-kopano.php`                             |
-| `ZPUSH_CONFIG_MEMCACHED_FILE`              |                                           | `zpush-config-memcached.php`                          |
-| `ZPUSH_CONFIG_SQL_FILE`                    |                                           | `zpush-config-sql.php`                                |
-| `ZPUSH_CONFLICT_HANDLER`                   |                                           | `SYNC_CONFLICT_OVERWRITE_PIM`                         |
-| `ZPUSH_CONTACT_FILE_ORDER`                 |                                           | `SYNC_FILEAS_LASTFIRST`                               |
-| `ZPUSH_CONTENT_BODY_SIZE`                  |                                           | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`                       |
-| `ZPUSH_CUSTOM_INDEX_FILE`                  |                                           | `/assets/zpush/templates/index.html`                  |
-| `ZPUSH_ENABLE_AUTODISCOVER`                |                                           | `TRUE`                                                |
-| `ZPUSH_ENABLE_CUSTOM_INDEX`                |                                           | `TRUE`                                                |
-| `ZPUSH_ENABLE_PROVISIONING`                |                                           | `TRUE`                                                |
-| `ZPUSH_ENABLE_WEBSERVICE_USERS_ACCESS`     |                                           | `FALSE`                                               |
-| `ZPUSH_HOSTNAME`                           |                                           | `$WEBAPP_HOSTNAME`                                    |
-| `ZPUSH_IPC_PROVIDER`                       |                                           | `SHARED`                                              |
-| `ZPUSH_LOGIN_EMAIL`                        |                                           | `TRUE`                                                |
-| `ZPUSH_LOGIN_USE_EMAIL`                    |                                           | `FALSE`                                               |
-| `ZPUSH_MEMCACHED_BLOCK_WAIT`               |                                           | `10`                                                  |
-| `ZPUSH_MEMCACHED_LOCK_EXPIRATION`          |                                           | `30`                                                  |
-| `ZPUSH_MEMCACHED_PORT`                     |                                           | `11211`                                               |
-| `ZPUSH_MEMCACHED_TIMEOUT_MUTEX`            |                                           | `5`                                                   |
-| `ZPUSH_MEMCACHED_TIMEOUT`                  |                                           | `100`                                                 |
-| `ZPUSH_OUTLOOK_ENABLE_GAB`                 |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_IMPERSONATE`         |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_NOTES`               |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE_TIMES` |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE`       |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_RECEIPTS`            |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_RECEIVE_FLAGS`       |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SECONDARY_CONTACTS`  |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SEND_AS`             |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SEND_FLAGS`          |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SHARED_FOLDERS`      |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SIGNATURES`          |                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_GAB_FOLDERID`               |                                           |                                                       |
-| `ZPUSH_OUTLOOK_GAB_NAME`                   |                                           | `Z-Push-KOE-GAB`                                      |
-| `ZPUSH_OUTLOOK_GAB_STORE`                  |                                           | `SYSTEM`                                              |
-| `ZPUSH_PING_INTERVAL`                      |                                           | `30`                                                  |
-| `ZPUSH_PING_LIFETIME_HIGHER`               |                                           | `FALSE`                                               |
-| `ZPUSH_PING_LIFETIME_LOWER`                |                                           | `FALSE`                                               |
-| `ZPUSH_PROVISIONING_FILE_POLICY`           |                                           | `policies.ini`                                        |
-| `ZPUSH_PROVISIONING_LOOSE`                 |                                           | `FALSE`                                               |
-| `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       |                                           | `%d.%m.%Y`                                            |
-| `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                           | `TRUE`                                                |
-| `ZPUSH_READ_ONLY_NOTIFY_NO_NOTIFY`         |                                           | ``                                                    |
-| `ZPUSH_READ_ONLY_NOTIFY_SUBJECT`           |                                           | `Sync - Writing operation not permitted - data reset` |
-| `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                           | `%H:%M:%S`                                            |
-| `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                           | `Your data`                                           |
-| `ZPUSH_SEARCH_MAX_RESULTS`                 |                                           | `10`                                                  |
-| `ZPUSH_SEARCH_PROVIDER`                    |                                           | `kopano`                                              |
-| `ZPUSH_SEARCH_TIME`                        |                                           | `10`                                                  |
-| `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server | `${SOCKET_SERVER}`                                    |
-| `ZPUSH_STATE_FILE_PATH`                    |                                           | `/data/zpush/`                                        |
-| `ZPUSH_STATE_TYPE`                         |                                           | `FILE`                                                |
-| `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     |                                           | `FALSE`                                               |
-| `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     |                                           | `5242880`                                             |
-| `ZPUSH_SYNC_MAX_FILTERTIME`                |                                           | `SYNC_FILTERTYPE_ALL`                                 |
-| `ZPUSH_SYNC_MAX_ITEMS`                     |                                           | `512`                                                 |
-| `ZPUSH_SYNC_RETRY_DELAY`                   |                                           | `300`                                                 |
-| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      |                                           | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
-| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    |                                           | `SAMSUNGTI`                                           |
-| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    |                                           | `FALSE`                                               |
+| Parameter                                  | Description                                                       | Default                                               |
+| ------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------- |
+| `ENABLE_ZPUSH`                             | Enable Service                                                    | `TRUE`                                                |
+| `LOG_FILE_ZPUSH`                           | Log File                                                          | `zpush.log`                                           |
+| `LOG_FILE_ZPUSH_AUTODISCOVER`              | Autodiscover Log File                                             | `autodiscover.log`                                    |
+| `LOG_FILE_ZPUSH_AUTODISCOVER_ERROR`        | Autodiscover Error Log File                                       | `autodiscover-error.log`                              |
+| `LOG_FILE_ZPUSH_ERROR`                     | Error Log File                                                    | `zpush-error.log`                                     |
+| `LOG_ZPUSH_AUTH_FAIL`                      | Log authentication errors                                         | `TRUE`                                                |
+| `TEMPLATE_ZPUSH_NOTIFY`                    | Template: Notifications on errors                                 | `notify.mail`                                         |
+| `TEMPLATE_ZPUSH_PATH`                      | Where to find templates                                           | `/data/templates/zpush/`                              |
+| `ZPUSH_AUTODISCOVER_LOGIN_TYPE`            |                                                                   | `AUTODISCOVER_LOGIN_EMAIL`                            |
+| `ZPUSH_BACKEND_PROVIDER`                   |                                                                   | `BackendKopano`                                       |
+| `ZPUSH_CONFIG_AUTODISCOVER_FILE`           |                                                                   | `zpush-config-autodiscover.php`                       |
+| `ZPUSH_CONFIG_FILE`                        |                                                                   | `zpush-config.php`                                    |
+| `ZPUSH_CONFIG_GAB2CONTACTS_FILE`           |                                                                   | `zpush-config-gab2contacts.php`                       |
+| `ZPUSH_CONFIG_GABSYNC_FILE`                |                                                                   | `zpush-config-gabsync.php`                            |
+| `ZPUSH_CONFIG_KOPANO_FILE`                 |                                                                   | `zpush-config-kopano.php`                             |
+| `ZPUSH_CONFIG_MEMCACHED_FILE`              |                                                                   | `zpush-config-memcached.php`                          |
+| `ZPUSH_CONFIG_SQL_FILE`                    |                                                                   | `zpush-config-sql.php`                                |
+| `ZPUSH_CONFLICT_HANDLER`                   |                                                                   | `SYNC_CONFLICT_OVERWRITE_PIM`                         |
+| `ZPUSH_CONTACT_FILE_ORDER`                 |                                                                   | `SYNC_FILEAS_LASTFIRST`                               |
+| `ZPUSH_CONTENT_BODY_SIZE`                  |                                                                   | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`                       |
+| `ZPUSH_CUSTOM_INDEX_FILE`                  |                                                                   | `/assets/zpush/templates/index.html`                  |
+| `ZPUSH_ENABLE_AUTODISCOVER`                |                                                                   | `TRUE`                                                |
+| `ZPUSH_ENABLE_CUSTOM_INDEX`                |                                                                   | `TRUE`                                                |
+| `ZPUSH_ENABLE_PROVISIONING`                |                                                                   | `TRUE`                                                |
+| `ZPUSH_ENABLE_WEBSERVICE_USERS_ACCESS`     |                                                                   | `FALSE`                                               |
+| `ZPUSH_HOSTNAME`                           |                                                                   | `$WEBAPP_HOSTNAME`                                    |
+| `ZPUSH_IPC_PROVIDER`                       |                                                                   | `SHARED`                                              |
+| `ZPUSH_LOGIN_EMAIL`                        |                                                                   | `TRUE`                                                |
+| `ZPUSH_LOG_LEVEL`                          | Override master `LOG_LEVEL` environment for this specific service |                                                       |
+| `ZPUSH_LOGIN_USE_EMAIL`                    |                                                                   | `FALSE`                                               |
+| `ZPUSH_MEMCACHED_BLOCK_WAIT`               |                                                                   | `10`                                                  |
+| `ZPUSH_MEMCACHED_LOCK_EXPIRATION`          |                                                                   | `30`                                                  |
+| `ZPUSH_MEMCACHED_PORT`                     |                                                                   | `11211`                                               |
+| `ZPUSH_MEMCACHED_TIMEOUT_MUTEX`            |                                                                   | `5`                                                   |
+| `ZPUSH_MEMCACHED_TIMEOUT`                  |                                                                   | `100`                                                 |
+| `ZPUSH_OUTLOOK_ENABLE_GAB`                 |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_IMPERSONATE`         |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_NOTES`               |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE_TIMES` |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE`       |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_RECEIPTS`            |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_RECEIVE_FLAGS`       |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SECONDARY_CONTACTS`  |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SEND_AS`             |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SEND_FLAGS`          |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SHARED_FOLDERS`      |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SIGNATURES`          |                                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_GAB_FOLDERID`               |                                                                   |                                                       |
+| `ZPUSH_OUTLOOK_GAB_NAME`                   |                                                                   | `Z-Push-KOE-GAB`                                      |
+| `ZPUSH_OUTLOOK_GAB_STORE`                  |                                                                   | `SYSTEM`                                              |
+| `ZPUSH_PING_INTERVAL`                      |                                                                   | `30`                                                  |
+| `ZPUSH_PING_LIFETIME_HIGHER`               |                                                                   | `FALSE`                                               |
+| `ZPUSH_PING_LIFETIME_LOWER`                |                                                                   | `FALSE`                                               |
+| `ZPUSH_PROVISIONING_FILE_POLICY`           |                                                                   | `policies.ini`                                        |
+| `ZPUSH_PROVISIONING_LOOSE`                 |                                                                   | `FALSE`                                               |
+| `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       |                                                                   | `%d.%m.%Y`                                            |
+| `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                                                   | `TRUE`                                                |
+| `ZPUSH_READ_ONLY_NOTIFY_NO_NOTIFY`         |                                                                   | ``                                                    |
+| `ZPUSH_READ_ONLY_NOTIFY_SUBJECT`           |                                                                   | `Sync - Writing operation not permitted - data reset` |
+| `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                                                   | `%H:%M:%S`                                            |
+| `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                                                   | `Your data`                                           |
+| `ZPUSH_SEARCH_MAX_RESULTS`                 |                                                                   | `10`                                                  |
+| `ZPUSH_SEARCH_PROVIDER`                    |                                                                   | `kopano`                                              |
+| `ZPUSH_SEARCH_TIME`                        |                                                                   | `10`                                                  |
+| `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                         | `${SOCKET_SERVER}`                                    |
+| `ZPUSH_STATE_FILE_PATH`                    |                                                                   | `/data/zpush/`                                        |
+| `ZPUSH_STATE_TYPE`                         |                                                                   | `FILE`                                                |
+| `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     |                                                                   | `FALSE`                                               |
+| `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     |                                                                   | `5242880`                                             |
+| `ZPUSH_SYNC_MAX_FILTERTIME`                |                                                                   | `SYNC_FILTERTYPE_ALL`                                 |
+| `ZPUSH_SYNC_MAX_ITEMS`                     |                                                                   | `512`                                                 |
+| `ZPUSH_SYNC_RETRY_DELAY`                   |                                                                   | `300`                                                 |
+| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      |                                                                   | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
+| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    |                                                                   | `SAMSUNGTI`                                           |
+| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    |                                                                   | `FALSE`                                               |
 
 ### Networking
 

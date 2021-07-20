@@ -224,7 +224,7 @@ EOF
 server_socket = ${BACKUP_SOCKET_SERVER}
 ${backup_sslkey}
 log_method = file
-log_level = ${LOG_LEVEL}
+log_level = ${BACKUP_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_BACKUP}
 log_timestamp = ${LOG_TIMESTAMPS}
 worker_processes = ${BACKUP_WORKER_PROCESSES}
@@ -359,7 +359,7 @@ lmtp_listen = ${DAGENT_LISTEN_HOST}:${DAGENT_LISTEN_PORT}
 server_socket = ${DAGENT_SOCKET_SERVER}
 ${dagent_sslkey}
 coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${LOG_LEVEL}
+log_level = ${DAGENT_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_DAGENT}
 log_timestamp = ${LOG_TIMESTAMPS}
 log_raw_message = ${dagent_log_raw_message}
@@ -443,7 +443,7 @@ bypass_auth = ${GATEWAY_BYPASS_AUTHENTICATION_ADMIN}
 server_hostname_greeting = ${GATEWAY_GREETING_SHOW_HOSTNAME}
 server_hostname = ${GATEWAY_HOSTNAME}
 coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${LOG_LEVEL}
+log_level = ${GATEWAY_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_GATEWAY}
 log_timestamp = ${LOG_TIMESTAMPS}
 imap_only_mailfolders = ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS}
@@ -493,7 +493,7 @@ ssl_certificate_file = ${ICAL_SSL_CERT_FILE}
 ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
 server_socket = ${ICAL_SOCKET_SERVER}
 coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${LOG_LEVEL}
+log_level = ${ICAL_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_ICAL}
 log_timestamp = ${LOG_TIMESTAMPS}
 server_timezone = ${TIMEZONE}
@@ -820,73 +820,174 @@ configure_logging() {
     case "$LOG_LEVEL" in
         "NONE" | "none" | "disabled" | "0" )
             LOG_LEVEL=0
-            files_log_level="NONE"
-            webapp_log_level="OFF"
-            zpush_log_level="OFF"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"0"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"0"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"0"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"0"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"ERROR"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"0"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"0"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"0"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"0"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"0"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"0"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"OFF"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"NONE"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"OFF"}
             LOG_FILE_KDAV="/dev/null"
         ;;
         "CRITICAL" | "critical" | "crit" | "1" )
             LOG_LEVEL=1
-            files_log_level="ERROR"
-            kdav_log_level="FATAL"
-            webapp_log_level="FATAL"
-            zpush_log_level="FATAL"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"1"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"1"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"1"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"1"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"FATAL"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"1"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"1"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"1"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"1"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"1"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"1"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"FATAL"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"ERROR"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"FATAL"}
         ;;
         "ERROR" | "error" | "err" | "2" )
             LOG_LEVEL=2
-            files_log_level="ERROR"
-            kdav_log_level="ERROR"
-            webapp_log_level="ERROR"
-            zpush_log_level="ERROR"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"2"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"2"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"2"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"2"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"ERROR"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"2"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"2"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"2"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"2"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"2"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"2"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"ERROR"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"ERROR"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"ERROR"}
         ;;
         "WARN" | "warn" | "3" )
             LOG_LEVEL=3
-            files_log_level="NORMAL"
-            kdav_log_level="WARN"
-            webapp_log_level="WARN"
-            zpush_log_level="WARN"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"3"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"3"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"3"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"3"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"WARN"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"3"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"3"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"3"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"3"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"3"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"3"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"WARN"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"NORMAL"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"WARN"}
         ;;
         "NOTICE" | "notice" | "4" )
             LOG_LEVEL=4
-            files_log_level="NORMAL"
-            kdav_log_level="INFO"
-            webapp_log_level="WARN"
-            zpush_log_level="WARN"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"4"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"4"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"4"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"4"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"INFO"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"4"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"4"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"4"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"4"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"4"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"4"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"WARN"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"NORMAL"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"WARN"}
         ;;
         "INFO" | "info" | "5" )
             LOG_LEVEL=5
-            files_log_level="NORMAL"
-            kdav_log_level="INFO"
-            webapp_log_level="INFO"
-            zpush_log_level="INFO"
-                    ;;
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"5"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"5"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"5"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"5"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"INFO"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"5"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"5"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"5"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"5"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"5"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"5"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"INFO"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"NORMAL"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"INFO"}
+        ;;
         "DEBUG" | "debug" | "6" )
             LOG_LEVEL=6
-            files_log_level="DEBUG"
-            kdav_log_level="DEBUG"
-            webapp_log_level="DEBUG"
-            zpush_log_level="DEBUG"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"6"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"6"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"6"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"6"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"6"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"DEBUG"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"DEBUG"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"DEBUG"}
         ;;
         "WBXML" | "wbxml" )
             LOG_LEVEL=6
-            files_log_level="DEBUG"
-            kdav_log_level="DEBUG"
-            webapp_log_level="DEBUG"
-            zpush_log_level="WBXML"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"6"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"6"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"6"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"6"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"6"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"DEBUG"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"DEBUG"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"WBXML"}
         ;;
         "DEVICEID" | "deviceid" )
             LOG_LEVEL=6
-            files_log_level="DEBUG"
-            kdav_log_level="DEBUG"
-            webapp_log_level="DEBUG"
-            zpush_log_level="DEVICEID"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"6"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"6"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"6"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"6"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"6"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"DEBUG"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"DEBUG"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"DEVICEID"}
         ;;
         "WBXMLSTACK" | "wbxmlstack" )
             LOG_LEVEL=6
-            files_log_level="DEBUG"
-            kdav_log_level="DEBUG"
-            webapp_log_level="DEBUG"
-            zpush_log_level="WBXMLSTACK"
+            BACKUP_LOG_LEVEL=${BACKUP_LOG_LEVEL:-"6"}
+            DAGENT_LOG_LEVEL=${DAGENT_LOG_LEVEL:-"6"}
+            GATEWAY_LOG_LEVEL=${GATEWAY_LOG_LEVEL:-"6"}
+            ICAL_LOG_LEVEL=${ICAL_LOG_LEVEL:-"6"}
+            KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
+            MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
+            MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
+            SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
+            SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
+            SPOOLER_LOG_LEVEL=${SPOOLER_LOG_LEVEL:-"6"}
+            WEBAPP_LOG_LEVEL=${WEBAPP_LOG_LEVEL:-"DEBUG"}
+            WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"DEBUG"}
+            ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"WBXMLSTACK"}
         ;;
 
     esac
@@ -1064,7 +1165,7 @@ bypass_auth = yes
 server_hostname_greeting = ${GATEWAY_GREETING_SHOW_HOSTNAME}
 server_hostname = ${GATEWAY_HOSTNAME}
 coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${LOG_LEVEL}
+log_level = ${MIGRATOR_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_MIGRATOR}
 log_timestamp = ${LOG_TIMESTAMPS}
 imap_only_mailfolders = ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS}
@@ -1103,7 +1204,7 @@ EOF
 server_socket = ${MONITOR_SOCKET_SERVER}
 ${monitor_sslkey}
 coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${LOG_LEVEL}
+log_level = ${MONITOR_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_MONITOR}
 log_timestamp = ${LOG_TIMESTAMPS}
 quota_check_interval = ${MONITOR_QUOTA_CHECK_INTERVAL}
@@ -1166,7 +1267,7 @@ server_bind_name = ${SOCKET_SEARCH_LISTEN}
 ${search_socket_sslkey}
 index_path = ${SEARCH_INDEX_PATH}
 limit_results = ${SEARCH_LIMIT_RESULTS}
-log_level = ${LOG_LEVEL}
+log_level = ${SEARCH_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SEARCH}
 log_timestamp = ${LOG_TIMESTAMPS}
 term_cache_size = ${SEARCH_CACHE_SIZE_TERM}
@@ -1316,7 +1417,7 @@ cache_server_lifetime = ${SERVER_CACHE_SERVER_LIFETIME}
 allow_local_users = ${SERVER_ALLOW_LOCAL_USERS}
 local_admin_users = ${SERVER_LOCAL_ADMIN_USERS}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SERVER}
-log_level = ${LOG_LEVEL}
+log_level = ${SERVER_LOG_LEVEL}
 log_timestamp = ${LOG_TIMESTAMPS}
 attachment_storage = ${SERVER_ATTACHMENT_BACKEND}
 ${server_attachment}
@@ -1389,7 +1490,7 @@ ${spamd_sslkey}
 
 run_as_user         = kopano
 run_as_group        = kopano
-log_level           = ${LOG_LEVEL}
+log_level           = ${SPAMD_LOG_LEVEL}
 log_file            = ${LOG_PATH_KOPANO}${LOG_FILE_SPAMD}
 log_timestamp       = ${LOG_TIMESTAMPS}
 sa_group            = ${SPAMD_SA_GROUP}
@@ -1446,7 +1547,7 @@ smtp_port = ${SPOOLER_SMTP_PORT}
 server_socket = ${SPOOLER_SOCKET_SERVER}
 ${spooler_sslkey}
 coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${LOG_LEVEL}
+log_level = ${SPOOLER_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SPOOLER}
 log_timestamp = ${LOG_TIMESTAMPS}
 log_raw_message_path = ${SPOOLER_PATH_RAW_MESSAGES}
@@ -1603,7 +1704,7 @@ configure_webapp() {
     define("EXPIRES_TIME", ${WEBAPP_EXPIRES_TIME});
     define("STATE_FILE_MAX_LIFETIME", ${WEBAPP_STATE_FILE_MAX_LIFETIME});
     define("UPLOADED_ATTACHMENT_MAX_LIFETIME", ${WEBAPP_UPLOADED_ATTACHMENT_MAX_LIFETIME});
-    define("LOG_USER_LEVEL", LOGLEVEL_${webapp_log_level});
+    define("LOG_USER_LEVEL", LOGLEVEL_${WEBAPP_LOG_LEVEL});
     define("LOG_USERS", "${WEBAPP_LOG_USERS}");
     define("LOG_FILE_DIR", "${LOG_PATH_WEBAPP}");
     define("LANGUAGE_DIR", "server/language/");
@@ -1748,7 +1849,7 @@ EOF
 define('PLUGIN_FILES_USER_DEFAULT_ENABLE', ${WEBAPP_PLUGIN_FILES_DEFAULT_USER});
 define('PLUGIN_FILES_ASK_BEFORE_DELETE', ${WEBAPP_PLUGIN_FILES_ASK_BEFORE_DELETE});
 define('PLUGIN_FILES_CACHE_DIR', "${WEBAPP_PLUGIN_FILES_CACHE_DIR}");
-define('PLUGIN_FILESBROWSER_LOGLEVEL', "${files_log_level}");
+define('PLUGIN_FILESBROWSER_LOGLEVEL', "${WEBAPP_PLUGIN_FILES_LOG_LEVEL}");
 define('FILES_PASSWORD_KEY', '${WEBAPP_PLUGIN_FILES_PASSWORD_KEY}');
 define('FILES_PASSWORD_IV', '${WEBAPP_PLUGIN_FILES_PASSWORD_IV}');
 define('FILES_ACCOUNTSTORE_V1_SECRET_KEY', '${WEBAPP_PLUGIN_FILES_PASSWORD_SECRET}');
@@ -2153,7 +2254,7 @@ EOF
     define('STATE_DIR', '${ZPUSH_STATE_FILE_PATH}');
     define('IPC_PROVIDER', '${zpush_ipc_provider}');
     define('LOGBACKEND', 'filelog');
-    define('LOGLEVEL', LOGLEVEL_${zpush_log_level});
+    define('LOGLEVEL', LOGLEVEL_${ZPUSH_LOG_LEVEL});
     define('LOGAUTHFAIL', ${LOG_ZPUSH_AUTH_FAIL});
     define('LOGUSERLEVEL', LOGLEVEL_DEVICEID);
     \$specialLogUsers = array();
@@ -2417,7 +2518,7 @@ EOF
     define('LOGFILEDIR', '${LOG_PATH_ZPUSH}');
     define('LOGFILE', LOGFILEDIR . '${LOG_FILE_ZPUSH_AUTODISCOVER}');
     define('LOGERRORFILE', LOGFILEDIR . '${LOG_FILE_ZPUSH_AUTODISCOVER}');
-    define('LOGLEVEL', LOGLEVEL_${zpush_log_level});
+    define('LOGLEVEL', LOGLEVEL_${ZPUSH_LOG_LEVEL});
     define('LOGUSERLEVEL', LOGLEVEL);
     \$specialLogUsers = array();
     define('LOG_SYSLOG_HOST', false);
