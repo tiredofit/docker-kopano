@@ -1050,7 +1050,7 @@ configure_kdav() {
         fi
         sed -i "s|level value=\"TRACE\"|level value=\"${kdav_log_level}\"|g" /usr/share/kdav/log4php.xml
         sed -i "s|%date.*%n|%date{Y-m-d H:i:s} [%5pid] [%-5level] [%server{HTTP_X_REAL_IP}] %4logger %msg%n|g" /usr/share/kdav/log4php.xml
-        
+
         if [ "${KDAV_SERVE_MODE}" = "APACHE" ]; then
             print_debug "Using Apache for KDAV"
             ### Configure Apache

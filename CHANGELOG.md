@@ -1,3 +1,13 @@
+## 2.4.2 2021-07-20 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Reworked cron settings
+      - Rewrote Fail2ban Regex and modified log output
+      - Forced KDAV log to be owned by webserver
+      - Safety net around DAgent forwarding whitelist options
+      - Fix Z-Push Search Backend Default
+
+
 ## 2.4.1 2021-07-20 <dave at tiredofit dot ca>
 
    ### Added
