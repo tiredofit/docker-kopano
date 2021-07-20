@@ -1101,6 +1101,7 @@ configure_kdav_apache() {
     print_debug "Running KDAV Apache hack"
 	mkdir -p /var/log/apache2
 	chown -R ${NGINX_USER}:${NGINX_GROUP} /var/log/apache2
+    chown ${NGINX_USER}:${NGINX_GROUP} ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
     mkdir -p /etc/services.available/41-kopano-kdav-apache
     ## Create Service
     cat <<EOF > /etc/services.available/41-kopano-kdav-apache/run
