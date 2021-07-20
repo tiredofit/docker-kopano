@@ -1,3 +1,9 @@
+## 2.4.1 2021-07-20 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add more options to kopano spooler auto configuration
+
+
 ## 2.4.0 2021-07-20 <dave at tiredofit dot ca>
 
    ### Added
