@@ -263,17 +263,17 @@ configure_calendar() {
 
 configure_cron_ldap_sync() {
     print_debug "CRON: Adding LDAP Sync routines"
-    echo "*/30 * * * * /usr/sbin/kopano-admin --sync" >> /assets/cron/crontab.txt
+    echo "*/30 * * * * /usr/sbin/kopano-admin --sync" >> /assets/cron/sync-ldap
 }
 
 configure_cron_purge_deleted () {
     print_debug "CRON: Adding Storage Purge routines"
-    echo "30 0 * * * /usr/sbin/kopano-srvadm --purge-softdelete=${SERVER_PURGE_SOFTDELETE}" >> /assets/cron/crontab.txt
+    echo "30 0 * * * /usr/sbin/kopano-srvadm --purge-softdelete=${SERVER_PURGE_SOFTDELETE}" >> /assets/cron/purge-trashcans
 }
 
 configure_cron_zpush_gab2contacts() {
     print_debug "CRON: Adding Z-Push GAB <> Contacts Sync routines"
-    echo "0 * * * * sudo -u nginx /usr/share/z-push/tools/gab2contacts/gab2contacts.php -a sync" >> /assets/cron/crontab.txt
+    echo "0 * * * * sudo -u nginx /usr/share/z-push/tools/gab2contacts/gab2contacts.php -a sync" >> /assets/cron/zpush-gabsync
 }
 
 configure_dagent() {
