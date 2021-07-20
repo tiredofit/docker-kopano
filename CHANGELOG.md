@@ -1,3 +1,9 @@
+## 2.4.3 2021-07-20 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix Cron issues referencing files that don't exist
+
+
 ## 2.4.2 2021-07-20 <dave at tiredofit dot ca>
 
    ### Changed

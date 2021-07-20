@@ -263,12 +263,12 @@ configure_calendar() {
 
 configure_cron_ldap_sync() {
     print_debug "CRON: Adding LDAP Sync routines"
-    echo "*/30 * * * * ${TZ_TIMEZONE} /usr/sbin/kopano-admin --sync" >> /assets/cron/sync-ldap
+    echo "*/30 * * * * ${TZ_TIMEZONE} /usr/bin/kopano-admin --sync" >> /assets/cron/sync-ldap
 }
 
 configure_cron_purge_deleted () {
     print_debug "CRON: Adding Storage Purge routines"
-    echo "30 0 * * * TZ=${TIMEZONE} /usr/sbin/kopano-srvadm --purge-softdelete=${SERVER_PURGE_SOFTDELETE}" >> /assets/cron/purge-trashcans
+    echo "30 0 * * * TZ=${TIMEZONE} /usr/bin/kopano-srvadm --purge-softdelete=${SERVER_PURGE_SOFTDELETE}" >> /assets/cron/purge-trashcans
 }
 
 configure_cron_zpush_gab2contacts() {
