@@ -1,3 +1,9 @@
+## 2.4.4 2021-07-29 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove LLNG Authentication from Zpush
+
+
 ## 2.4.3 2021-07-20 <dave at tiredofit dot ca>
 
    ### Changed

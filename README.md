@@ -333,14 +333,14 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 
 ##### Autorespond Options
 
-| Parameter                              | Description | Default              |
-| -------------------------------------- | ----------- | -------------------- |
-| `AUTORESPOND_AUTORESPOND_BCC`          |             | `FALSE`              |
-| `AUTORESPOND_AUTORESPOND_CC`           |             | `FALSE`              |
-| `AUTORESPOND_AUTORESPOND_NORECIPIENTS` |             | `FALSE`              |
-| `AUTORESPOND_COPY_TO_SENTMAIL`         |             | `TRUE`               |
-| `AUTORESPOND_FILE`                     |             | `autorespond.db`     |
-| `AUTORESPOND_PATH`                     |             | `/data/autorespond/` |
+| Parameter                              | Description                                  | Default              |
+| -------------------------------------- | -------------------------------------------- | -------------------- |
+| `AUTORESPOND_AUTORESPOND_BCC`          | Autorespond if on BCC                        | `FALSE`              |
+| `AUTORESPOND_AUTORESPOND_CC`           | Autorespond if on CC                         | `FALSE`              |
+| `AUTORESPOND_AUTORESPOND_NORECIPIENTS` | Autorespond if no recipients visible         | `FALSE`              |
+| `AUTORESPOND_COPY_TO_SENTMAIL`         | Automatically copy autoresponse to Sent Mail | `TRUE`               |
+| `AUTORESPOND_FILE`                     | Autoresponder database                       | `autorespond.db`     |
+| `AUTORESPOND_PATH`                     | Where to store Autoresponder data            | `/data/autorespond/` |
 
 ##### Backup Options
 
@@ -364,24 +364,24 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 | Parameter                                  | Description                                                                                                    | Default                                                                                                                                                                                                                                                      |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ENABLE_DAGENT`                            | Enable Service                                                                                                 | `TRUE`                                                                                                                                                                                                                                                       |
-| `DAGENT_ARCHIVE_ON_DELIVERY`               |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
-| `DAGENT_ENABLE_FORWARD_WHITELIST`          |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
-| `DAGENT_ENABLE_PLUGIN`                     |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
-| `DAGENT_FORWARD_WHITELIST_DOMAINS_MESSAGE` |                                                                                                                | `The Kopano mail system has rejected your request to forward your e-mail with subject %subject (via mail filters) to %sender: the operation is not permitted.\n\nRemove the rule or contact your administrator about the forward_whitelist_domains setting.` |
-| `DAGENT_FORWARD_WHITELIST_DOMAINS_SUBJECT` |                                                                                                                | `REJECT: %subject not forwarded (administratively blocked)`                                                                                                                                                                                                  |
-| `DAGENT_FORWARD_WHITELIST_DOMAINS`         |                                                                                                                | `*`                                                                                                                                                                                                                                                          |
+| `DAGENT_ARCHIVE_ON_DELIVERY`               | Archive messages on Delivery                                                                                   | `FALSE`                                                                                                                                                                                                                                                      |
+| `DAGENT_ENABLE_FORWARD_WHITELIST`          | Enable Forwarding to specific domains functionality via rules                                                  | `FALSE`                                                                                                                                                                                                                                                      |
+| `DAGENT_ENABLE_PLUGIN`                     | Enable Plugin functionality                                                                                    | `FALSE`                                                                                                                                                                                                                                                      |
+| `DAGENT_FORWARD_WHITELIST_DOMAINS_MESSAGE` | Rejection message to send when domain not in whitelist                                                         | `The Kopano mail system has rejected your request to forward your e-mail with subject %subject (via mail filters) to %sender: the operation is not permitted.\n\nRemove the rule or contact your administrator about the forward_whitelist_domains setting.` |
+| `DAGENT_FORWARD_WHITELIST_DOMAINS_SUBJECT` | Subject when message forwearded not to whitelisted domain                                                      | `REJECT: %subject not forwarded (administratively blocked)`                                                                                                                                                                                                  |
+| `DAGENT_FORWARD_WHITELIST_DOMAINS`         | Space seperated list of domains to allow automatic forwarding                                                  | `*`                                                                                                                                                                                                                                                          |
 | `DAGENT_INSECURE_HTML_JOIN`                |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
 | `DAGENT_LISTEN_HOST`                       | LMTP Listen address (insecure)                                                                                 | `*`                                                                                                                                                                                                                                                          |
 | `DAGENT_LISTEN_PORT`                       | LMTP Listen port (insecure)                                                                                    | `2003`                                                                                                                                                                                                                                                       |
-| `DAGENT_LMTP_MAX_THREADS`                  |                                                                                                                | `20`                                                                                                                                                                                                                                                         |
+| `DAGENT_LMTP_MAX_THREADS`                  | Maximum Threads to use for DAgent                                                                              | `20`                                                                                                                                                                                                                                                         |
 | `DAGENT_LOG_LEVEL`                         | Override master `LOG_LEVEL` environment for this specific service                                              |                                                                                                                                                                                                                                                              |
-| `DAGENT_LOG_RAW_MESSAGES`                  |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
-| `DAGENT_NO_DOUBLE_FORWARD`                 |                                                                                                                | `TRUE`                                                                                                                                                                                                                                                       |
-| `DAGENT_PATH_PLUGIN`                       |                                                                                                                | `/data/dagent/plugins/`                                                                                                                                                                                                                                      |
-| `DAGENT_PATH_RAW_MESSAGES`                 |                                                                                                                | `/data/dagent/raw_messages`                                                                                                                                                                                                                                  |
+| `DAGENT_LOG_RAW_MESSAGES`                  | Log Raw Messages                                                                                               | `FALSE`                                                                                                                                                                                                                                                      |
+| `DAGENT_NO_DOUBLE_FORWARD`                 | Do not create forward loops                                                                                    | `TRUE`                                                                                                                                                                                                                                                       |
+| `DAGENT_PATH_PLUGIN`                       | Plugins Path                                                                                                   | `/data/dagent/plugins/`                                                                                                                                                                                                                                      |
+| `DAGENT_PATH_RAW_MESSAGES`                 | Where to store logs for raw messages                                                                           | `/data/dagent/raw_messages`                                                                                                                                                                                                                                  |
 | `DAGENT_SET_RULE_HEADERS`                  |                                                                                                                | `FALSE`                                                                                                                                                                                                                                                      |
 | `DAGENT_SOCKET_SERVER`                     | What should service use to contact server                                                                      | `${SOCKET_SERVER}`                                                                                                                                                                                                                                           |
-| `DAGENT_SPAM_HEADER_NAME`                  |                                                                                                                | `X-Spam-Status`                                                                                                                                                                                                                                              |
+| `DAGENT_SPAM_HEADER_NAME`                  | What header to read for upstream Spam filtering                                                                | `X-Spam-Status`                                                                                                                                                                                                                                              |
 | `DAGENT_SSL_CERT_FILE`                     | DAgent SSL Certificate File                                                                                    | `/certs/core/dagent.crt`                                                                                                                                                                                                                                     |
 | `DAGENT_SSL_KEY_FILE`                      | DAgent SSL Key File                                                                                            | `/certs/core/dagent.pem`                                                                                                                                                                                                                                     |
 | `DAGENT_INHIBIT_FORWARD_HEADERS`           | Inhibit forwarding with these headers seperated by space                                                       | `X-Kopano-Vacation Auto-Submitted`                                                                                                                                                                                                                           |
@@ -412,9 +412,9 @@ In order to work with the [Fusion Directory Plugin](https://github.com/tiredofit
 | `GATEWAY_GREETING_SHOW_HOSTNAME`      | Show hostiname in greeting                                        | `FALSE`                   |
 | `GATEWAY_HOSTNAME`                    | Greeting Hostname                                                 | `example.com`             |
 | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`       | Maximum Message Size to Process for POP3/IMAP                     | `25M`                     |
-| `GATEWAY_IMAP_MAX_FAIL_COMMANDS`      |                                                                   | `5`                       |
-| `GATEWAY_IMAP_ONLY_MAIL_FOLDERS`      |                                                                   | `TRUE`                    |
-| `GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS`    |                                                                   | `TRUE`                    |
+| `GATEWAY_IMAP_MAX_FAIL_COMMANDS`      | Maximum Fail Commands                                             | `5`                       |
+| `GATEWAY_IMAP_ONLY_MAIL_FOLDERS`      | Show only mail folders in IMAP folder lookup                      | `TRUE`                    |
+| `GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS`    | Show Public folders available to sync                             | `TRUE`                    |
 | `GATEWAY_LISTEN_HOST_IMAP_SECURE`     | Listen address (secure)                                           | `*`                       |
 | `GATEWAY_LISTEN_HOST_IMAP`            | Listen address (insecure)                                         | `*`                       |
 | `GATEWAY_LISTEN_HOST_POP3_SECURE`     | Listen address (secure)                                           | `*`                       |
@@ -448,10 +448,10 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 
 | Parameter                 | Description                                                       | Default                |
 | ------------------------- | ----------------------------------------------------------------- | ---------------------- |
-| `ENABLE_ICAL`             |                                                                   | `TRUE`                 |
-| `ICAL_ENABLE_HTTP`        |                                                                   | `TRUE`                 |
-| `ICAL_ENABLE_HTTPS`       |                                                                   | `TRUE`                 |
-| `ICAL_ENABLE_ICAL_GET`    |                                                                   | `TRUE`                 |
+| `ENABLE_ICAL`             | Enable Service                                                    | `TRUE`                 |
+| `ICAL_ENABLE_HTTP`        | Enable HTTP                                                       | `TRUE`                 |
+| `ICAL_ENABLE_HTTPS`       | Enable HTTPS                                                      | `TRUE`                 |
+| `ICAL_ENABLE_ICAL_GET`    | Enable GET functionaluty                                          | `TRUE`                 |
 | `ICAL_LISTEN_HOST`        | Listen address (insecure)                                         | `*`                    |
 | `ICAL_LISTEN_HOST_SECURE` | Listen address (secure)                                           | `*`                    |
 | `ICAL_LISTEN_PORT`        | Listen port (insecure)                                            | `8080`                 |
@@ -468,15 +468,15 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | --------------------- | ----------------------------------------------------------------- | ------------------ |
 | `ENABLE_KDAV`         | Enable Service                                                    | `TRUE`             |
 | `KDAV_CONFIG_FILE`    | Configuration File                                                | `kdav.php`         |
-| `KDAV_DEVELOPER_MODE` |                                                                   | `TRUE`             |
+| `KDAV_DEVELOPER_MODE` | Utilize Developer mode                                            | `TRUE`             |
 | `KDAV_HOSTNAME`       | DAV Service Hostname                                              | `dav.example.com`  |
 | `KDAV_LOG_LEVEL`      | Override master `LOG_LEVEL` environment for this specific service |                    |
-| `KDAV_MAX_SYNC_ITEMS` |                                                                   | `1000`             |
-| `KDAV_PATH`           |                                                                   | `/data/kdav/`      |
+| `KDAV_MAX_SYNC_ITEMS` | Maximum items to sync at once                                     | `1000`             |
+| `KDAV_PATH`           | Where data files are stored                                       | `/data/kdav/`      |
 | `KDAV_REALM`          | KDAV Realm                                                        | `Kopano DAV`       |
-| `KDAV_ROOT_URI`       |                                                                   | `/`                |
+| `KDAV_ROOT_URI`       | Root URI                                                          | `/`                |
 | `KDAV_SOCKET_SERVER`  | What should service use to contact server                         | `${SOCKET_SERVER}` |
-| `KDAV_SYNC_DB`        |                                                                   | `syncdate.db`      |
+| `KDAV_SYNC_DB`        | Filename of Sync State                                            | `syncdate.db`      |
 | `LOG_FILE_KDAV`       | Logfile Name                                                      | `kdav.log`         |
 
 ##### Monitor Options
@@ -535,8 +535,8 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | ---------------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
 | `ENABLE_SERVER`                          | Enable Service                                                    | `TRUE`                        |
 | `LOG_FILE_SERVER`                        | Logfile Name                                                      | `server.log`                  |
-| `SERVER_ALLOW_LOCAL_USERS`               |                                                                   | `TRUE`                        |
-| `SERVER_ATTACHMENT_BACKEND_FILES_FSYNC`  |                                                                   | `TRUE`                        |
+| `SERVER_ALLOW_LOCAL_USERS`               | Allow local users to utilize Kopano cli tools                     | `TRUE`                        |
+| `SERVER_ATTACHMENT_BACKEND_FILES_FSYNC`  | Use FSync when storing files on filesystem                        | `TRUE`                        |
 | `SERVER_ATTACHMENT_BACKEND_FILES_PATH`   | Where to store attachments                                        | `/data/attachments/`          |
 | `SERVER_ATTACHMENT_BACKEND_S3_PATH`      | Path on S3 Bucket to store attachments                            | `attachments`                 |
 | `SERVER_ATTACHMENT_BACKEND`              | Files Backend `FILES` `FILES_V2` `S3`                             | `files_v2`                    |
@@ -573,7 +573,7 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `SERVER_ENABLE_SSO`                      | Enable SSO Functionality w/Server                                 | `FALSE`                       |
 | `SERVER_GAB_HIDE_EVERYONE`               | Hide everyone from GAB                                            | `FALSE`                       |
 | `SERVER_GAB_HIDE_SYSTEM`                 | Hide System Account from GAB                                      | `FALSE`                       |
-| `SERVER_GAB_SYNC_REALTIME`               |                                                                   | `TRUE`                        |
+| `SERVER_GAB_SYNC_REALTIME`               | Perform Lookups against LDAP server when user uses GAB            | `TRUE`                        |
 | `SERVER_HOSTNAME`                        | Server Hostname (multi tenant)                                    | ``                            |
 | `SERVER_LISTEN_HOST`                     | Listen Interface for Server                                       | `*%lo`                        |
 | `SERVER_LISTEN_PORT_SECURE`              | Listen Interface for Secure Server                                | `237`                         |
@@ -584,20 +584,20 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `SERVER_MULTI_TENANT_STORENAME_FORMAT`   |                                                                   | `%f_%c`                       |
 | `SERVER_OIDC_DISABLE_TLS_VALIDATION`     |                                                                   | `FALSE`                       |
 | `SERVER_OIDC_IDENTIFIER`                 | URL to OIDC Provider                                              |                               |
-| `SERVER_OIDC_TIMEOUT_INITIALIZE`         |                                                                   | `60`                          |
+| `SERVER_OIDC_TIMEOUT_INITIALIZE`         | Timeout for OIDC functionality in seconds                         | `60`                          |
 | `SERVER_PIPE_NAME`                       | Server Pipe Name                                                  | `/var/run/kopano/server.sock` |
 | `SERVER_PIPE_PRIORITY_NAME`              | Prioritized Server Pipe Name                                      | `/var/run/kopano/prio.sock`   |
-| `SERVER_PURGE_SOFTDELETE`                |                                                                   | `30`                          |
+| `SERVER_PURGE_SOFTDELETE`                | Delete files from trash after (x) days                            | `30`                          |
 | `SERVER_QUOTA_COMPANY_WARN`              |                                                                   | `0`                           |
-| `SERVER_QUOTA_HARD`                      |                                                                   | `1024`                        |
-| `SERVER_QUOTA_SOFT`                      |                                                                   | `950`                         |
-| `SERVER_QUOTA_WARN`                      |                                                                   | `900`                         |
-| `SERVER_SERVER_NAME`                     |                                                                   | `Kopano`                      |
+| `SERVER_QUOTA_HARD`                      | Hard (No send or recieve) default Quota in MB                     | `1024`                        |
+| `SERVER_QUOTA_SOFT`                      | Soft (No Send) default Quota in MB                                | `950`                         |
+| `SERVER_QUOTA_WARN`                      | Send Warning default Quota in MB                                  | `900`                         |
+| `SERVER_SERVER_NAME`                     | Kopano Server Name                                                | `Kopano`                      |
 | `SERVER_SSL_CERT_FILE`                   | Server SSL Certificate File                                       | `/certs/core/server.crt`      |
 | `SERVER_SSL_KEY_FILE`                    | Server SSL Key File                                               | `/certs/core/server.pem`      |
 | `SERVER_SSL_KEY_PASS`                    | Set password set on SSL Key                                       |                               |
 | `SERVER_SSL_PUBLIC_PATH`                 | Where to store public keys for SSL                                | `/certs/core/core/public/`    |
-| `SERVER_SYSTEM_EMAIL_ADDRESS`            |                                                                   | `postmaster@example.com`      |
+| `SERVER_SYSTEM_EMAIL_ADDRESS`            | System Email Address                                              | `postmaster@example.com`      |
 | `SERVER_THREADS`                         | Amount of Threads Server should use                               | `8`                           |
 | `SERVER_TIMEOUT_RECIEVE`                 |                                                                   | `5`                           |
 | `SERVER_TIMEOUT_SEND`                    |                                                                   | `60`                          |
@@ -652,18 +652,18 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 
 | Parameter                                            | Description                                                       | Default                                                                                                                   |
 | ---------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `WEBAPP_BLOCK_SIZE`                                  |                                                                   | `1048576`                                                                                                                 |
-| `WEBAPP_CLIENT_TIMEOUT`                              |                                                                   | `0`                                                                                                                       |
-| `WEBAPP_CONFIG_CHECK_COOKIES_HTTP`                   |                                                                   | `FALSE`                                                                                                                   |
-| `WEBAPP_CONFIG_CHECK_COOKIES_SSL`                    |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_BLOCK_SIZE`                                  | Block Size for buffering data                                     | `1048576`                                                                                                                 |
+| `WEBAPP_CLIENT_TIMEOUT`                              | Timeout from Session                                              | `0`                                                                                                                       |
+| `WEBAPP_CONFIG_CHECK_COOKIES_HTTP`                   | Check to see if HTTP (insecure) cookies being used                | `FALSE`                                                                                                                   |
+| `WEBAPP_CONFIG_CHECK_COOKIES_SSL`                    | Check to see if SSL cookies are being used                        | `FALSE`                                                                                                                   |
 | `WEBAPP_CONFIG_CHECK`                                | Perform Configuration Sanity Check                                | `TRUE`                                                                                                                    |
 | `WEBAPP_COOKIE_NAME`                                 | Cookie Name                                                       | `KOPANO_WEBAPP`                                                                                                           |
 | `WEBAPP_CROSS_DOMAIN_AUTHENTICATION_ALLOWED_DOMAINS` | Cross Domain Authentication Domains                               |                                                                                                                           |
 | `WEBAPP_ENABLED_LANGUAGES`                           | Enabled Languages                                                 | `cs_CZ;da_DK;de_DE;en_GB;en_US;es_CA;es_ES;fi_FI;fr_FR;hu_HU;it_IT;ja_JP;nb_NO;nl_NL;pl_PL;pt_BR;ru_RU;sl_SI;tr_TR;zh_TW` |
 | `WEBAPP_ENABLE_ADVANCED_SETTINGS`                    | Enable Advanced Settings                                          | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_DEFAULT_SOFT_DELETE`                  |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_DEFAULT_SOFT_DELETE`                  | Enable Soft Deletion                                              | `FALSE`                                                                                                                   |
 | `WEBAPP_ENABLE_DIRECT_BOOKING`                       | Enable Direct Booking or Meeting Requests                         | `TRUE`                                                                                                                    |
-| `WEBAPP_ENABLE_DOMPURIFY_FILTER`                     |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_DOMPURIFY_FILTER`                     | Enable Javascript purification for messages                       | `FALSE`                                                                                                                   |
 | `WEBAPP_ENABLE_FILE_PREVIEWER`                       | Enable File Previewer                                             | `TRUE`                                                                                                                    |
 | `WEBAPP_ENABLE_FULL_GAB`                             | Enable/Disable Global Address Book Display                        | `TRUE`                                                                                                                    |
 | `WEBAPP_ENABLE_ICONSETS`                             | Enable user selection of Iconsets                                 | `TRUE`                                                                                                                    |
@@ -674,7 +674,7 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `WEBAPP_ENABLE_REMOTE_USER_LOGIN`                    | Allow REMOTE_USER header to login (SSO)                           | `FALSE`                                                                                                                   |
 | `WEBAPP_ENABLE_RESPONSE_COMPRESSION`                 | Enable GZIP Compression                                           | `TRUE`                                                                                                                    |
 | `WEBAPP_ENABLE_SHARED_CONTACT_FOLDERS`               | Enable/Disable Shared Contacts                                    | `FALSE`                                                                                                                   |
-| `WEBAPP_ENABLE_SHARED_RULES`                         |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_ENABLE_SHARED_RULES`                         | Enable Shared Message Rules                                       | `FALSE`                                                                                                                   |
 | `WEBAPP_ENABLE_THEMES`                               | Enable User Theme Selection                                       | `TRUE`                                                                                                                    |
 | `WEBAPP_ENABLE_WELCOME_SCREEN`                       | Show Welcome Screen on first login                                | `TRUE`                                                                                                                    |
 | `WEBAPP_ENABLE_WHATS_NEW_DIALOG`                     | Show What's New Dialog on login                                   | `FALSE`                                                                                                                   |
@@ -684,17 +684,17 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `WEBAPP_FREEBUSY_LOAD_START_OFFSET`                  |                                                                   | `7`                                                                                                                       |
 | `WEBAPP_HOSTNAME`                                    | Hostname of Webmail service                                       | `webapp.example.com`                                                                                                      |
 | `WEBAPP_ICONSET`                                     | Set Default Icons                                                 | `breeze`                                                                                                                  |
-| `WEBAPP_INSECURE_COOKIES`                            |                                                                   | `FALSE`                                                                                                                   |
+| `WEBAPP_INSECURE_COOKIES`                            | Allow Insecure Cookies                                            | `FALSE`                                                                                                                   |
 | `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |                                                                                                                           |
 | `WEBAPP_LOG_LEVEL`                                   | Override master `LOG_LEVEL` environment for this specific service |                                                                                                                           |
 | `WEBAPP_LOG_SUCCESSFUL_LOGINS`                       |                                                                   | `FALSE`                                                                                                                   |
 | `WEBAPP_LOG_USERS`                                   |                                                                   |                                                                                                                           |
 | `WEBAPP_MANUAL_URL`                                  | URL to Load for Manual                                            | `https://documentation.kopano.io/user_manual_webapp/`                                                                     |
-| `WEBAPP_MAX_EML_FILES_IN_ZIP`                        |                                                                   | `50`                                                                                                                      |
+| `WEBAPP_MAX_EML_FILES_IN_ZIP`                        | Maximum files in a Zip file to allow                              | `50`                                                                                                                      |
 | `WEBAPP_MAX_GAB_RESULTS`                             | Maximum results for Global Address Book `0` to disable            | `0`                                                                                                                       |
-| `WEBAPP_OIDC_CLIENT_ID`                              |                                                                   |                                                                                                                           |
-| `WEBAPP_OIDC_ISS`                                    |                                                                   |                                                                                                                           |
-| `WEBAPP_OIDC_SCOPE`                                  |                                                                   | `openid profile email kopano/gc`                                                                                          |
+| `WEBAPP_OIDC_CLIENT_ID`                              | OIDC Client ID                                                    |                                                                                                                           |
+| `WEBAPP_OIDC_ISS`                                    | OIDC Provider                                                     |                                                                                                                           |
+| `WEBAPP_OIDC_SCOPE`                                  | OIDC Scope or Attributes                                          | `openid profile email kopano/gc`                                                                                          |
 | `WEBAPP_PLUGIN_SMIME_ENABLE_OCSP`                    |                                                                   | `TRUE`                                                                                                                    |
 | `WEBAPP_POWERPASTE_ALLOW_LOCAL_IMAGES`               |                                                                   | `TRUE`                                                                                                                    |
 | `WEBAPP_POWERPASTE_HTML_IMPORT`                      |                                                                   | `merge`                                                                                                                   |
@@ -954,83 +954,83 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 
 ##### Z-Push Options
 
-| Parameter                                  | Description                                                       | Default                                               |
-| ------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------- |
-| `ENABLE_ZPUSH`                             | Enable Service                                                    | `TRUE`                                                |
-| `LOG_FILE_ZPUSH`                           | Log File                                                          | `zpush.log`                                           |
-| `LOG_FILE_ZPUSH_AUTODISCOVER`              | Autodiscover Log File                                             | `autodiscover.log`                                    |
-| `LOG_FILE_ZPUSH_AUTODISCOVER_ERROR`        | Autodiscover Error Log File                                       | `autodiscover-error.log`                              |
-| `LOG_FILE_ZPUSH_ERROR`                     | Error Log File                                                    | `zpush-error.log`                                     |
-| `LOG_ZPUSH_AUTH_FAIL`                      | Log authentication errors                                         | `TRUE`                                                |
-| `TEMPLATE_ZPUSH_NOTIFY`                    | Template: Notifications on errors                                 | `notify.mail`                                         |
-| `TEMPLATE_ZPUSH_PATH`                      | Where to find templates                                           | `/data/templates/zpush/`                              |
-| `ZPUSH_AUTODISCOVER_LOGIN_TYPE`            |                                                                   | `AUTODISCOVER_LOGIN_EMAIL`                            |
-| `ZPUSH_BACKEND_PROVIDER`                   |                                                                   | `BackendKopano`                                       |
-| `ZPUSH_CONFIG_AUTODISCOVER_FILE`           |                                                                   | `zpush-config-autodiscover.php`                       |
-| `ZPUSH_CONFIG_FILE`                        |                                                                   | `zpush-config.php`                                    |
-| `ZPUSH_CONFIG_GAB2CONTACTS_FILE`           |                                                                   | `zpush-config-gab2contacts.php`                       |
-| `ZPUSH_CONFIG_GABSYNC_FILE`                |                                                                   | `zpush-config-gabsync.php`                            |
-| `ZPUSH_CONFIG_KOPANO_FILE`                 |                                                                   | `zpush-config-kopano.php`                             |
-| `ZPUSH_CONFIG_MEMCACHED_FILE`              |                                                                   | `zpush-config-memcached.php`                          |
-| `ZPUSH_CONFIG_SQL_FILE`                    |                                                                   | `zpush-config-sql.php`                                |
-| `ZPUSH_CONFLICT_HANDLER`                   |                                                                   | `SYNC_CONFLICT_OVERWRITE_PIM`                         |
-| `ZPUSH_CONTACT_FILE_ORDER`                 |                                                                   | `SYNC_FILEAS_LASTFIRST`                               |
-| `ZPUSH_CONTENT_BODY_SIZE`                  |                                                                   | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`                       |
-| `ZPUSH_CUSTOM_INDEX_FILE`                  |                                                                   | `/assets/zpush/templates/index.html`                  |
-| `ZPUSH_ENABLE_AUTODISCOVER`                |                                                                   | `TRUE`                                                |
-| `ZPUSH_ENABLE_CUSTOM_INDEX`                |                                                                   | `TRUE`                                                |
-| `ZPUSH_ENABLE_PROVISIONING`                |                                                                   | `TRUE`                                                |
-| `ZPUSH_ENABLE_WEBSERVICE_USERS_ACCESS`     |                                                                   | `FALSE`                                               |
-| `ZPUSH_HOSTNAME`                           |                                                                   | `$WEBAPP_HOSTNAME`                                    |
-| `ZPUSH_IPC_PROVIDER`                       |                                                                   | `SHARED`                                              |
-| `ZPUSH_LOGIN_EMAIL`                        |                                                                   | `TRUE`                                                |
-| `ZPUSH_LOG_LEVEL`                          | Override master `LOG_LEVEL` environment for this specific service |                                                       |
-| `ZPUSH_LOGIN_USE_EMAIL`                    |                                                                   | `FALSE`                                               |
-| `ZPUSH_MEMCACHED_BLOCK_WAIT`               |                                                                   | `10`                                                  |
-| `ZPUSH_MEMCACHED_LOCK_EXPIRATION`          |                                                                   | `30`                                                  |
-| `ZPUSH_MEMCACHED_PORT`                     |                                                                   | `11211`                                               |
-| `ZPUSH_MEMCACHED_TIMEOUT_MUTEX`            |                                                                   | `5`                                                   |
-| `ZPUSH_MEMCACHED_TIMEOUT`                  |                                                                   | `100`                                                 |
-| `ZPUSH_OUTLOOK_ENABLE_GAB`                 |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_IMPERSONATE`         |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_NOTES`               |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE_TIMES` |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE`       |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_RECEIPTS`            |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_RECEIVE_FLAGS`       |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SECONDARY_CONTACTS`  |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SEND_AS`             |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SEND_FLAGS`          |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SHARED_FOLDERS`      |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SIGNATURES`          |                                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_GAB_FOLDERID`               |                                                                   |                                                       |
-| `ZPUSH_OUTLOOK_GAB_NAME`                   |                                                                   | `Z-Push-KOE-GAB`                                      |
-| `ZPUSH_OUTLOOK_GAB_STORE`                  |                                                                   | `SYSTEM`                                              |
-| `ZPUSH_PING_INTERVAL`                      |                                                                   | `30`                                                  |
-| `ZPUSH_PING_LIFETIME_HIGHER`               |                                                                   | `FALSE`                                               |
-| `ZPUSH_PING_LIFETIME_LOWER`                |                                                                   | `FALSE`                                               |
-| `ZPUSH_PROVISIONING_FILE_POLICY`           |                                                                   | `policies.ini`                                        |
-| `ZPUSH_PROVISIONING_LOOSE`                 |                                                                   | `FALSE`                                               |
-| `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       |                                                                   | `%d.%m.%Y`                                            |
-| `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                                                   | `TRUE`                                                |
-| `ZPUSH_READ_ONLY_NOTIFY_NO_NOTIFY`         |                                                                   | ``                                                    |
-| `ZPUSH_READ_ONLY_NOTIFY_SUBJECT`           |                                                                   | `Sync - Writing operation not permitted - data reset` |
-| `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                                                   | `%H:%M:%S`                                            |
-| `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                                                   | `Your data`                                           |
-| `ZPUSH_SEARCH_MAX_RESULTS`                 |                                                                   | `10`                                                  |
-| `ZPUSH_SEARCH_PROVIDER`                    |                                                                   | `BackendKopano`                                       |
-| `ZPUSH_SEARCH_TIME`                        |                                                                   | `10`                                                  |
-| `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                         | `${SOCKET_SERVER}`                                    |
-| `ZPUSH_STATE_FILE_PATH`                    |                                                                   | `/data/zpush/`                                        |
-| `ZPUSH_STATE_TYPE`                         |                                                                   | `FILE`                                                |
-| `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     |                                                                   | `FALSE`                                               |
-| `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     |                                                                   | `5242880`                                             |
-| `ZPUSH_SYNC_MAX_FILTERTIME`                |                                                                   | `SYNC_FILTERTYPE_ALL`                                 |
-| `ZPUSH_SYNC_MAX_ITEMS`                     |                                                                   | `512`                                                 |
-| `ZPUSH_SYNC_RETRY_DELAY`                   |                                                                   | `300`                                                 |
-| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      |                                                                   | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
-| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    |                                                                   | `SAMSUNGTI`                                           |
-| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    |                                                                   | `FALSE`                                               |
+| Parameter                                  | Description                                                                 | Default                                               |
+| ------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `ENABLE_ZPUSH`                             | Enable Service                                                              | `TRUE`                                                |
+| `LOG_FILE_ZPUSH`                           | Log File                                                                    | `zpush.log`                                           |
+| `LOG_FILE_ZPUSH_AUTODISCOVER`              | Autodiscover Log File                                                       | `autodiscover.log`                                    |
+| `LOG_FILE_ZPUSH_AUTODISCOVER_ERROR`        | Autodiscover Error Log File                                                 | `autodiscover-error.log`                              |
+| `LOG_FILE_ZPUSH_ERROR`                     | Error Log File                                                              | `zpush-error.log`                                     |
+| `LOG_ZPUSH_AUTH_FAIL`                      | Log authentication errors                                                   | `TRUE`                                                |
+| `TEMPLATE_ZPUSH_NOTIFY`                    | Template: Notifications on errors                                           | `notify.mail`                                         |
+| `TEMPLATE_ZPUSH_PATH`                      | Where to find templates                                                     | `/data/templates/zpush/`                              |
+| `ZPUSH_AUTODISCOVER_LOGIN_TYPE`            |                                                                             | `AUTODISCOVER_LOGIN_EMAIL`                            |
+| `ZPUSH_BACKEND_PROVIDER`                   | Backend Provider for synchronization                                        | `BackendKopano`                                       |
+| `ZPUSH_CONFIG_AUTODISCOVER_FILE`           | Autodiscover Source                                                         | `zpush-config-autodiscover.php`                       |
+| `ZPUSH_CONFIG_FILE`                        | Config File                                                                 | `zpush-config.php`                                    |
+| `ZPUSH_CONFIG_GAB2CONTACTS_FILE`           | GAB2Contacts File                                                           | `zpush-config-gab2contacts.php`                       |
+| `ZPUSH_CONFIG_GABSYNC_FILE`                | GABSync File                                                                | `zpush-config-gabsync.php`                            |
+| `ZPUSH_CONFIG_KOPANO_FILE`                 | Kopano Backend Configuration                                                | `zpush-config-kopano.php`                             |
+| `ZPUSH_CONFIG_MEMCACHED_FILE`              | Memcached Configuration                                                     | `zpush-config-memcached.php`                          |
+| `ZPUSH_CONFIG_SQL_FILE`                    | SQL State Configuration                                                     | `zpush-config-sql.php`                                |
+| `ZPUSH_CONFLICT_HANDLER`                   | Conflict Resoltuion Methodology                                             | `SYNC_CONFLICT_OVERWRITE_PIM`                         |
+| `ZPUSH_CONTACT_FILE_ORDER`                 | How to file Cotacts                                                         | `SYNC_FILEAS_LASTFIRST`                               |
+| `ZPUSH_CONTENT_BODY_SIZE`                  | How large can messages be (Max message size * 1.3)                          | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`                       |
+| `ZPUSH_CUSTOM_INDEX_FILE`                  | Custom Index file when developer mode on                                    | `/assets/zpush/templates/index.html`                  |
+| `ZPUSH_ENABLE_AUTODISCOVER`                | Enable ZPush Autodiscover functionality                                     | `TRUE`                                                |
+| `ZPUSH_ENABLE_CUSTOM_INDEX`                | Enable Custom Index file                                                    | `TRUE`                                                |
+| `ZPUSH_ENABLE_PROVISIONING`                | Enable Provisioning                                                         | `TRUE`                                                |
+| `ZPUSH_ENABLE_WEBSERVICE_USERS_ACCESS`     |                                                                             | `FALSE`                                               |
+| `ZPUSH_HOSTNAME`                           | Hostname of Z-Push Server                                                   | `$WEBAPP_HOSTNAME`                                    |
+| `ZPUSH_IPC_PROVIDER`                       |                                                                             | `SHARED`                                              |
+| `ZPUSH_LOGIN_EMAIL`                        |                                                                             | `TRUE`                                                |
+| `ZPUSH_LOG_LEVEL`                          | Override master `LOG_LEVEL` environment for this specific service           |                                                       |
+| `ZPUSH_LOGIN_USE_EMAIL`                    | Use full email address for login                                            | `FALSE`                                               |
+| `ZPUSH_MEMCACHED_BLOCK_WAIT`               |                                                                             | `10`                                                  |
+| `ZPUSH_MEMCACHED_LOCK_EXPIRATION`          | Memcached Lock Expiration                                                   | `30`                                                  |
+| `ZPUSH_MEMCACHED_PORT`                     | Memcached Port                                                              | `11211`                                               |
+| `ZPUSH_MEMCACHED_TIMEOUT_MUTEX`            |                                                                             | `5`                                                   |
+| `ZPUSH_MEMCACHED_TIMEOUT`                  | Memcached Timeout                                                           | `100`                                                 |
+| `ZPUSH_OUTLOOK_ENABLE_GAB`                 | Enable syncing of GAB                                                       | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_IMPERSONATE`         | Enable Impersonation                                                        | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_NOTES`               | Enable Syncing of Notes                                                     | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE_TIMES` | Enable Syncing Out of Office Times                                          | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE`       | Enable Syncing Out of Office                                                | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_RECEIPTS`            | Enable Read Receipts                                                        | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_RECEIVE_FLAGS`       |                                                                             | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SECONDARY_CONTACTS`  |                                                                             | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SEND_AS`             | Enable Send as Capability                                                   | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SEND_FLAGS`          |                                                                             | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SHARED_FOLDERS`      | Enable Shared Folders                                                       | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SIGNATURES`          | Enable Signatures                                                           | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_GAB_FOLDERID`               |                                                                             |                                                       |
+| `ZPUSH_OUTLOOK_GAB_NAME`                   | Z -Push Global Address Name                                                 | `Z-Push-KOE-GAB`                                      |
+| `ZPUSH_OUTLOOK_GAB_STORE`                  | Where to store GAB                                                          | `SYSTEM`                                              |
+| `ZPUSH_PING_INTERVAL`                      |                                                                             | `30`                                                  |
+| `ZPUSH_PING_LIFETIME_HIGHER`               |                                                                             | `FALSE`                                               |
+| `ZPUSH_PING_LIFETIME_LOWER`                |                                                                             | `FALSE`                                               |
+| `ZPUSH_PROVISIONING_FILE_POLICY`           | Z-Push Prvosioning policy File                                              | `policies.ini`                                        |
+| `ZPUSH_PROVISIONING_LOOSE`                 | Allow provisioning for older devices that may not support features required | `FALSE`                                               |
+| `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       | Date Format                                                                 | `%d.%m.%Y`                                            |
+| `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                                                             | `TRUE`                                                |
+| `ZPUSH_READ_ONLY_NOTIFY_NO_NOTIFY`         |                                                                             | ``                                                    |
+| `ZPUSH_READ_ONLY_NOTIFY_SUBJECT`           |                                                                             | `Sync - Writing operation not permitted - data reset` |
+| `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                                                             | `%H:%M:%S`                                            |
+| `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                                                             | `Your data`                                           |
+| `ZPUSH_SEARCH_MAX_RESULTS`                 | Search Results                                                              | `10`                                                  |
+| `ZPUSH_SEARCH_PROVIDER`                    | Backend Search Provider                                                     | `BackendKopano`                                       |
+| `ZPUSH_SEARCH_TIME`                        | Search Timeout                                                              | `10`                                                  |
+| `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                                   | `${SOCKET_SERVER}`                                    |
+| `ZPUSH_STATE_FILE_PATH`                    |                                                                             | `/data/zpush/`                                        |
+| `ZPUSH_STATE_TYPE`                         | State Type                                                                  | `FILE`                                                |
+| `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     | Allow Partial Folder Synchronization                                        | `FALSE`                                               |
+| `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     | Max size for Contacts Picture                                               | `5242880`                                             |
+| `ZPUSH_SYNC_MAX_FILTERTIME`                |                                                                             | `SYNC_FILTERTYPE_ALL`                                 |
+| `ZPUSH_SYNC_MAX_ITEMS`                     | Maximum items to sync at once                                               | `512`                                                 |
+| `ZPUSH_SYNC_RETRY_DELAY`                   | Retry when failure in seconds                                               | `300`                                                 |
+| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      | Show leniency for these devices                                             | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
+| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    | Show medium leniency for these devices                                      | `SAMSUNGTI`                                           |
+| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    | Should we sync undefined MAPI properties                                    | `FALSE`                                               |
 
 ### Networking
 

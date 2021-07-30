@@ -2174,6 +2174,21 @@ configure_zpush() {
     if var_true "${ENABLE_ZPUSH}" ; then
         print_notice "Z-Push: Enabled"
         ### Configure Nginx
+        case "$NGINX_AUTHENTICATION_TYPE" in
+          "LLNG")
+              print_notice "Setting Webapp LLNG Authentication"
+              sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
+              sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush.template
+              sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush-autodiscover.template
+              ;;
+          "NONE")
+            :
+          ;;
+         *)
+            :
+         ;;
+        esac
+
         if [ "${ZPUSH_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
             sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/webapp.template
         else

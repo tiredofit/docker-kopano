@@ -1,5 +1,5 @@
-FROM tiredofit/kopano-core:2.1.2 as kopano-core
-FROM tiredofit/kopano-webservices:2.2.0 as kopano-webservices
+FROM tiredofit/kopano-core:2.1.3 as kopano-core
+FROM tiredofit/kopano-webservices:2.2.1 as kopano-webservices
 ##
 
 FROM tiredofit/nginx-php-fpm:debian-7.3-buster
@@ -11,10 +11,10 @@ ADD build-assets/ /build-assets
 COPY --from=kopano-core /kopano-dependencies/* /usr/src/kopano-dependencies/
 ### Move Previously built files from Core image
 COPY --from=kopano-core /kopano-core/* /usr/src/kopano-core/
-COPY --from=kopano-core /CORE-CHANGELOG.md /tiredofit/
+COPY --from=kopano-core /tiredofit_docker-kopano-core.md /assets/.changelogs/
 ### Move Previously built files from Webservices image
 COPY --from=kopano-webservices /kopano-webservices/* /usr/src/kopano-webservices/
-COPY --from=kopano-webservices /WEBSERVICES-CHANGELOG.md /tiredofit/
+COPY --from=kopano-webservices /tiredofit_docker-kopano-webservices.md /assets/.changelogs/
 
 ENV NGINX_LOG_ACCESS_LOCATION=/logs/nginx \
     NGINX_LOG_ERROR_LOCATION=/logs/nginx \
@@ -189,4 +189,5 @@ RUN set -x && \
     rm -rf /var/log/*
 
 ### Assets Install
+COPY CHANGELOG.md /assets/.changelogs/tiredofit_docker-kopano.md
 ADD install /
