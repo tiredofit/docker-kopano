@@ -113,6 +113,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 |                    | `SPOOLER` - Spooler                                                                                                  |            |
 |                    | `WEBAPP` - Webapp                                                                                                    |            |
 |                    | `ZPUSH` - ZPush                                                                                                      |            |
+|                    | `ZPUSH_AUTODISCOVER` - ZPush                                                                                         |            |
 | `CONFIG_PATH`      | Where to store configuration files                                                                                   | `/config/` |
 | `ENABLE_COREDUMPS` | Enable Coredumps for services                                                                                        | `FALSE`    |
 
@@ -1046,11 +1047,8 @@ The following ports are exposed.
 | `995`  | Gateway - POPs  |
 | `1238` | Search          |
 | `2003` | DAgent LMTP     |
-| `8039` | KAPI            |
 | `8080` | ICal            |
 | `8443` | ICal - Secure   |
-| `8777` | Konnect         |
-| `8778` | KWM Server      |
 
 ## Maintenance
 

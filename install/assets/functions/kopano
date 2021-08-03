@@ -800,7 +800,7 @@ configure_logging() {
     fi
 
     if [ ! -f "/tmp/state/.log.zpush" ] ; then
-        if var_true "$ENABLE_ZPUSH" ; then
+        if var_true "$ENABLE_ZPUSH" || var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
             print_debug "Logging: Configuring Z-Push"
             if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
                 print_debug "Logging: Z-Push set to ${LOG_TYPE}"
@@ -2179,7 +2179,6 @@ configure_zpush() {
               print_notice "Setting Webapp LLNG Authentication"
               sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
               sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush.template
-              sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush-autodiscover.template
               ;;
           "NONE")
             :
@@ -2502,19 +2501,48 @@ define('GAB_SYNC_TYPES', GAB_SYNC_ALL);
 EOF
         fi
 
-        if var_true "$ZPUSH_ENABLE_AUTODISCOVER" ; then
+        ### Setup Scheduled GAB to Contacts
+        configure_cron_zpush_gab2contacts
+
+        ### Change Output of ZPush when visiting with webbrowser in Debug Mode
+        if var_true "${ENABLE_ZPUSH_CUSTOM_INDEX}" ; then
+            print_debug "Z-Push: Changing Z-Push Custom HTML Output with template"
+            zpush_custom_index=$(mktemp)
+            awk 'BEGIN {p=1}/print <<<END/{print;system("cat ${ZPUSH_CUSTOM_INDEX_FILE}");p=0}/^END\;/{p=1} p' /usr/share/zpush/src/lib/core/zpush.php > "${zpush_custom_index}"
+            cp -Rp "${zpush_custom_index}" /usr/share/zpush/src/lib/core/zpush.php
+        fi
+        chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/zpush
+    fi
+}
+
+configure_zpush_autodiscover() {
+        if var_true "$ENABLE_ZPUSH_AUTODISCOVER" ; then
             print_notice "Z-Push: Enabling Autodiscover"
+            ### Configure Nginx
+            case "$NGINX_AUTHENTICATION_TYPE" in
+            "LLNG")
+                print_notice "Setting Webapp LLNG Authentication"
+                sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
+                sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                ;;
+            "NONE")
+                :
+            ;;
+            *)
+                :
+            ;;
+            esac
+
+            sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+            sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+            sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+            sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+            ln -sf /etc/nginx/conf.available/zpush-autodiscover.template /etc/nginx/conf.d/zpush-autodiscover.conf
+            rm -rf /usr/share/zpush/src/autodiscover/config.php
+            ln -sf "${CONFIG_PATH}""${ZPUSH_CONFIG_AUTODISCOVER_FILE}" /usr/share/zpush/src/autodiscover/config.php
 
             if [ "$SETUP_TYPE" = "AUTO" ]; then
-                print_debug "Z-Push: Autoconfiguring"
-                ### Configure Nginx
-                sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                ln -sf /etc/nginx/conf.available/zpush-autodiscover.template /etc/nginx/conf.d/zpush-autodiscover.conf
-                rm -rf /usr/share/zpush/src/autodiscover/config.php
-                ln -sf "${CONFIG_PATH}""${ZPUSH_CONFIG_AUTODISCOVER_FILE}" /usr/share/zpush/src/autodiscover/config.php
+                print_notice "Z-Push Autodiscover: Autoconfiguring"
                 cat <<EOF > "${CONFIG_PATH}""${ZPUSH_CONFIG_AUTODISCOVER_FILE}"
 <?php
 // Custom Generated ZPush AutoDiscover Configuration! Do not edit, instead set ENV Vars
@@ -2525,20 +2553,6 @@ EOF
     define('TIMEZONE', '${TIMEZONE}');
     define('BASE_PATH', dirname(\$_SERVER['SCRIPT_FILENAME']). '/');
     define('USE_FULLEMAIL_FOR_LOGIN', ${ZPUSH_LOGIN_USE_EMAIL});
-
-    /*
-     * AutoDiscover requires the username to match either the email address
-     * or the local part of the email address.
-     * AUTODISCOVER_LOGIN_EMAIL             - uses the email address as provided when setting up the account
-     * AUTODISCOVER_LOGIN_NO_DOT            - removes the '.' from email address:
-     *                                          email: first.last@domain.com -> resulting username: firstlast
-     * AUTODISCOVER_LOGIN_F_NO_DOT_LAST     - cuts the first part before '.' after the first letter and
-     *                                          removes the '.' from email address:
-     *                                          email: first.last@domain.com -> resulting username: flast
-     * AUTODISCOVER_LOGIN_F_DOT_LAST        - cuts the part before '.' after the first letter and
-     *                                          leaves the part after '.' as is:
-     *                                          email: first.last@domain.com -> resulting username: f.last
-     */
     define('AUTODISCOVER_LOGIN_TYPE', ${ZPUSH_AUTODISCOVER_LOGIN_TYPE});
     define('LOGBACKEND', 'filelog');
 
@@ -2554,21 +2568,10 @@ EOF
     define('LOG_SYSLOG_FACILITY', LOG_LOCAL0);
     define('BACKEND_PROVIDER', '${ZPUSH_BACKEND_PROVIDER}');
 EOF
-            fi
         fi
-
-        ### Setup Scheduled GAB to Contacts
-        configure_cron_zpush_gab2contacts
-
-        ### Change Output of ZPush when visiting with webbrowser in Debug Mode
-        if var_true "${ENABLE_ZPUSH_CUSTOM_INDEX}" ; then
-            print_debug "Z-Push: Changing Z-Push Custom HTML Output with template"
-            zpush_custom_index=$(mktemp)
-            awk 'BEGIN {p=1}/print <<<END/{print;system("cat ${ZPUSH_CUSTOM_INDEX_FILE}");p=0}/^END\;/{p=1} p' /usr/share/zpush/src/lib/core/zpush.php > "${zpush_custom_index}"
-            cp -Rp "${zpush_custom_index}" /usr/share/zpush/src/lib/core/zpush.php
-        fi
-        chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/zpush
     fi
+
+    chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/zpush
 }
 
 create_store() {
@@ -2679,6 +2682,7 @@ setup_container_mode() {
             echo "ENABLE_SPOOLER=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_WEBAPP=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_ZPUSH=TRUE" >> /tmp/state/.mode-env
+            echo "ENABLE_ZPUSH_AUTODISCOVER=TRUE" >> /tmp/state/.mode-env
             if [[ "$(grep -cq 'create_log_kopano=TRUE' /tmp/state/.mode-env)" -eq 0 ]] ; then
                 echo "create_log_kopano=TRUE" >> /tmp/state/.mode-env
             fi
@@ -2689,6 +2693,7 @@ setup_container_mode() {
             service_start 20-php-fpm
             echo "ENABLE_WEBAPP=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_ZPUSH=TRUE" >> /tmp/state/.mode-env
+            echo "ENABLE_ZPUSH_AUTODISCOVER=TRUE" >> /tmp/state/.mode-env
         elif [ "${MODE}" = "AIO" ] || [ "${MODE}" = "aio" ] || [ "${MODE}" = "ALL" ] || [ "${MODE}" = "all" ] ; then
             print_debug "Container Mode: AIO"
             print_debug "Creating MODE environment generated variables"
@@ -2705,6 +2710,7 @@ setup_container_mode() {
             echo "ENABLE_SPOOLER=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_WEBAPP=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_ZPUSH=TRUE" >> /tmp/state/.mode-env
+            echo "ENABLE_ZPUSH_AUTODISCOVER=TRUE" >> /tmp/state/.mode-env
             if [[ "$(grep -cq 'create_log_kopano=TRUE' /tmp/state/.mode-env)" -eq 0 ]] ; then
                 echo "create_log_kopano=TRUE" >> /tmp/state/.mode-env
             fi
@@ -2814,6 +2820,12 @@ setup_container_mode() {
                         service_start 10-nginx
                         service_start 20-php-fpm
                         echo "ENABLE_ZPUSH=TRUE" >> /tmp/state/.mode-env
+                    ;;
+                    "ZPUSH_AUTODISCOVER" | "zpush_autodiscover" )
+                        print_debug "Enabling Container Mode for: ZPUSH Autodiscover"
+                        service_start 10-nginx
+                        service_start 20-php-fpm
+                        echo "ENABLE_ZPUSH_AUTODISCOVER=TRUE" >> /tmp/state/.mode-env
                     ;;
                     *)
                         print_error "Unknown 'MODE' environment variable - exitting.."

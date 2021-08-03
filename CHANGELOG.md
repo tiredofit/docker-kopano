@@ -1,3 +1,9 @@
+## 2.5.0 2021-08-03 <dave at tiredofit dot ca>
+
+   ### Added
+      - Split MODE=ZPUSH and MODE=ZPUSH_AUTODISCOVER. All ZPUSH Options remain the same
+
+
 ## 2.4.4 2021-07-29 <dave at tiredofit dot ca>
 
    ### Changed
