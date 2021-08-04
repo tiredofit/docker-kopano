@@ -1,3 +1,9 @@
+## 2.6.0 2021-08-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change the way that PHP is called to support multiple version builds
+
+
 ## 2.5.0 2021-08-03 <dave at tiredofit dot ca>
 
    ### Added
