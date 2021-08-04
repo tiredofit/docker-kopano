@@ -1,3 +1,9 @@
+## 2.6.2 2021-08-04 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Add variable for KDAV PHP Library hack
+
+
 ## 2.6.1 2021-08-04 <dave at tiredofit dot ca>
 
    ### Added
