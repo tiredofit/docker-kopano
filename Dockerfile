@@ -1,4 +1,4 @@
-FROM tiredofit/kopano-core:debian-7.3-buster-2.2.0 as kopano-core
+FROM tiredofit/kopano-core:debian-7.3-buster-2.2.1 as kopano-core
 FROM tiredofit/kopano-webservices:debian-7.3-buster-2.3.0 as kopano-webservices
 ##
 
