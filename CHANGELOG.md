@@ -1,3 +1,9 @@
+## 2.6.6 2021-08-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Spelling mistake enabling an extension
+
+
 ## 2.6.5 2021-08-05 <dave at tiredofit dot ca>
 
    ### Changed
