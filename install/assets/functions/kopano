@@ -2511,7 +2511,14 @@ EOF
             awk 'BEGIN {p=1}/print <<<END/{print;system("cat ${ZPUSH_CUSTOM_INDEX_FILE}");p=0}/^END\;/{p=1} p' /usr/share/zpush/src/lib/core/zpush.php > "${zpush_custom_index}"
             cp -Rp "${zpush_custom_index}" /usr/share/zpush/src/lib/core/zpush.php
         fi
+
+        ### Setup Device Policies
+        if [ ! -f "${CONFIG_PATH}/${ZPUSH_PROVISIONING_FILE_POLICY}" ]; then
+            cp -R /usr/src/zpush/src/policies.ini "${CONFIG_PATH}"/
+        fi
+
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/zpush
+        sudo -u ${NGINX_USER} php /usr/share/zpush/src/z-push-admin.php -a fixstates
     fi
 }
 

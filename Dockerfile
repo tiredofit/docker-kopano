@@ -1,5 +1,5 @@
 FROM tiredofit/kopano-core:debian-7.3-buster-2.2.1 as kopano-core
-FROM tiredofit/kopano-webservices:debian-7.3-buster-2.3.0 as kopano-webservices
+FROM tiredofit/kopano-webservices:debian-7.3-buster-2.3.1 as kopano-webservices
 ##
 
 FROM tiredofit/nginx-php-fpm:debian-7.3-buster
@@ -25,8 +25,12 @@ ENV NGINX_LOG_ACCESS_LOCATION=/logs/nginx \
     PHP_ENABLE_MBSTRING=TRUE \
     PHP_ENABLE_SIMPLEXML=TRUE \
     PHP_ENABLE_SOAP=TRUE \
+    PHP_ENABLE_POSIX=TRUE \
     PHP_ENABLE_PDO=TRUE \
     PHP_ENABLE_PDO_SQLITE=TRUE \
+    PHP_ENABLE_SHMOP=TRUE \
+    PHP_ENABLE_SYSVSEM=TRUE \
+    PHP_ENABKE_SYSVSHM=TRUE \
     PHP_ENABLE_XMLWRITER=TRUE \
     PHP_ENABLE_TOKENIZER=TRUE \
     PHP_LOG_LOCATION=/logs/php-fpm

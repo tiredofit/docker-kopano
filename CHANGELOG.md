@@ -1,3 +1,18 @@
+## 2.6.4 2021-08-05 <dave at tiredofit dot ca>
+
+   ### Added
+      - tiredofit/kopano-webservices:2.3.1
+      - Change defaults with Zpush
+      - Move Z-Push provisioning policy to be with rest of persistent configuration
+      - Fix Zpush states on each container start
+
+
+## 2.6.3 2021-08-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add additional PHP dependencies
+
+
 ## 2.6.2 2021-08-04 <dave at tiredofit dot ca>
 
    ### Changed

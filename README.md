@@ -1010,7 +1010,7 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 | `ZPUSH_PING_INTERVAL`                      |                                                                             | `30`                                                  |
 | `ZPUSH_PING_LIFETIME_HIGHER`               |                                                                             | `FALSE`                                               |
 | `ZPUSH_PING_LIFETIME_LOWER`                |                                                                             | `FALSE`                                               |
-| `ZPUSH_PROVISIONING_FILE_POLICY`           | Z-Push Prvosioning policy File                                              | `policies.ini`                                        |
+| `ZPUSH_PROVISIONING_FILE_POLICY`           | Z-Push Prvosioning policy File                                              | `zpush-policies.ini`                                        |
 | `ZPUSH_PROVISIONING_LOOSE`                 | Allow provisioning for older devices that may not support features required | `FALSE`                                               |
 | `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       | Date Format                                                                 | `%d.%m.%Y`                                            |
 | `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                                                             | `TRUE`                                                |
