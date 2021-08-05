@@ -1,3 +1,9 @@
+## 2.6.7 2021-08-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Hardcode Configuration path for Zpush Policies
+
+
 ## 2.6.6 2021-08-05 <dave at tiredofit dot ca>
 
    ### Changed
