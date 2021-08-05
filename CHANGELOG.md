@@ -1,3 +1,9 @@
+## 2.6.5 2021-08-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for initial Zpush Policies file
+
+
 ## 2.6.4 2021-08-05 <dave at tiredofit dot ca>
 
    ### Added

@@ -2514,7 +2514,7 @@ EOF
 
         ### Setup Device Policies
         if [ ! -f "${CONFIG_PATH}/${ZPUSH_PROVISIONING_FILE_POLICY}" ]; then
-            cp -R /usr/src/zpush/src/policies.ini "${CONFIG_PATH}"/
+            cp -R /usr/share/zpush/src/policies.ini "${CONFIG_PATH}"/"${ZPUSH_PROVISIONING_FILE_POLICY}"
         fi
 
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/zpush
