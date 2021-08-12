@@ -1,7 +1,7 @@
   server {
      ### Don't Touch This
      server_name <CALENDAR_HOSTNAME>;
-     listen <LISTEN_PORT>;
+     listen <CALENDAR_LISTEN_PORT>;
      root <WEBROOT_CALENDAR>;
 
 

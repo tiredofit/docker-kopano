@@ -1069,7 +1069,7 @@ configure_kdav() {
                 sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/nginx/conf.available/kdav.template
                 ln -s /etc/nginx/conf.available/kdav.template /etc/nginx/conf.d/kdav.conf
             fi
-            sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/kdav.template
+            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/nginx/conf.available/kdav.template
             sed -i "s|<WEBROOT>|/usr/share/kdav|g" /etc/nginx/conf.available/kdav.template
             sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/kdav.template
             sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/kdav.template
@@ -1606,7 +1606,7 @@ configure_webapp() {
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" "${WEBAPP_TMP_PATH}"
         ### Nginx
         sed -i "s|<WEBAPP_HOSTNAME>|${WEBAPP_HOSTNAME}|g" /etc/nginx/conf.available/webapp.template
-        sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/webapp.template
+        sed -i "s|<WEBAPP_LISTEN_PORT>|${WEBAPP_LISTEN_PORT}|g" /etc/nginx/conf.available/webapp.template
         sed -i "s|<WEBROOT>|/usr/share/kopano-webapp|g" /etc/nginx/conf.available/webapp.template
         sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/webapp.template
         sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/webapp.template
@@ -2195,7 +2195,7 @@ configure_zpush() {
             sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/webapp.template
         else
             sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/nginx/conf.available/zpush.template
-            sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush.template
+            sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush.template
             sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/zpush.template
             ln -s /etc/nginx/conf.available/zpush.template /etc/nginx/conf.d/zpush.conf
         fi
@@ -2546,7 +2546,7 @@ configure_zpush_autodiscover() {
             ;;
             esac
 
-            sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+            sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
             sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/conf.available/zpush-autodiscover.template
             sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
             sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
@@ -2568,7 +2568,6 @@ configure_zpush_autodiscover() {
     define('USE_FULLEMAIL_FOR_LOGIN', ${ZPUSH_LOGIN_USE_EMAIL});
     define('AUTODISCOVER_LOGIN_TYPE', ${ZPUSH_AUTODISCOVER_LOGIN_TYPE});
     define('LOGBACKEND', 'filelog');
-
     define('LOGFILEDIR', '${LOG_PATH_ZPUSH}');
     define('LOGFILE', LOGFILEDIR . '${LOG_FILE_ZPUSH_AUTODISCOVER}');
     define('LOGERRORFILE', LOGFILEDIR . '${LOG_FILE_ZPUSH_AUTODISCOVER}');

@@ -1,3 +1,9 @@
+## 2.7.0 2021-08-12 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add *_LISTENING_PORT environment variables if you want to run differnet web servers on different ports
+
+
 ## 2.6.8 2021-08-12 <dave at tiredofit dot ca>
 
    ### Added

@@ -471,6 +471,7 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `KDAV_CONFIG_FILE`    | Configuration File                                                | `kdav.php`         |
 | `KDAV_DEVELOPER_MODE` | Utilize Developer mode                                            | `TRUE`             |
 | `KDAV_HOSTNAME`       | DAV Service Hostname                                              | `dav.example.com`  |
+| `KDAV_LISTEN_PORT`    | Listening Port for KDAV Services                                  | `80`               |
 | `KDAV_LOG_LEVEL`      | Override master `LOG_LEVEL` environment for this specific service |                    |
 | `KDAV_MAX_SYNC_ITEMS` | Maximum items to sync at once                                     | `1000`             |
 | `KDAV_PATH`           | Where data files are stored                                       | `/data/kdav/`      |
@@ -686,7 +687,9 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `WEBAPP_HOSTNAME`                                    | Hostname of Webmail service                                       | `webapp.example.com`                                                                                                      |
 | `WEBAPP_ICONSET`                                     | Set Default Icons                                                 | `breeze`                                                                                                                  |
 | `WEBAPP_INSECURE_COOKIES`                            | Allow Insecure Cookies                                            | `FALSE`                                                                                                                   |
-| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |                                                                                                                           |
+| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |
+|                                                      |
+| `WEBAPP_LISTEN_PORT`                                 | Port to listen for Webapp requests on                             | `80`                                                                                                                      |  |  |
 | `WEBAPP_LOG_LEVEL`                                   | Override master `LOG_LEVEL` environment for this specific service |                                                                                                                           |
 | `WEBAPP_LOG_SUCCESSFUL_LOGINS`                       |                                                                   | `FALSE`                                                                                                                   |
 | `WEBAPP_LOG_USERS`                                   |                                                                   |                                                                                                                           |
@@ -955,83 +958,85 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 
 ##### Z-Push Options
 
-| Parameter                                  | Description                                                                 | Default                                               |
-| ------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `ENABLE_ZPUSH`                             | Enable Service                                                              | `TRUE`                                                |
-| `LOG_FILE_ZPUSH`                           | Log File                                                                    | `zpush.log`                                           |
-| `LOG_FILE_ZPUSH_AUTODISCOVER`              | Autodiscover Log File                                                       | `autodiscover.log`                                    |
-| `LOG_FILE_ZPUSH_AUTODISCOVER_ERROR`        | Autodiscover Error Log File                                                 | `autodiscover-error.log`                              |
-| `LOG_FILE_ZPUSH_ERROR`                     | Error Log File                                                              | `zpush-error.log`                                     |
-| `LOG_ZPUSH_AUTH_FAIL`                      | Log authentication errors                                                   | `TRUE`                                                |
-| `TEMPLATE_ZPUSH_NOTIFY`                    | Template: Notifications on errors                                           | `notify.mail`                                         |
-| `TEMPLATE_ZPUSH_PATH`                      | Where to find templates                                                     | `/data/templates/zpush/`                              |
-| `ZPUSH_AUTODISCOVER_LOGIN_TYPE`            |                                                                             | `AUTODISCOVER_LOGIN_EMAIL`                            |
-| `ZPUSH_BACKEND_PROVIDER`                   | Backend Provider for synchronization                                        | `BackendKopano`                                       |
-| `ZPUSH_CONFIG_AUTODISCOVER_FILE`           | Autodiscover Source                                                         | `zpush-config-autodiscover.php`                       |
-| `ZPUSH_CONFIG_FILE`                        | Config File                                                                 | `zpush-config.php`                                    |
-| `ZPUSH_CONFIG_GAB2CONTACTS_FILE`           | GAB2Contacts File                                                           | `zpush-config-gab2contacts.php`                       |
-| `ZPUSH_CONFIG_GABSYNC_FILE`                | GABSync File                                                                | `zpush-config-gabsync.php`                            |
-| `ZPUSH_CONFIG_KOPANO_FILE`                 | Kopano Backend Configuration                                                | `zpush-config-kopano.php`                             |
-| `ZPUSH_CONFIG_MEMCACHED_FILE`              | Memcached Configuration                                                     | `zpush-config-memcached.php`                          |
-| `ZPUSH_CONFIG_SQL_FILE`                    | SQL State Configuration                                                     | `zpush-config-sql.php`                                |
-| `ZPUSH_CONFLICT_HANDLER`                   | Conflict Resoltuion Methodology                                             | `SYNC_CONFLICT_OVERWRITE_PIM`                         |
-| `ZPUSH_CONTACT_FILE_ORDER`                 | How to file Cotacts                                                         | `SYNC_FILEAS_LASTFIRST`                               |
-| `ZPUSH_CONTENT_BODY_SIZE`                  | How large can messages be (Max message size * 1.3)                          | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`                       |
-| `ZPUSH_CUSTOM_INDEX_FILE`                  | Custom Index file when developer mode on                                    | `/assets/zpush/templates/index.html`                  |
-| `ZPUSH_ENABLE_AUTODISCOVER`                | Enable ZPush Autodiscover functionality                                     | `TRUE`                                                |
-| `ZPUSH_ENABLE_CUSTOM_INDEX`                | Enable Custom Index file                                                    | `TRUE`                                                |
-| `ZPUSH_ENABLE_PROVISIONING`                | Enable Provisioning                                                         | `TRUE`                                                |
-| `ZPUSH_ENABLE_WEBSERVICE_USERS_ACCESS`     |                                                                             | `FALSE`                                               |
-| `ZPUSH_HOSTNAME`                           | Hostname of Z-Push Server                                                   | `$WEBAPP_HOSTNAME`                                    |
-| `ZPUSH_IPC_PROVIDER`                       |                                                                             | `SHARED`                                              |
-| `ZPUSH_LOGIN_EMAIL`                        |                                                                             | `TRUE`                                                |
-| `ZPUSH_LOG_LEVEL`                          | Override master `LOG_LEVEL` environment for this specific service           |                                                       |
-| `ZPUSH_LOGIN_USE_EMAIL`                    | Use full email address for login                                            | `FALSE`                                               |
-| `ZPUSH_MEMCACHED_BLOCK_WAIT`               |                                                                             | `10`                                                  |
-| `ZPUSH_MEMCACHED_LOCK_EXPIRATION`          | Memcached Lock Expiration                                                   | `30`                                                  |
-| `ZPUSH_MEMCACHED_PORT`                     | Memcached Port                                                              | `11211`                                               |
-| `ZPUSH_MEMCACHED_TIMEOUT_MUTEX`            |                                                                             | `5`                                                   |
-| `ZPUSH_MEMCACHED_TIMEOUT`                  | Memcached Timeout                                                           | `100`                                                 |
-| `ZPUSH_OUTLOOK_ENABLE_GAB`                 | Enable syncing of GAB                                                       | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_IMPERSONATE`         | Enable Impersonation                                                        | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_NOTES`               | Enable Syncing of Notes                                                     | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE_TIMES` | Enable Syncing Out of Office Times                                          | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE`       | Enable Syncing Out of Office                                                | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_RECEIPTS`            | Enable Read Receipts                                                        | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_RECEIVE_FLAGS`       |                                                                             | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SECONDARY_CONTACTS`  |                                                                             | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SEND_AS`             | Enable Send as Capability                                                   | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SEND_FLAGS`          |                                                                             | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SHARED_FOLDERS`      | Enable Shared Folders                                                       | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_ENABLE_SIGNATURES`          | Enable Signatures                                                           | `TRUE`                                                |
-| `ZPUSH_OUTLOOK_GAB_FOLDERID`               |                                                                             |                                                       |
-| `ZPUSH_OUTLOOK_GAB_NAME`                   | Z -Push Global Address Name                                                 | `Z-Push-KOE-GAB`                                      |
-| `ZPUSH_OUTLOOK_GAB_STORE`                  | Where to store GAB                                                          | `SYSTEM`                                              |
-| `ZPUSH_PING_INTERVAL`                      |                                                                             | `30`                                                  |
-| `ZPUSH_PING_LIFETIME_HIGHER`               |                                                                             | `FALSE`                                               |
-| `ZPUSH_PING_LIFETIME_LOWER`                |                                                                             | `FALSE`                                               |
-| `ZPUSH_PROVISIONING_FILE_POLICY`           | Z-Push Prvosioning policy File                                              | `zpush-policies.ini`                                        |
-| `ZPUSH_PROVISIONING_LOOSE`                 | Allow provisioning for older devices that may not support features required | `FALSE`                                               |
-| `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       | Date Format                                                                 | `%d.%m.%Y`                                            |
-| `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                                                             | `TRUE`                                                |
-| `ZPUSH_READ_ONLY_NOTIFY_NO_NOTIFY`         |                                                                             | ``                                                    |
-| `ZPUSH_READ_ONLY_NOTIFY_SUBJECT`           |                                                                             | `Sync - Writing operation not permitted - data reset` |
-| `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                                                             | `%H:%M:%S`                                            |
-| `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                                                             | `Your data`                                           |
-| `ZPUSH_SEARCH_MAX_RESULTS`                 | Search Results                                                              | `10`                                                  |
-| `ZPUSH_SEARCH_PROVIDER`                    | Backend Search Provider                                                     | `BackendKopano`                                       |
-| `ZPUSH_SEARCH_TIME`                        | Search Timeout                                                              | `10`                                                  |
-| `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                                   | `${SOCKET_SERVER}`                                    |
-| `ZPUSH_STATE_FILE_PATH`                    |                                                                             | `/data/zpush/`                                        |
-| `ZPUSH_STATE_TYPE`                         | State Type                                                                  | `FILE`                                                |
-| `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     | Allow Partial Folder Synchronization                                        | `FALSE`                                               |
-| `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     | Max size for Contacts Picture                                               | `5242880`                                             |
-| `ZPUSH_SYNC_MAX_FILTERTIME`                |                                                                             | `SYNC_FILTERTYPE_ALL`                                 |
-| `ZPUSH_SYNC_MAX_ITEMS`                     | Maximum items to sync at once                                               | `512`                                                 |
-| `ZPUSH_SYNC_RETRY_DELAY`                   | Retry when failure in seconds                                               | `300`                                                 |
-| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      | Show leniency for these devices                                             | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
-| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    | Show medium leniency for these devices                                      | `SAMSUNGTI`                                           |
-| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    | Should we sync undefined MAPI properties                                    | `FALSE`                                               |
+| Parameter                                  | Description                                                                   | Default                                               |
+| ------------------------------------------ | ----------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `ENABLE_ZPUSH`                             | Enable Service                                                                | `TRUE`                                                |
+| `LOG_FILE_ZPUSH`                           | Log File                                                                      | `zpush.log`                                           |
+| `LOG_FILE_ZPUSH_AUTODISCOVER`              | Autodiscover Log File                                                         | `autodiscover.log`                                    |
+| `LOG_FILE_ZPUSH_AUTODISCOVER_ERROR`        | Autodiscover Error Log File                                                   | `autodiscover-error.log`                              |
+| `LOG_FILE_ZPUSH_ERROR`                     | Error Log File                                                                | `zpush-error.log`                                     |
+| `LOG_ZPUSH_AUTH_FAIL`                      | Log authentication errors                                                     | `TRUE`                                                |
+| `TEMPLATE_ZPUSH_NOTIFY`                    | Template: Notifications on errors                                             | `notify.mail`                                         |
+| `TEMPLATE_ZPUSH_PATH`                      | Where to find templates                                                       | `/data/templates/zpush/`                              |
+| `ZPUSH_AUTODISCOVER_LISTEN_PORT`           | Listen Port for Z-Push autodiscover services if seperate from Webapp Hostname | `80`                                                  |
+| `ZPUSH_AUTODISCOVER_LOGIN_TYPE`            |                                                                               | `AUTODISCOVER_LOGIN_EMAIL`                            |
+| `ZPUSH_BACKEND_PROVIDER`                   | Backend Provider for synchronization                                          | `BackendKopano`                                       |
+| `ZPUSH_CONFIG_AUTODISCOVER_FILE`           | Autodiscover Source                                                           | `zpush-config-autodiscover.php`                       |
+| `ZPUSH_CONFIG_FILE`                        | Config File                                                                   | `zpush-config.php`                                    |
+| `ZPUSH_CONFIG_GAB2CONTACTS_FILE`           | GAB2Contacts File                                                             | `zpush-config-gab2contacts.php`                       |
+| `ZPUSH_CONFIG_GABSYNC_FILE`                | GABSync File                                                                  | `zpush-config-gabsync.php`                            |
+| `ZPUSH_CONFIG_KOPANO_FILE`                 | Kopano Backend Configuration                                                  | `zpush-config-kopano.php`                             |
+| `ZPUSH_CONFIG_MEMCACHED_FILE`              | Memcached Configuration                                                       | `zpush-config-memcached.php`                          |
+| `ZPUSH_CONFIG_SQL_FILE`                    | SQL State Configuration                                                       | `zpush-config-sql.php`                                |
+| `ZPUSH_CONFLICT_HANDLER`                   | Conflict Resoltuion Methodology                                               | `SYNC_CONFLICT_OVERWRITE_PIM`                         |
+| `ZPUSH_CONTACT_FILE_ORDER`                 | How to file Cotacts                                                           | `SYNC_FILEAS_LASTFIRST`                               |
+| `ZPUSH_CONTENT_BODY_SIZE`                  | How large can messages be (Max message size * 1.3)                            | `GATEWAY_IMAP_MAX_MESSAGE_SIZE`                       |
+| `ZPUSH_CUSTOM_INDEX_FILE`                  | Custom Index file when developer mode on                                      | `/assets/zpush/templates/index.html`                  |
+| `ZPUSH_ENABLE_AUTODISCOVER`                | Enable ZPush Autodiscover functionality                                       | `TRUE`                                                |
+| `ZPUSH_ENABLE_CUSTOM_INDEX`                | Enable Custom Index file                                                      | `TRUE`                                                |
+| `ZPUSH_ENABLE_PROVISIONING`                | Enable Provisioning                                                           | `TRUE`                                                |
+| `ZPUSH_ENABLE_WEBSERVICE_USERS_ACCESS`     |                                                                               | `FALSE`                                               |
+| `ZPUSH_HOSTNAME`                           | Hostname of Z-Push Server                                                     | `$WEBAPP_HOSTNAME`                                    |
+| `ZPUSH_IPC_PROVIDER`                       |                                                                               | `SHARED`                                              |
+| `ZPUSH_LISTEN_PORT`                        | Listen Port for Z-Push services if seperate from Webapp Hostname              | `80`                                                  |
+| `ZPUSH_LOGIN_EMAIL`                        |                                                                               | `TRUE`                                                |
+| `ZPUSH_LOG_LEVEL`                          | Override master `LOG_LEVEL` environment for this specific service             |                                                       |
+| `ZPUSH_LOGIN_USE_EMAIL`                    | Use full email address for login                                              | `FALSE`                                               |
+| `ZPUSH_MEMCACHED_BLOCK_WAIT`               |                                                                               | `10`                                                  |
+| `ZPUSH_MEMCACHED_LOCK_EXPIRATION`          | Memcached Lock Expiration                                                     | `30`                                                  |
+| `ZPUSH_MEMCACHED_PORT`                     | Memcached Port                                                                | `11211`                                               |
+| `ZPUSH_MEMCACHED_TIMEOUT_MUTEX`            |                                                                               | `5`                                                   |
+| `ZPUSH_MEMCACHED_TIMEOUT`                  | Memcached Timeout                                                             | `100`                                                 |
+| `ZPUSH_OUTLOOK_ENABLE_GAB`                 | Enable syncing of GAB                                                         | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_IMPERSONATE`         | Enable Impersonation                                                          | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_NOTES`               | Enable Syncing of Notes                                                       | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE_TIMES` | Enable Syncing Out of Office Times                                            | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_OUT_OF_OFFICE`       | Enable Syncing Out of Office                                                  | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_RECEIPTS`            | Enable Read Receipts                                                          | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_RECEIVE_FLAGS`       |                                                                               | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SECONDARY_CONTACTS`  |                                                                               | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SEND_AS`             | Enable Send as Capability                                                     | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SEND_FLAGS`          |                                                                               | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SHARED_FOLDERS`      | Enable Shared Folders                                                         | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_ENABLE_SIGNATURES`          | Enable Signatures                                                             | `TRUE`                                                |
+| `ZPUSH_OUTLOOK_GAB_FOLDERID`               |                                                                               |                                                       |
+| `ZPUSH_OUTLOOK_GAB_NAME`                   | Z -Push Global Address Name                                                   | `Z-Push-KOE-GAB`                                      |
+| `ZPUSH_OUTLOOK_GAB_STORE`                  | Where to store GAB                                                            | `SYSTEM`                                              |
+| `ZPUSH_PING_INTERVAL`                      |                                                                               | `30`                                                  |
+| `ZPUSH_PING_LIFETIME_HIGHER`               |                                                                               | `FALSE`                                               |
+| `ZPUSH_PING_LIFETIME_LOWER`                |                                                                               | `FALSE`                                               |
+| `ZPUSH_PROVISIONING_FILE_POLICY`           | Z-Push Prvosioning policy File                                                | `zpush-policies.ini`                                  |
+| `ZPUSH_PROVISIONING_LOOSE`                 | Allow provisioning for older devices that may not support features required   | `FALSE`                                               |
+| `ZPUSH_READ_ONLY_NOTIFY_DATE_FORMAT`       | Date Format                                                                   | `%d.%m.%Y`                                            |
+| `ZPUSH_READ_ONLY_NOTIFY_LOST_DATA`         |                                                                               | `TRUE`                                                |
+| `ZPUSH_READ_ONLY_NOTIFY_NO_NOTIFY`         |                                                                               | ``                                                    |
+| `ZPUSH_READ_ONLY_NOTIFY_SUBJECT`           |                                                                               | `Sync - Writing operation not permitted - data reset` |
+| `ZPUSH_READ_ONLY_NOTIFY_TIME_FORMAT`       |                                                                               | `%H:%M:%S`                                            |
+| `ZPUSH_READ_ONLY_NOTIFY_YOUR_DATA`         |                                                                               | `Your data`                                           |
+| `ZPUSH_SEARCH_MAX_RESULTS`                 | Search Results                                                                | `10`                                                  |
+| `ZPUSH_SEARCH_PROVIDER`                    | Backend Search Provider                                                       | `BackendKopano`                                       |
+| `ZPUSH_SEARCH_TIME`                        | Search Timeout                                                                | `10`                                                  |
+| `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                                     | `${SOCKET_SERVER}`                                    |
+| `ZPUSH_STATE_FILE_PATH`                    |                                                                               | `/data/zpush/`                                        |
+| `ZPUSH_STATE_TYPE`                         | State Type                                                                    | `FILE`                                                |
+| `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     | Allow Partial Folder Synchronization                                          | `FALSE`                                               |
+| `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     | Max size for Contacts Picture                                                 | `5242880`                                             |
+| `ZPUSH_SYNC_MAX_FILTERTIME`                |                                                                               | `SYNC_FILTERTYPE_ALL`                                 |
+| `ZPUSH_SYNC_MAX_ITEMS`                     | Maximum items to sync at once                                                 | `512`                                                 |
+| `ZPUSH_SYNC_RETRY_DELAY`                   | Retry when failure in seconds                                                 | `300`                                                 |
+| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      | Show leniency for these devices                                               | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
+| `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    | Show medium leniency for these devices                                        | `SAMSUNGTI`                                           |
+| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    | Should we sync undefined MAPI properties                                      | `FALSE`                                               |
 
 ### Networking
 
