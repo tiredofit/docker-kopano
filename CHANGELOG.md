@@ -1,3 +1,12 @@
+## 2.6.8 2021-08-12 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add more safety checks for KDAV to operate effectively when using Apache Hack
+      - Zpush Clear Loop states on startup
+
+   ### Reverted
+
+
 ## 2.6.7 2021-08-05 <dave at tiredofit dot ca>
 
    ### Changed

@@ -1055,6 +1055,9 @@ configure_kdav() {
             print_debug "Using Apache for KDAV"
             ### Configure Apache
             sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/apache2/sites-enabled/kdav.conf
+            if [ ! -e "/etc/php/${PHP_BASE}/apache2/conf.d/20-mapi.ini" ] ; then
+                php-ext enable mapi
+            fi
             mkdir -p /logs/apache
             chown -R ${NGINX_USER}:${NGINX_GROUP} /logs/apache
         else
@@ -2518,7 +2521,10 @@ EOF
         fi
 
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" /usr/share/zpush
-        sudo -u ${NGINX_USER} php /usr/share/zpush/src/z-push-admin.php -a fixstates
+        print_debug "Z-Push: Fixing States"
+        silent sudo -u ${NGINX_USER} php /usr/share/zpush/src/z-push-admin.php -a fixstates
+        print_debug "Z-Push: Clearing Loops"
+        silent sudo -u ${NGINX_USER} php /usr/share/zpush/src/z-push-admin.php -a clearloop
     fi
 }
 
