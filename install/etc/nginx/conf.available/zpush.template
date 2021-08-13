@@ -1,7 +1,7 @@
   server {
      ### Don't Touch This
      server_name <ZPUSH_HOSTNAME>;
-     listen <LISTEN_PORT>;
+     listen <ZPUSH_LISTEN_PORT>;
      root /usr/share/zpush/src;
 
      ### Populate your custom directives here

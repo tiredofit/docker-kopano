@@ -1055,6 +1055,8 @@ configure_kdav() {
             print_debug "Using Apache for KDAV"
             ### Configure Apache
             sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/apache2/sites-enabled/kdav.conf
+            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/apache2/sites-enabled/kdav.conf
+            echo "Listen ${KDAV_LISTEN_PORT}" > /etc/apache2/ports.conf
             if [ ! -e "/etc/php/${PHP_BASE}/apache2/conf.d/20-mapi.ini" ] ; then
                 php-ext enable mapi
             fi
@@ -2508,7 +2510,7 @@ EOF
         configure_cron_zpush_gab2contacts
 
         ### Change Output of ZPush when visiting with webbrowser in Debug Mode
-        if var_true "${ENABLE_ZPUSH_CUSTOM_INDEX}" ; then
+        if var_true "${ZPUSH_ENABLE_CUSTOM_INDEX}" ; then
             print_debug "Z-Push: Changing Z-Push Custom HTML Output with template"
             zpush_custom_index=$(mktemp)
             awk 'BEGIN {p=1}/print <<<END/{print;system("cat ${ZPUSH_CUSTOM_INDEX_FILE}");p=0}/^END\;/{p=1} p' /usr/share/zpush/src/lib/core/zpush.php > "${zpush_custom_index}"

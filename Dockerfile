@@ -152,7 +152,6 @@ RUN set -x && \
     rm -rf /etc/apache2/sites-enabled/* && \
     a2disconf other-vhosts-access-log && \
     a2enmod rewrite && \
-    echo "Listen 8888" > /etc/apache2/ports.conf && \
     sed -i "s#export APACHE_RUN_USER=www-data#export APACHE_RUN_USER=nginx#g" /etc/apache2/envvars && \
     crudini --set /etc/php/${PHP_BASE}/apache2/php.ini PHP upload_max_filesize 500M && \
     crudini --set /etc/php/${PHP_BASE}/apache2/php.ini PHP post_max_size 500M && \

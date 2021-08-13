@@ -1,3 +1,15 @@
+## 2.7.2 2021-08-13 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Add KDAV Custom Listening Port to Apache
+
+
+## 2.7.1 2021-08-13 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix ZPush Custom Template from not activating
+
+
 ## 2.7.0 2021-08-12 <dave at tiredofit dot ca>
 
    ### Added
