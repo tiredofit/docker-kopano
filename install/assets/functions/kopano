@@ -565,7 +565,7 @@ ldap_groupname_attribute = ${LDAP_ATTRIBUTE_GROUP_NAME}
 ldap_groupmembers_attribute = ${LDAP_ATTRIBUTE_GROUP_MEMBERS}
 ldap_groupmembers_attribute_type = ${LDAP_ATTRIBUTE_TYPE_GROUP_MEMBERS}
 ldap_groupmembers_relation_attribute = ${LDAP_ATTRIBUTE_LDAP_ATTRIBUTE_GROUP_MEMBERS_RELATION}
-ldap_group_security_attribute = ${LDAP_ATTRIBUTE_TYPE_GROUP_SECURITY}
+ldap_group_security_attribute = ${LDAP_ATTRIBUTE_GROUP_SECURITY}
 ldap_group_security_attribute_type = ${LDAP_ATTRIBUTE_TYPE_GROUP_SECURITY}
 
 # Company settings
@@ -2208,6 +2208,7 @@ configure_zpush() {
         zpush_content_body_size_overhead="$(echo "$(scale=1; echo "${zpush_content_body_size}"*1.33 | bc | awk '{printf "%.0f\n", $1}')")"
         print_debug "Setting Z-Push Content Body overhead to '${zpush_content_body_size_overhead}${zpush_content_body_size_unit}' from message size '${ZPUSH_CONTENT_BODY_SIZE}'"
         sed -i "s|<ZPUSH_CONTENT_BODY_SIZE>|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/conf.available/zpush-activesync.template
+        sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/nginx/conf.available/zpush-activesync.template
         if [ "$SETUP_TYPE" = "AUTO" ]; then
             print_notice "Z-Push: Autoconfiguring"
 

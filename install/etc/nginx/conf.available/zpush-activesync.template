@@ -9,4 +9,6 @@
         include /etc/nginx/nginx.conf.d/php-fpm.conf;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME /usr/share/zpush/src/index.php;
+        fastcgi_param PHP_FLAG "magic_quotes_gpc=off \n register_globals=off \n magic_quotes_runtime=off \n short_open_tag=on";
+        fastcgi_param PHP_VALUE "post_max_size=<ZPUSH_CONTENT_BODY_SIZE>\n upload_max_filesize=<ZPUSH_CONTENT_BODY_SIZE>\n max_execution_time=<PHP_TIMEOUT>";
     }

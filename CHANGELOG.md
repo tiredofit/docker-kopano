@@ -1,3 +1,10 @@
+## 2.7.3 2021-08-17 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix LDAP_GROUP_ATTRIBUTE issue showing as Boolean instead of an actual attribute
+      - Add additional configuration to nginx for Z-Push
+
+
 ## 2.7.2 2021-08-13 <dave at tiredofit dot ca>
 
    ### Changed
