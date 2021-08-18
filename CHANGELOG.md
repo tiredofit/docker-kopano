@@ -1,3 +1,14 @@
+## 2.8.0 2021-08-18 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Apache mode for Z-Push
+
+   ### Changed
+      - Tweaks to Z-Push configuration for nginx specifically autodiscover
+      - Rework Apache confgiuration to not create duplicate configuration files if using KDAV and ZPUSH under Apache
+      - Stopped overwriting ldap-propmap.cfg if already existed
+
+
 ## 2.7.3 2021-08-17 <dave at tiredofit dot ca>
 
    ### Changed

@@ -173,6 +173,51 @@ EOF
     esac
 }
 
+configure_apache() {
+    print_debug "Running Apache hack"
+	mkdir -p /var/log/apache2
+	chown -R ${NGINX_USER}:${NGINX_GROUP} /var/log/apache2
+    if [ ! -e "/etc/php/${PHP_BASE}/apache2/conf.d/20-mapi.ini" ] ; then
+        php-ext enable mapi
+    fi
+    mkdir -p /logs/apache
+    chown -R ${NGINX_USER}:${NGINX_GROUP} /logs/apache
+    chown ${NGINX_USER}:${NGINX_GROUP} ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
+    mkdir -p /etc/services.available/41-apache
+    ## Create Service
+    cat <<EOF > /etc/services.available/41-apache/run
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service functions kopano
+PROCESS_NAME="apache"
+check_container_initialized
+liftoff
+
+print_info "Starting Apache"
+source /etc/apache2/envvars
+silent apache2 -DFOREGROUND
+EOF
+
+    chmod +x /etc/services.available/41-apache/run
+
+    ## Setup Logroate
+    cat <<EOF > /etc/logrotate.d/apache
+/logs/apache/*.log {
+daily
+ifempty
+rotate 7
+missingok
+copytruncate
+compress
+dateext
+}
+EOF
+    chmod 644 /etc/logrotate.d/apache
+    sed -i "s|<PHP_MEMORY_LIMIT>|${PHP_MEMORY_LIMIT}|g" /etc/apache2/sites-available/*.conf
+    sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/apache2/sites-available/*.conf
+}
+
 configure_autorespond() {
     mkdir -p "${AUTORESPOND_PATH}"
     chown -R kopano: "${AUTORESPOND_PATH}"
@@ -505,7 +550,6 @@ EOF
     fi
 }
 
-### LDAP Needs Work
 configure_ldap() {
     if [ "$SETUP_TYPE" = "AUTO" ]; then
         print_notice "Configuring LDAP"
@@ -637,11 +681,10 @@ ldap_server_unique_attribute = ${LDAP_ATTRIBUTE_MULTIUSER_SERVER_UNIQUE}
 !propmap ${CONFIG_PATH}${LDAP_FILE_PROPMAP}
 
 EOF
-
-        cat <<EOF > "${CONFIG_PATH}""${LDAP_FILE_PROPMAP}"
-## Custom Generated Kopano LDAP Propmap Configuration! Do not edit, instead set ENV Vars
-## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
-## Last Generated on $(date)
+        if [ ! -f "${CONFIG_PATH}""${LDAP_FILE_PROPMAP}" ] ; then
+            cat <<EOF > "${CONFIG_PATH}""${LDAP_FILE_PROPMAP}"
+## Custom Generated Kopano LDAP Propmap Configuration! Will not be rebuilt on container start unless file is deleted.
+## Generated on $(date)
 # PR_EC_ENABLED_FEATURES
 0x67B3101E  =   kopanoEnabledFeatures
 
@@ -776,6 +819,7 @@ EOF
 # PR_EMS_AB_OBJECT_GUID
 0x8C6D0102  =   EntryUUID
 EOF
+        fi
     else
         print_info "LDAP: Skipping Auto Configuration"
     fi
@@ -1054,14 +1098,10 @@ configure_kdav() {
         if [ "${KDAV_SERVE_MODE}" = "APACHE" ]; then
             print_debug "Using Apache for KDAV"
             ### Configure Apache
-            sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/apache2/sites-enabled/kdav.conf
-            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/apache2/sites-enabled/kdav.conf
-            echo "Listen ${KDAV_LISTEN_PORT}" > /etc/apache2/ports.conf
-            if [ ! -e "/etc/php/${PHP_BASE}/apache2/conf.d/20-mapi.ini" ] ; then
-                php-ext enable mapi
-            fi
-            mkdir -p /logs/apache
-            chown -R ${NGINX_USER}:${NGINX_GROUP} /logs/apache
+            sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/apache2/sites-available/kdav.conf
+            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/apache2/sites-available/kdav.conf
+            ln -s /etc/apache2/sites-available/kdav.conf /etc/apache2/sites-enabled/
+            echo "Listen ${KDAV_LISTEN_PORT}" >> /etc/apache2/ports.conf
         else
             ### Configure Nginx
             print_debug "Using Nginx for KDAV"
@@ -1101,44 +1141,6 @@ EOF
 
         chown -R ${NGINX_USER}:${NGINX_GROUP} /usr/share/kdav
     fi
-}
-
-configure_kdav_apache() {
-    print_debug "Running KDAV Apache hack"
-	mkdir -p /var/log/apache2
-	chown -R ${NGINX_USER}:${NGINX_GROUP} /var/log/apache2
-    chown ${NGINX_USER}:${NGINX_GROUP} ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
-    mkdir -p /etc/services.available/41-kopano-kdav-apache
-    ## Create Service
-    cat <<EOF > /etc/services.available/41-kopano-kdav-apache/run
-#!/usr/bin/with-contenv bash
-
-source /assets/functions/00-container
-prepare_service functions kopano
-PROCESS_NAME="kopano-kdav-apache"
-check_container_initialized
-liftoff
-
-print_info "Starting Apache for Kopano KDAV on port 8888"
-source /etc/apache2/envvars
-silent apache2 -DFOREGROUND
-EOF
-
-    chmod +x /etc/services.available/41-kopano-kdav-apache/run
-
-    ## Setup Logroate
-    cat <<EOF > /etc/logrotate.d/apache
-/logs/apache/*.log {
-daily
-ifempty
-rotate 7
-missingok
-copytruncate
-compress
-dateext
-}
-EOF
-    chmod 644 /etc/logrotate.d/apache
 }
 
 configure_migrator() {
@@ -2178,37 +2180,49 @@ configure_webapp_plugin_texttemplates() {
 configure_zpush() {
     if var_true "${ENABLE_ZPUSH}" ; then
         print_notice "Z-Push: Enabled"
-        ### Configure Nginx
-        case "$NGINX_AUTHENTICATION_TYPE" in
-          "LLNG")
-              print_notice "Setting Webapp LLNG Authentication"
-              sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
-              sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush.template
-              ;;
-          "NONE")
-            :
-          ;;
-         *)
-            :
-         ;;
+        case "${ZPUSH_SERVE_MODE}" in
+            "NGINX" | "nginx" )
+                ### Configure Nginx
+                case "$NGINX_AUTHENTICATION_TYPE" in
+                "LLNG")
+                    print_notice "Setting Webapp LLNG Authentication"
+                    sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
+                    sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush.template
+                    ;;
+                "NONE")
+                    :
+                ;;
+                *)
+                    :
+                ;;
+                esac
+
+                if [ "${ZPUSH_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
+                    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/webapp.template
+                else
+                    sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/nginx/conf.available/zpush.template
+                    sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush.template
+                    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/zpush.template
+                    ln -s /etc/nginx/conf.available/zpush.template /etc/nginx/conf.d/zpush.conf
+                fi
+                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-activesync.template
+                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-activesync.template
+                zpush_content_body_size=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 0-9)
+                zpush_content_body_size_unit=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 'a-zA-Z')
+                zpush_content_body_size_overhead="$(echo "$(scale=1; echo "${zpush_content_body_size}"*1.33 | bc | awk '{printf "%.0f\n", $1}')")"
+                print_debug "Setting Z-Push Content Body overhead to '${zpush_content_body_size_overhead}${zpush_content_body_size_unit}' from message size '${ZPUSH_CONTENT_BODY_SIZE}'"
+                sed -i "s|<ZPUSH_CONTENT_BODY_SIZE>|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/conf.available/zpush-activesync.template
+                sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/nginx/conf.available/zpush-activesync.template
+            ;;
+            "APACHE" | "apache" )
+                ### Configure Apache
+                sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/apache2/sites-available/zpush.conf
+                sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/apache2/sites-available/zpush.conf
+                ln -s /etc/apache2/sites-available/zpush.conf /etc/apache2/sites-enabled/
+                echo "Listen ${ZPUSH_LISTEN_PORT}" >> /etc/apache2/ports.conf
+            ;;
         esac
 
-        if [ "${ZPUSH_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
-            sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/webapp.template
-        else
-            sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/nginx/conf.available/zpush.template
-            sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush.template
-            sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/zpush.template
-            ln -s /etc/nginx/conf.available/zpush.template /etc/nginx/conf.d/zpush.conf
-        fi
-        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-activesync.template
-        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-activesync.template
-        zpush_content_body_size=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 0-9)
-        zpush_content_body_size_unit=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 'a-zA-Z')
-        zpush_content_body_size_overhead="$(echo "$(scale=1; echo "${zpush_content_body_size}"*1.33 | bc | awk '{printf "%.0f\n", $1}')")"
-        print_debug "Setting Z-Push Content Body overhead to '${zpush_content_body_size_overhead}${zpush_content_body_size_unit}' from message size '${ZPUSH_CONTENT_BODY_SIZE}'"
-        sed -i "s|<ZPUSH_CONTENT_BODY_SIZE>|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/conf.available/zpush-activesync.template
-        sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/nginx/conf.available/zpush-activesync.template
         if [ "$SETUP_TYPE" = "AUTO" ]; then
             print_notice "Z-Push: Autoconfiguring"
 
@@ -2534,26 +2548,38 @@ EOF
 configure_zpush_autodiscover() {
         if var_true "$ENABLE_ZPUSH_AUTODISCOVER" ; then
             print_notice "Z-Push: Enabling Autodiscover"
-            ### Configure Nginx
-            case "$NGINX_AUTHENTICATION_TYPE" in
-            "LLNG")
-                print_notice "Setting Webapp LLNG Authentication"
-                sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
-                sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush-autodiscover.template
+        case "${ZPUSH_SERVE_MODE}" in
+            "NGINX" | "nginx" )
+                ### Configure Nginx
+                case "$NGINX_AUTHENTICATION_TYPE" in
+                "LLNG")
+                    print_notice "Setting Webapp LLNG Authentication"
+                    sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
+                    sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                    ;;
+                "NONE")
+                    :
                 ;;
-            "NONE")
-                :
-            ;;
-            *)
-                :
-            ;;
-            esac
+                *)
+                    :
+                ;;
+                esac
 
-            sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-            sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-            sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-            sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-            ln -sf /etc/nginx/conf.available/zpush-autodiscover.template /etc/nginx/conf.d/zpush-autodiscover.conf
+                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                ln -sf /etc/nginx/conf.available/zpush-autodiscover.template /etc/nginx/conf.d/zpush-autodiscover.conf
+            ;;
+            "APACHE" | "apache" )
+                ### Configure Apache
+                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/apache2/sites-available/zpush-autodiscover.conf
+                sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/apache2/sites-available/zpush-autodiscover.conf
+                ln -s /etc/apache2/sites-available/zpush-autodiscover.conf /etc/apache2/sites-enabled/
+                echo "Listen ${ZPUSH_AUTODISCOVER_LISTEN_PORT}" >> /etc/apache2/ports.conf
+            ;;
+        esac
+
             rm -rf /usr/share/zpush/src/autodiscover/config.php
             ln -sf "${CONFIG_PATH}""${ZPUSH_CONFIG_AUTODISCOVER_FILE}" /usr/share/zpush/src/autodiscover/config.php
 

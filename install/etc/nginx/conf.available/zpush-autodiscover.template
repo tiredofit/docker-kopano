@@ -2,10 +2,10 @@
      ### Don't Touch This
      server_name <AUTODISCOVER_HOSTNAME>;
      listen <AUTODISCOVER_LISTEN_PORT>;
-     root /usr/share/zpush/src;
+     root /usr/share/zpush/src/autodiscover;
 
      ### Populate your custom directives here
-     index  autodiscover/autodiscover.php;
+     index autodiscover.php;
 
     location ~* /AutoDiscover/AutoDiscover.xml {
         access_log  <LOG_ACCESS_LOCATION>/zpush-autodiscover-access.log;
