@@ -31,7 +31,7 @@ if var_true "${ENABLE_KDAV}" ; then
 	source /assets/defaults/kopano-kdav
 	configure_kdav
 	if [ "${KDAV_SERVE_MODE}" = "APACHE" ]; then
-		if [ "apache_configured" = "false" ]; then
+		if [ "$apache_configured" = "false" ]; then
 			print_notice "Adding Apache to startup for KDAV"
 			configure_apache
 			apache_configured=true
@@ -56,7 +56,7 @@ if var_true "${ENABLE_ZPUSH}" ; then
 	source /assets/defaults/z-push
 	configure_zpush
 	if [ "${ZPUSH_SERVE_MODE}" = "APACHE" ]; then
-		if [ "apache_configured" = "false" ]; then
+		if [ "$apache_configured" = "false" ]; then
 			print_notice "Adding Apache to startup for Z-Push"
 			configure_apache
 			apache_configured=true
@@ -73,7 +73,7 @@ if var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
 	source /assets/defaults/z-push
 	configure_zpush_autodiscover
 	if [ "${ZPUSH_SERVE_MODE}" = "APACHE" ]; then
-		if [ "apache_configured" = "false" ]; then
+		if [ "$apache_configured" = "false" ]; then
 			print_notice "Adding Apache to startup for Z-Push Autodiscover"
 			configure_apache
 			apache_configured=true

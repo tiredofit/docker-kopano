@@ -1,3 +1,9 @@
+## 2.8.1 2021-08-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Zpush Apache Serving
+
+
 ## 2.8.0 2021-08-18 <dave at tiredofit dot ca>
 
    ### Added
