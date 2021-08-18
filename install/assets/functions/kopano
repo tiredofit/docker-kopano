@@ -182,7 +182,6 @@ configure_apache() {
     fi
     mkdir -p /logs/apache
     chown -R ${NGINX_USER}:${NGINX_GROUP} /logs/apache
-    chown ${NGINX_USER}:${NGINX_GROUP} ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
     mkdir -p /etc/services.available/41-apache
     ## Create Service
     cat <<EOF > /etc/services.available/41-apache/run
@@ -1102,6 +1101,8 @@ configure_kdav() {
             sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/apache2/sites-available/kdav.conf
             ln -s /etc/apache2/sites-available/kdav.conf /etc/apache2/sites-enabled/
             echo "Listen ${KDAV_LISTEN_PORT}" >> /etc/apache2/ports.conf
+            touch ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
+            chown ${NGINX_USER}:${NGINX_GROUP} ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
         else
             ### Configure Nginx
             print_debug "Using Nginx for KDAV"

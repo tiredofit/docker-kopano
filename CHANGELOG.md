@@ -1,3 +1,9 @@
+## 2.8.2 2021-08-18 <dave at tiredofit dot ca>
+
+   ### Changed
+      - More Apache Changes
+
+
 ## 2.8.1 2021-08-18 <dave at tiredofit dot ca>
 
    ### Changed
