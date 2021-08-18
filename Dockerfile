@@ -158,6 +158,7 @@ RUN set -x && \
     crudini --set /etc/php/${PHP_BASE}/apache2/php.ini PHP max_input_vars 1800 && \
     crudini --set /etc/php/${PHP_BASE}/apache2/php.ini Session session.save_path /run/sessions && \
     apt-get remove -y crudini && \
+    rm -rf /etc/apache2/ports.conf && \
     ##########
     \
     ##### Unpack KCOIDC
