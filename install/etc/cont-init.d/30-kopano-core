@@ -20,6 +20,9 @@ if var_true "${ENABLE_SERVER}" ; then
 	create_user_scripts
 	configure_cron_purge_deleted
 	configure_server
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-server ${LOG_PATH_KOPANO}/${LOG_FILE_SERVER} none kopano kopano
+	fi
 	print_debug "Finished Configuring Kopano Server"
 else
 	service_stop 31-kopano-server
@@ -39,6 +42,9 @@ if var_true "${ENABLE_BACKUP}" ; then
 	print_debug "Configuring Backup"
 	source /assets/defaults/kopano-backup
 	configure_backup
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-backup ${LOG_PATH_KOPANO}/${LOG_FILE_BACKUP} none kopano kopano
+	fi
 	print_debug "Finished Configuring Backup"
 fi
 
@@ -47,6 +53,9 @@ if var_true "${ENABLE_DAGENT}" ; then
 	print_debug "Configuring DAgent"
 	source /assets/defaults/kopano-dagent
 	configure_dagent
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-dagent ${LOG_PATH_KOPANO}/${LOG_FILE_DAGENT} none kopano kopano
+	fi
 	print_debug "Finished Configuring DAgent"
 else
 	service_stop 34-kopano-dagent
@@ -57,6 +66,9 @@ if var_true "${ENABLE_GATEWAY}" ; then
 	print_debug "Configuring Gateway"
 	source /assets/defaults/kopano-gateway
 	configure_gateway
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-gateway ${LOG_PATH_KOPANO}/${LOG_FILE_GATEWAY} none kopano kopano
+	fi
 	print_debug "Finished Configuring Gateway"
 else
     service_stop 33-kopano-gateway
@@ -67,6 +79,9 @@ if var_true "${ENABLE_ICAL}" ; then
 	print_debug "Configuring ICAL"
 	source /assets/defaults/kopano-ical
 	configure_ical
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-ical ${LOG_PATH_KOPANO}/${LOG_FILE_ICAL} none kopano kopano
+	fi
 	print_debug "Finished Configuring ICAL"
 else
 	service_stop 35-kopano-ical
@@ -77,6 +92,9 @@ if var_true "${ENABLE_MIGRATOR}" ; then
 	print_debug "Configuring Migrator"
 	source /assets/defaults/kopano-gateway
 	configure_migrator
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-migrator ${LOG_PATH_KOPANO}/${LOG_FILE_MIGRATOR} none kopano kopano
+	fi
 	print_debug "Finished Configuring Migrator"
 else
 	service_stop 92-kopano-gateway-migrator
@@ -88,6 +106,9 @@ if var_true "${ENABLE_MONITOR}" ; then
 	source /assets/defaults/kopano-monitor
 	create_quota_templates
 	configure_monitor
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-monitor ${LOG_PATH_KOPANO}/${LOG_FILE_MONITOR} none kopano kopano
+	fi
 	print_debug "Finished Configuring Monitor"
 else
 	service_stop 38-kopano-monitor
@@ -98,6 +119,9 @@ if var_true "${ENABLE_SEARCH}" ; then
 	print_debug "Configuring Search"
 	source /assets/defaults/kopano-search
 	configure_search
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-search ${LOG_PATH_KOPANO}/${LOG_FILE_SEARCH} none kopano kopano
+	fi
 	print_debug "Finished Configuring Search"
 else
 	service_stop 37-kopano-search
@@ -109,6 +133,9 @@ if var_true "${ENABLE_SPAMD}" ; then
 	source /assets/defaults/kopano-dagent
 	source /assets/defaults/kopano-spamd
 	configure_spamd
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-spamd ${LOG_PATH_KOPANO}/${LOG_FILE_SPAMD} none kopano kopano
+	fi
 	print_debug "Finished Configuring Spamd"
 else
 	service_stop 36-kopano-spamd
@@ -119,6 +146,9 @@ if var_true "${ENABLE_SPOOLER}" ; then
 	print_debug "Configuring Spooler"
 	source /assets/defaults/kopano-spooler
 	configure_spooler
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-spooler ${LOG_PATH_KOPANO}/${LOG_FILE_SPOOLER} none kopano kopano
+	fi
 	print_debug "Finished Configuring Spooler"
 else
 	service_stop 32-kopano-spooler

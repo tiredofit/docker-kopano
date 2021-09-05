@@ -19,7 +19,7 @@ services:
       - ./certs:/certs
     environment:
       - TIMEZONE=America/Vancouver
-      - ZABBIX_HOSTNAME=mail-example-dev-app
+      - CONTAINER_NAME=mail-example-dev-app
 
       - CONTAINER_LOG_LEVEL=DEBUG
       - DEBUG_MODE=FALSE
@@ -147,7 +147,7 @@ services:
       - DB_USER=kopano
       - DB_PASS=dbpassword
 
-      - ZABBIX_HOSTNAME=kopano-db
+      - CONTAINER_NAME=kopano-db
     networks:
       - services
     restart: always
@@ -170,7 +170,7 @@ services:
       - DB_CLEANUP_TIME=8640
       - COMPRESSION=BZ
 
-      - ZABBIX_HOSTNAME=kopano-db-backup
+      - CONTAINER_NAME=kopano-db-backup
     networks:
       - services
     restart: always

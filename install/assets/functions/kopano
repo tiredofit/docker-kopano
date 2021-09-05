@@ -193,7 +193,7 @@ PROCESS_NAME="apache"
 check_container_initialized
 liftoff
 
-print_info "Starting Apache"
+print_start "Starting Apache"
 source /etc/apache2/envvars
 silent apache2 -DFOREGROUND
 EOF
@@ -832,14 +832,9 @@ configure_logging() {
                 print_debug "Logging: Kopano set to ${LOG_TYPE}"
                 mkdir -p "${LOG_PATH_KOPANO}"
                 chown -R kopano: "${LOG_PATH_KOPANO}"
-                sed -i -e "s#<KOPANO_LOG_LOCATION>#${LOG_PATH_KOPANO}#g" /etc/logrotate.d/kopano
-            else
-                rm -rf /etc/logrotate.d/kopano
             fi
             touch /tmp/state/.log.kopano
         fi
-    else
-        rm -rf /etc/logrotate.d/kopano
     fi
 
     if [ ! -f "/tmp/state/.log.zpush" ] ; then
@@ -849,13 +844,8 @@ configure_logging() {
                 print_debug "Logging: Z-Push set to ${LOG_TYPE}"
                 mkdir -p "${LOG_PATH_ZPUSH}"
                 chown -R "${NGINX_USER}":"${NGINX_GROUP}" "${LOG_PATH_ZPUSH}"
-                sed -i -e "s#<ZPUSH_LOG_LOCATION>#${LOG_PATH_ZPUSH}#g" /etc/logrotate.d/zpush
-            else
-                rm -rf /etc/logrotate.d/zpush
             fi
             touch /tmp/state/.log.zpush
-        else
-            rm -rf /etc/logrotate.d/zpush
         fi
     fi
 

@@ -4,7 +4,7 @@ fail2ban_configure_logging() {
 	print_debug "Fail2ban: Configure Logging"
 	mkdir -p $(dirname ${FAIL2BAN_LOG_FILE})
 	touch ${FAIL2BAN_LOG_FILE}
-	sed -i "s|<FAIL2BAN_LOG_LOCATION>|$(dirname ${FAIL2BAN_LOG_FILE})|g" /etc/logrotate.d/fail2ban
+	create_logrotate fail2ban $(dirname ${FAIL2BAN_LOG_FILE})/${FAIL2BAN_LOG_FILE} none root root
 }
 
 fail2ban_create_data_dir() {

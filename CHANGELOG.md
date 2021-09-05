@@ -1,3 +1,10 @@
+## 2.8.4 2021-09-04 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Adjustments to Apache Log Format
+      - Changed the way that Logrotate occurs to accomodate for log shipping and differnet types of parsers
+
+
 ## 2.8.3 2021-08-18 <dave at tiredofit dot ca>
 
    ### Changed
