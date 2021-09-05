@@ -17,6 +17,7 @@ COPY --from=kopano-webservices /kopano-webservices/* /usr/src/kopano-webservices
 COPY --from=kopano-webservices /*.md /assets/.changelogs/
 
 ENV NGINX_LOG_ACCESS_LOCATION=/logs/nginx \
+    NGINX_LOG_BLOCKED_LOCATION=/logs/nginx \
     NGINX_LOG_ERROR_LOCATION=/logs/nginx \
     NGINX_WEBROOT=/usr/share/kopano-webapp \
     PHP_CREATE_SAMPLE_PHP=FALSE \

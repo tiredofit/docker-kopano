@@ -1,3 +1,9 @@
+## 2.8.5 2021-09-05 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add blocked logs configuration location
+
+
 ## 2.8.4 2021-09-04 <dave at tiredofit dot ca>
 
    ### Changed
