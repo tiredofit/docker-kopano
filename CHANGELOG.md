@@ -1,3 +1,9 @@
+## 2.8.7 2021-09-15 <dave at tiredofit dot ca>
+
+   ### Changed
+      - More adjustments to Fusiondirectory LDAP configuration
+
+
 ## 2.8.6 2021-09-15 <dave at tiredofit dot ca>
 
    ### Changed
