@@ -1,3 +1,9 @@
+## 2.8.9 2021-09-15 <jihnmki@github.com>
+
+   ### Fixed
+      - FIx calendar defaults from loading
+
+
 ## 2.8.8 2021-09-15 <jihnmki@github.com>
 
    ### Fixed
