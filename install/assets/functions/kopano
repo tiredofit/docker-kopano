@@ -290,7 +290,7 @@ configure_calendar() {
             sed -i "s|<CALENDAR_HOSTNAME>|${CALENDAR_HOSTNAME}|g" /etc/nginx/conf.available/calendar.template
             ln -s /etc/nginx/conf.available/calendar.template /etc/nginx/conf.d/calendar.conf
         fi
-        sed -i "s|<LISTEN_PORT>|${NGINX_LISTEN_PORT}|g" /etc/nginx/conf.available/calendar.template
+        sed -i "s|<CALENDAR_LISTEN_PORT>|${CALENDAR_LISTEN_PORT}|g" /etc/nginx/conf.available/calendar.template
         sed -i "s|<WEBROOT_CALENDAR>|${CALENDAR_WEBROOT}|g" /etc/nginx/conf.available/calendar.template
         sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/calendar.template
         sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/calendar.template
