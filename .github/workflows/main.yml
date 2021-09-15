@@ -105,11 +105,11 @@ jobs:
 #      - name: Switch
 #        id: Switch
 #        run: |
-#          export core_sourcetag=$(grep "FROM tiredofit/kopano-core" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
-#          export web_sourcetag=$(grep "FROM tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
-#          sed -i "s|FROM tiredofit/kopano-core:.* as kopano-core|FROM tiredofit/kopano-core:debian-${RELEASE}-${DISTRIB}-${core_sourcetag} as kopano-core|g" Dockerfile
-#          sed -i "s|FROM tiredofit/kopano-webservices:.* as kopano-webservices|FROM tiredofit/kopano-webservices:debian-${RELEASE}-${DISTRIB}-${web_sourcetag} as kopano-webservices|g" Dockerfile
-#          sed -i "s|FROM tiredofit/nginx-php-fpm:debian-.* as|FROM tiredofit/nginx-php-fpm:debian-${RELEASE}-${DISTRIB} as|g" Dockerfile
+#          export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
+#          export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
+#          sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:debian-${RELEASE}-${DISTRIB}-${core_sourcetag} as kopano-core|g" Dockerfile
+#          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:debian-${RELEASE}-${DISTRIB}-${web_sourcetag} as kopano-webservices|g" Dockerfile
+#          sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:debian-.* as|FROM docker.io/tiredofit/nginx-php-fpm:debian-${RELEASE}-${DISTRIB} as|g" Dockerfile
 #      - name: Build
 #        uses: docker/build-push-action@v2
 #        with:
@@ -216,11 +216,11 @@ jobs:
       - name: Switch
         id: Switch
         run: |
-          export core_sourcetag=$(grep "FROM tiredofit/kopano-core" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
-          export web_sourcetag=$(grep "FROM tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
-          sed -i "s|FROM tiredofit/kopano-core:.* as kopano-core|FROM tiredofit/kopano-core:debian-${RELEASE}-${DISTRIB}-${core_sourcetag} as kopano-core|g" Dockerfile
-          sed -i "s|FROM tiredofit/kopano-webservices:.* as kopano-webservices|FROM tiredofit/kopano-webservices:debian-${RELEASE}-${DISTRIB}-${web_sourcetag} as kopano-webservices|g" Dockerfile
-          sed -i "s|FROM tiredofit/nginx-php-fpm:debian-.* as|FROM tiredofit/nginx-php-fpm:debian-${RELEASE}-${DISTRIB} as|g" Dockerfile
+          export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
+          export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
+          sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:debian-${RELEASE}-${DISTRIB}-${core_sourcetag} as kopano-core|g" Dockerfile
+          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:debian-${RELEASE}-${DISTRIB}-${web_sourcetag} as kopano-webservices|g" Dockerfile
+          sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:debian-.* as|FROM docker.io/tiredofit/nginx-php-fpm:debian-${RELEASE}-${DISTRIB} as|g" Dockerfile
       - name: Build
         uses: docker/build-push-action@v2
         with:
@@ -327,11 +327,11 @@ jobs:
       - name: Switch
         id: Switch
         run: |
-          export core_sourcetag=$(grep "FROM tiredofit/kopano-core" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
-          export web_sourcetag=$(grep "FROM tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
-          sed -i "s|FROM tiredofit/kopano-core:.* as kopano-core|FROM tiredofit/kopano-core:debian-${RELEASE}-${DISTRIB}-${core_sourcetag} as kopano-core|g" Dockerfile
-          sed -i "s|FROM tiredofit/kopano-webservices:.* as kopano-webservices|FROM tiredofit/kopano-webservices:debian-${RELEASE}-${DISTRIB}-${web_sourcetag} as kopano-webservices|g" Dockerfile
-          sed -i "s|FROM tiredofit/nginx-php-fpm:debian-.* as|FROM tiredofit/nginx-php-fpm:debian-${RELEASE}-${DISTRIB} as|g" Dockerfile
+          export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
+          export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
+          sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:debian-${RELEASE}-${DISTRIB}-${core_sourcetag} as kopano-core|g" Dockerfile
+          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:debian-${RELEASE}-${DISTRIB}-${web_sourcetag} as kopano-webservices|g" Dockerfile
+          sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:debian-.* as|FROM docker.io/tiredofit/nginx-php-fpm:debian-${RELEASE}-${DISTRIB} as|g" Dockerfile
       - name: Build
         uses: docker/build-push-action@v2
         with:

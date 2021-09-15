@@ -1,3 +1,9 @@
+## 2.8.6 2021-09-15 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change LDAP default attribute for OpenLDAP / FusionDirectory
+
+
 ## 2.8.5 2021-09-05 <dave at tiredofit dot ca>
 
    ### Added
