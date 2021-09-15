@@ -1,3 +1,9 @@
+## 2.8.8 2021-09-15 <jihnmki@github.com>
+
+   ### Fixed
+      - Calendar configuration was failing looking for wrong value
+
+
 ## 2.8.7 2021-09-15 <dave at tiredofit dot ca>
 
    ### Changed
