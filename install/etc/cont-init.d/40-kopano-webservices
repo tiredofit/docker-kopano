@@ -24,6 +24,7 @@ fi
 
 ### Calendar Config
 if var_true "${ENABLE_CALENDAR}" ; then
+	source /assets/defaults/kopano-calendar
 	source /assets/defaults/kopano-server
 	configure_calendar
 fi
