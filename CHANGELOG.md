@@ -1,3 +1,12 @@
+## 2.9.0 2021-09-24 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Log Parsing regular expressions for Fluent-bit logshipping functionality in base image
+
+   ### Changed
+      - Remove "global" logrotate configuration when using Apache
+
+
 ## 2.8.9 2021-09-15 <jihnmki@github.com>
 
    ### Fixed

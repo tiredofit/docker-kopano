@@ -200,19 +200,6 @@ EOF
 
     chmod +x /etc/services.available/41-apache/run
 
-    ## Setup Logroate
-    cat <<EOF > /etc/logrotate.d/apache
-/logs/apache/*.log {
-daily
-ifempty
-rotate 7
-missingok
-copytruncate
-compress
-dateext
-}
-EOF
-    chmod 644 /etc/logrotate.d/apache
     sed -i "s|<PHP_MEMORY_LIMIT>|${PHP_MEMORY_LIMIT}|g" /etc/apache2/sites-available/*.conf
     sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/apache2/sites-available/*.conf
 }
@@ -682,7 +669,7 @@ ldap_server_unique_attribute = ${LDAP_ATTRIBUTE_MULTIUSER_SERVER_UNIQUE}
 EOF
         if [ ! -f "${CONFIG_PATH}""${LDAP_FILE_PROPMAP}" ] ; then
             cat <<EOF > "${CONFIG_PATH}""${LDAP_FILE_PROPMAP}"
-## Custom Generated Kopano LDAP Propmap Configuration! Will not be rebuilt on container start unless file is deleted.
+## Custom Generated Kopano LDAP Propmap Configuration! Make edits. It will NOT be rebuilt on container start UNLESS file is deleted.
 ## Generated on $(date)
 # PR_EC_ENABLED_FEATURES
 0x67B3101E  =   kopanoEnabledFeatures
