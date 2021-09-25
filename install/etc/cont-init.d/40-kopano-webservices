@@ -90,7 +90,7 @@ if var_true "${ENABLE_ZPUSH}" ; then
 		fi
 	fi
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-		create_logrotate zpush ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH} zpush ${NGINX_USER} ${NGINX_GROUP}
+		create_logrotate zpush ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH} zpush,zpush-detailed ${NGINX_USER} ${NGINX_GROUP}
 		create_logrotate zpush-error ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_ERROR} zpush-error ${NGINX_USER} ${NGINX_GROUP}
 	fi
 	create_zpush_templates
