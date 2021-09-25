@@ -1,3 +1,10 @@
+## 2.9.1 2021-09-25 <dave at tiredofit dot ca>
+
+   ### Changed
+      - tiredofit/kopano-core:2.2.3
+      - tiredofit/kopano-webservices:2.3.3
+
+
 ## 2.9.0 2021-09-24 <dave at tiredofit dot ca>
 
    ### Added
