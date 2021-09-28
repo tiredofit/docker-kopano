@@ -1,3 +1,9 @@
+## 2.9.2 2021-09-28 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix parsers for zpush and kopano
+
+
 ## 2.9.1 2021-09-25 <dave at tiredofit dot ca>
 
    ### Changed
