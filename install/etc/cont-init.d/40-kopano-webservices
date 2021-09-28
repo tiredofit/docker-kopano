@@ -43,17 +43,17 @@ if var_true "${ENABLE_KDAV}" ; then
 		cp -R /tmp/ports.conf /etc/apache2/
 		rm /tmp/ports.conf
 		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-			create_logrotate kdav-apache-access /logs/apache/kdav-access.log apache ${NGINX_USER} ${NGINX_GROUP}
-			create_logrotate kdav-apache-error /logs/apache/kdav-error.log apache-error ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate kopano-kdav-apache-access /logs/apache/kdav-access.log apache ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate kopano-kdav-apache-error /logs/apache/kdav-error.log apache-error ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	else
 		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-			create_logrotate kdav-nginx-access ${LOG_PATH_WEBAPP}/kdav-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
-			create_logrotate kdav-nginx-error ${LOG_PATH_WEBAPP}/kdav-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate kopano-kdav-nginx-access ${LOG_PATH_WEBAPP}/kdav-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate kopano-kdav-nginx-error ${LOG_PATH_WEBAPP}/kdav-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-		create_logrotate kdav ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV} kopano-kdav ${NGINX_USER} ${NGINX_GROUP}
+		create_logrotate kopano-kdav ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV} kopano-kdav ${NGINX_USER} ${NGINX_GROUP}
 	fi
 fi
 
