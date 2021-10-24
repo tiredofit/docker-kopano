@@ -1,3 +1,10 @@
+## 2.9.3 2021-10-24 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for fluent-bit failing due to extra logrotate.d files
+      - Fix for Nginx ZPush Logs
+
+
 ## 2.9.2 2021-09-28 <dave at tiredofit dot ca>
 
    ### Changed

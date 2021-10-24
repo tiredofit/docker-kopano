@@ -48,8 +48,8 @@ if var_true "${ENABLE_KDAV}" ; then
 		fi
 	else
 		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-			create_logrotate kopano-kdav-nginx-access ${LOG_PATH_WEBAPP}/kdav-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
-			create_logrotate kopano-kdav-nginx-error ${LOG_PATH_WEBAPP}/kdav-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate kopano-kdav-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/kdav-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate kopano-kdav-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/kdav-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
@@ -85,8 +85,8 @@ if var_true "${ENABLE_ZPUSH}" ; then
 		fi
 	else
 		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-			create_logrotate zpush-nginx-access ${LOG_PATH_WEBAPP}/zpush-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
-			create_logrotate zpush-nginx-error ${LOG_PATH_WEBAPP}/zpush-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate zpush-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/zpush-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate zpush-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/zpush-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
@@ -115,8 +115,8 @@ if var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
 		fi
 	else
 		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-			create_logrotate autodiscover-nginx-access ${LOG_PATH_WEBAPP}/zpush-autodiscover-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
-			create_logrotate autodiscover-nginx-error ${LOG_PATH_WEBAPP}/zpush-autodiscover-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate autodiscover-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/zpush-autodiscover-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
+			create_logrotate autodiscover-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/zpush-autodiscover-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
