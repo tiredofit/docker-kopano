@@ -192,7 +192,7 @@ RUN set -x && \
     rm -rf /usr/src/* && \
     rm -rf /etc/logrotate.d/unattended-upgrades && \
     rm -rf /etc/logrotate.d/kopano && \
-    rm -rf /etc/logroate.d/apache && \
+    rm -rf /etc/logroate.d/apache2 && \
     rm -rf /var/log/*
 
 ### Assets Install

@@ -1,3 +1,9 @@
+## 2.9.4 2021-10-24 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Delete extra apache2 logrotate file
+
+
 ## 2.9.3 2021-10-24 <dave at tiredofit dot ca>
 
    ### Changed
