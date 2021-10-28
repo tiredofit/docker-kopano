@@ -1,3 +1,9 @@
+## 2.9.5 2021-10-27 <dave at tiredofit dot ca>
+
+   ### Added
+      - Fluent Bit log parsing changes
+
+
 ## 2.9.4 2021-10-24 <dave at tiredofit dot ca>
 
    ### Changed

@@ -21,7 +21,7 @@ if var_true "${ENABLE_SERVER}" ; then
 	configure_cron_purge_deleted
 	configure_server
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-		create_logrotate kopano-server ${LOG_PATH_KOPANO}/${LOG_FILE_SERVER} none kopano kopano
+		create_logrotate kopano-server ${LOG_PATH_KOPANO}/${LOG_FILE_SERVER} kopano-server kopano kopano
 	fi
 	print_debug "Finished Configuring Kopano Server"
 else
