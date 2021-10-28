@@ -191,8 +191,9 @@ RUN set -x && \
     rm -rf /etc/apt/sources.list.d/kopano*.list && \
     rm -rf /usr/src/* && \
     rm -rf /etc/logrotate.d/unattended-upgrades && \
-    rm -rf /etc/logrotate.d/kopano && \
     rm -rf /etc/logroate.d/apache2 && \
+    rm -rf /etc/logrotate.d/fail2ban && \
+    rm -rf /etc/logrotate.d/kopano && \
     rm -rf /var/log/*
 
 ### Assets Install
