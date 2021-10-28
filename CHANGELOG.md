@@ -1,3 +1,9 @@
+## 2.9.7 2021-10-28 <dave at tiredofit dot ca>
+
+   ### Changed
+      - More Fixes for Fail2ban
+
+
 ## 2.9.6 2021-10-28 <dave at tiredofit dot ca>
 
    ### Changed
