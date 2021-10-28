@@ -1,3 +1,9 @@
+## 2.9.6 2021-10-28 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Fail2ban logrotation
+
+
 ## 2.9.5 2021-10-27 <dave at tiredofit dot ca>
 
    ### Added
