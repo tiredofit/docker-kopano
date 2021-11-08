@@ -1,3 +1,9 @@
+## 2.9.8 2021-11-08 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Cleanup another logrotate anomaly
+
+
 ## 2.9.7 2021-10-28 <dave at tiredofit dot ca>
 
    ### Changed
