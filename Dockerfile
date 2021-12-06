@@ -1,4 +1,4 @@
-FROM docker.io/tiredofit/kopano-core:debian-7.3-buster-2.2.3 as kopano-core
+FROM docker.io/tiredofit/kopano-core:debian-7.3-buster-2.3.0 as kopano-core
 FROM docker.io/tiredofit/kopano-webservices:debian-7.3-buster-2.3.3 as kopano-webservices
 ##
 
@@ -9,6 +9,8 @@ ADD build-assets/ /build-assets
 
 ### Move Kopano Dependencies from Core image
 COPY --from=kopano-core /kopano-dependencies/* /usr/src/kopano-dependencies/
+### Move Kopano Prometheus Exporter built files from Core image
+COPY --from=kopano-core /kopano-prometheus-exporter/* /usr/src/kopano-prometheus-exporter/
 ### Move Previously built files from Core image
 COPY --from=kopano-core /kopano-core/* /usr/src/kopano-core/
 COPY --from=kopano-core /*.md /assets/.changelogs/
@@ -141,7 +143,7 @@ RUN set -x && \
     ## Webapp Python Scripts
     pip3 install dotty_dict && \
     \
-### KDAV Install
+    ### KDAV Install
     ### Temporary Hack for KDAV - Using Apache along side of Nginx is not what I want to do, but see issues
     ### posted at https://forum.kopano.io/topic/3433/kdav-with-nginx
     apt-get install -y --no-install-recommends \
@@ -167,6 +169,9 @@ RUN set -x && \
     \
     ##### Unpack Core
     tar xaf /usr/src/kopano-core/kopano-core.tar.zst -C / && \
+    \
+    ##### Unpack Prometheus
+    tar xaf /usr/src/kopano-prometheus-exporter/kopano-prometheus-exporter.tar.zst -C / && \
     \
     ##### Unpack Webservices
     tar xaf /usr/src/kopano-webservices/kopano-webservices.tar.zst -C / && \

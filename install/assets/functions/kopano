@@ -375,6 +375,14 @@ EOF
                 dagent_spam_header_value="spam_header_value = ${DAGENT_SPAM_HEADER_VALUE}"
             fi
 
+            if var_true ${$ENABLE_PROMETHEUS_EXPORTER} ; then
+                dagent_stats=$(cat<<EOF
+statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+statsclient_interval=${STATS_INTERVAL}
+EOF
+                            )
+            fi
+
             truefalse_yesno DAGENT_ENABLE_PLUGIN
             truefalse_yesno DAGENT_ARCHIVE_ON_DELIVERY
             truefalse_yesno DAGENT_SET_RULE_HEADERS
@@ -407,6 +415,7 @@ inhibit_forward_headers = ${DAGENT_INHIBIT_FORWARD_HEADERS}
 inhibit_auto_reply_headers= ${DAGENT_INHIBIT_AUTOREPLY_HEADERS}
 ${dagent_forward_whitelist}
 ${dagent_spam_header_value}
+${dagent_stats}
 EOF
         else
             print_info "DAgent: Skipping Auto Configuration"
@@ -847,6 +856,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"ERROR"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"0"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"0"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"NONE"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"0"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"0"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"0"}
@@ -865,6 +875,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"FATAL"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"1"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"1"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"FATAL"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"1"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"1"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"1"}
@@ -882,6 +893,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"ERROR"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"2"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"2"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"ERROR"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"2"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"2"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"2"}
@@ -899,6 +911,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"WARN"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"3"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"3"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"WARN"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"3"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"3"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"3"}
@@ -916,6 +929,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"INFO"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"4"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"4"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"WARN"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"4"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"4"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"4"}
@@ -933,6 +947,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"INFO"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"5"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"5"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"INFO"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"5"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"5"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"5"}
@@ -950,6 +965,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"DEBUG"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
@@ -984,6 +1000,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"DEBUG"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
@@ -1001,6 +1018,7 @@ configure_logging() {
             KDAV_LOG_LEVEL=${KDAV_LOG_LEVEL:-"DEBUG"}
             MIGRATOR_LOG_LEVEL=${MIGRATOR_LOG_LEVEL:-"6"}
             MONITOR_LOG_LEVEL=${MONITOR_LOG_LEVEL:-"6"}
+            PROMETHEUS_EXPORTER_LOG_LEVEL=${PROMETHEUS_EXPORTER_LOG_LEVEL:-"DEBUG"}
             SEARCH_LOG_LEVEL=${SEARCH_LOG_LEVEL:-"6"}
             SERVER_LOG_LEVEL=${SERVER_LOG_LEVEL:-"6"}
             SPAMD_LOG_LEVEL=${SPAMD_LOG_LEVEL:-"6"}
@@ -1037,6 +1055,11 @@ configure_logging() {
     if [ "$LOG_FILE_MONITOR" = "NONE" ] || [ "$LOG_FILE_MONITOR" = "none" ] || [ "$LOG_FILE_MONITOR" = "-" ] ; then
         LOG_PATH_KOPANO=""
         LOG_FILE_MONITOR="-"
+    fi
+
+    if [ "$LOG_FILE_PROMETHEUS_EXPORTER" = "NONE" ] || [ "$LOG_FILE_PROMETHEUS_EXPORTER" = "none" ] || [ "$LOG_FILE_PROMETHEUS_EXPORTER" = "-" ] ; then
+        LOG_PATH_KOPANO="/dev/"
+        LOG_FILE_PROMETHEUS_EXPORTER="null"
     fi
 
     if [ "$LOG_FILE_SEARCH" = "NONE" ] || [ "$LOG_FILE_SEARCH" = "none" ] || [ "$LOG_FILE_SEARCH" = "-" ] ; then
@@ -1208,6 +1231,25 @@ EOF
     fi
 }
 
+configure_prometheus_exporter() {
+    if var_true "$ENABLE_PROMETHEUS_EXPORTER" ; then
+        if [ "$SETUP_TYPE" = "AUTO" ]; then
+            print_notice "Prometheus Exporter: Auto Configuring"
+            cat <<EOF > "${CONFIG_PATH}"prometheus_exporter.cfg
+# Custom Generated Kopano Prometheus Exporter Configuration! Do not edit, instead set ENV Vars
+# If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
+# Last Generated on $(date)
+
+listen = ${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+socket = ${PROMETHEUS_EXPORTER_SOCKET}
+log_level = ${PROMETHEUS_EXPORTER_LOG_LEVEL}
+EOF
+        else
+            print_info "Prometheus Exporter: Skipping Auto Configuration"
+        fi
+    fi
+}
+
 configure_search() {
     if var_true "$ENABLE_SEARCH" ; then
         mkdir -p /var/run/kopano-search
@@ -1313,9 +1355,16 @@ kcoidc_issuer_identifier = ${SERVER_OIDC_IDENTIFIER}
 kcoidc_insecure_skip_verify = ${SERVER_OIDC_DISABLE_TLS_VALIDATION}
 kcoidc_initialize_timeout = ${SERVER_OIDC_TIMEOUT_INITIALIZE}
 EOF
-                    )
+                            )
             fi
 
+            if var_true ${$ENABLE_PROMETHEUS_EXPORTER} ; then
+                server_stats=$(cat<<EOF
+statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+statsclient_interval=${STATS_INTERVAL}
+EOF
+                            )
+            fi
 
             truefalse_yesno SERVER_ALLOW_LOCAL_USERS
             truefalse_yesno SERVER_ATTACHMENT_BACKEND_FILES_FSYNC
@@ -1440,6 +1489,7 @@ search_enabled = ${SERVER_ENABLE_SEARCH}
 search_socket = ${SOCKET_SEARCH}
 search_timeout = ${SEARCH_TIMEOUT}
 disabled_features = ${SERVER_DISABLED_FEATURES}
+${server_stats}
 EOF
         else
             print_info "Server: Skipping Auto Configuration"
@@ -1529,6 +1579,15 @@ ssl_key_pass = ${SERVER_SSL_KEY_PASS}
 EOF
                     )
                 fi
+
+                if var_true ${$ENABLE_PROMETHEUS_EXPORTER} ; then
+                    spooler_stats=$(cat<<EOF
+statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+statsclient_interval=${STATS_INTERVAL}
+EOF
+                                )
+                fi
+
             fi
             cat <<EOF > "${CONFIG_PATH}"spooler.cfg
 ## Custom Generated Kopano Spooler Configuration! Do not edit, instead set ENV Vars
@@ -1553,6 +1612,7 @@ always_send_delegates = ${SPOOLER_ALWAYS_SEND_DELEGATES}
 allow_redirect_spoofing = ${SPOOLER_ALLOW_REDIRECT_SPOOFING}
 allow_delegate_meeting_request = ${SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST}
 allow_send_to_everyone = ${SPOOLER_ALLOW_SEND_TO_EVERYONE}
+${spooler_stats}
 EOF
         else
             print_info "Skipping Spooler Configuration"
@@ -2799,6 +2859,10 @@ setup_container_mode() {
                         if [[ "$(grep -cq 'create_log_kopano=TRUE' /tmp/state/.mode-env)" -eq 0 ]] ; then
                             echo "create_log_kopano=TRUE" >> /tmp/state/.mode-env
                         fi
+                    ;;
+                    "PROMETHEUS_EXPORTER" | "prometheus_exporter" )
+                        print_debug "Enabling Container Mode for: PROMETHEUS_EXPORTER"
+                        echo "ENABLE_PROMETHEUS_EXPORTER=TRUE" >> /tmp/state/.mode-env
                     ;;
                     "SEARCH" | "search" )
                         print_debug "Enabling Container Mode for: SEARCH"

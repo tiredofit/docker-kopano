@@ -114,6 +114,19 @@ else
 	service_stop 38-kopano-monitor
 fi
 
+### Prometheus Exporter Config
+if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
+	print_debug "Configuring Prometheus Exporter"
+	source /assets/defaults/kopano-prometheus-exporter
+	configure_prometheus_exporter
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-prometheus-exporter ${LOG_PATH_KOPANO}/${LOG_FILE_PROMETHEUS_EXPORTER} none kopano kopano
+	fi
+	print_debug "Finished Configuring Prometheus Exporter"
+else
+	service_stop 39-kopano-prometheus-exporter
+fi
+
 ### Search Config
 if var_true "${ENABLE_SEARCH}" ; then
 	print_debug "Configuring Search"

@@ -1,3 +1,9 @@
+## 2.10.0 2021-12-06 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Prometheus Exporter for Statistics
+
+
 ## 2.9.8 2021-11-08 <dave at tiredofit dot ca>
 
    ### Changed

@@ -15,6 +15,7 @@ This will build a container for the [Kopano Core Groupware](https://kopano.io/) 
 * Configured for LDAP usage, no other backend
 * Kopano Core (backup, dagent, gateway, ical, monitor, server, spamd, spooler, webapp)
 * Various Webapp plugins installed
+* Prometheus Exporter included for statistics
 * Z-Push for CalDAV,CardDAV
 * Fail2ban included for blocking attackers
 * Everything configurable via environment variables
@@ -109,6 +110,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 |                    | `MIGRATOR` - Gateway with Migration mode active (no authentication)                                                  |            |
 |                    | `MONITOR` - Monitor                                                                                                  |            |
 |                    | `SERVER` - Server                                                                                                    |            |
+|                    | `PROMETHEUS_EXPORTERSERVER` - Prometheus Exporter                                                                    |            |
 |                    | `SPAMD` - Spamd                                                                                                      |            |
 |                    | `SPOOLER` - Spooler                                                                                                  |            |
 |                    | `WEBAPP` - Webapp                                                                                                    |            |
@@ -116,6 +118,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 |                    | `ZPUSH_AUTODISCOVER` - ZPush                                                                                         |            |
 | `CONFIG_PATH`      | Where to store configuration files                                                                                   | `/config/` |
 | `ENABLE_COREDUMPS` | Enable Coredumps for services                                                                                        | `FALSE`    |
+| `STATS_INTERVAL`   | If sending statistics to StatsD or using Prometheus Exporter, interval to send in seconds                            | `59`       |
 
 #### Fail2ban Options
 
@@ -498,6 +501,17 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `TEMPLATE_MONITOR_USER_QUOTA`      | Template: User exceeded Quota                                     | `userwarning.mail`        |
 | `TEMPLATE_MONITOR_USER_HARD_QUOTA` | Template: User exceeded Quota Hard                                | `userhard.mail`           |
 | `TEMPLATE_MONITOR_USER_SOFT_QUOTA` | Template: User exceeded Quota Soft                                | `usersoft.mail`           |
+
+##### Prometheus Exporter Options
+
+| Parameter                             | Description                                       | Default                                  |
+| ------------------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| `ENABLE_PROMETHEUS_EXPORTER`          | Enable Service                                    | `TRUE`                                   |
+| `PROMETHEUS_EXPORTER_LISTEN_HOST`     | Listen Host for HTTP Exporter                     | `127.0.0.1`                              |
+| `PROMETHEUS_EXPORTER_LISTEN_PORT`     | Listening Port for HTTP Exporter                  | `6231`                                   |
+| `PROMETHEUS_EXPORTER_LISTEN_PROTOCOL` | Listening Port for HTTP Exporter                  | `http`                                   |
+| `LOG_FILE_PROMETHEUS_EXPORTER`        | Logfile Name                                      | `prometheus-exporter.log`                |
+| `PROMETHEUS_EXPORTER_SOCKET`          | Socket to point Kopano Server to for stats export | `/var/run/kopano/prometheus-export.sock` |
 
 ##### Search Options
 

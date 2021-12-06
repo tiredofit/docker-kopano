@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service functions kopano
+
+PROCESS_NAME="kopano-prometheus-exporter"
+check_container_initialized
+liftoff
+
+wait_for_server server
+
+print_start "Starting Kopano Prometheus Exporter $(/usr/sbin/prometheus-kopano-exporter version | head -n1 | awk '{print $3}')"
+silent sudo -u kopano /usr/sbin/prometheus-kopano-exporter \
+                serve \
+                --listen-address ${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} \
+                --listen-socket ${PROMETHEUS_EXPORTER_SOCKET} \
+                --log-level ${PROMETHEUS_EXPORTER_LOG_LEVEL} >> ${LOG_PATH_KOPANO}/${LOG_FILE_PROMETHEUS_EXPORTER}
