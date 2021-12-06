@@ -110,7 +110,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 |                    | `MIGRATOR` - Gateway with Migration mode active (no authentication)                                                  |            |
 |                    | `MONITOR` - Monitor                                                                                                  |            |
 |                    | `SERVER` - Server                                                                                                    |            |
-|                    | `PROMETHEUS_EXPORTERSERVER` - Prometheus Exporter                                                                    |            |
+|                    | `PROMETHEUS_EXPORTER` - Prometheus Exporter                                                                    |            |
 |                    | `SPAMD` - Spamd                                                                                                      |            |
 |                    | `SPOOLER` - Spooler                                                                                                  |            |
 |                    | `WEBAPP` - Webapp                                                                                                    |            |
