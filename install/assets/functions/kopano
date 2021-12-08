@@ -375,7 +375,7 @@ EOF
                 dagent_spam_header_value="spam_header_value = ${DAGENT_SPAM_HEADER_VALUE}"
             fi
 
-            if var_true ${$ENABLE_PROMETHEUS_EXPORTER} ; then
+            if var_true ${ENABLE_PROMETHEUS_EXPORTER} ; then
                 dagent_stats=$(cat<<EOF
 statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
 statsclient_interval=${STATS_INTERVAL}
@@ -1358,7 +1358,7 @@ EOF
                             )
             fi
 
-            if var_true ${$ENABLE_PROMETHEUS_EXPORTER} ; then
+            if var_true ${ENABLE_PROMETHEUS_EXPORTER} ; then
                 server_stats=$(cat<<EOF
 statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
 statsclient_interval=${STATS_INTERVAL}
@@ -1580,7 +1580,7 @@ EOF
                     )
                 fi
 
-                if var_true ${$ENABLE_PROMETHEUS_EXPORTER} ; then
+                if var_true ${ENABLE_PROMETHEUS_EXPORTER} ; then
                     spooler_stats=$(cat<<EOF
 statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
 statsclient_interval=${STATS_INTERVAL}
@@ -2784,6 +2784,7 @@ setup_container_mode() {
             echo "ENABLE_GATEWAY=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_ICAL=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_MONITOR=TRUE" >> /tmp/state/.mode-env
+            echo "ENABLE_PROMETHEUS_EXPORTER=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_SEARCH=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_SPAMD=TRUE" >> /tmp/state/.mode-env
             echo "ENABLE_SPOOLER=TRUE" >> /tmp/state/.mode-env

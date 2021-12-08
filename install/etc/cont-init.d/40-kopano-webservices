@@ -19,6 +19,7 @@ else
     service_stop 10-nginx
     service_stop 11-nginx-config-reload
     service_stop 20-php-fpm
+	rm -rf /etc/zabbix/zabbix_agentd.d/{nginx,php-fpm.conf,tiredofit-php-opcache.conf
 	rm -rf /etc/logrotate.d/{nginx,php-fpm}
 fi
 

@@ -96,7 +96,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- | ---------- |
 | `SETUP_TYPE`       | `MANUAL` or `AUTO` to auto generate cofniguration for services on bootup, otherwise let admin control configuration. | `AUTO`     |
 | `MODE`             | Container Mode - Which services to use - Multiple modes can occur by seperating with comma e.g. `DAGENT,SPAMD`       | `CORE`     |
-|                    | Options _(not all will work on their own, you may need multiple modes defined)_:                                     |            |
+|                    | Options _(not all will work on their own, you may need multiple modes defined)_:                                 |            |
 |                    | `AIO` All in one - Kopano Core, Webapp, Zpush, Konnect, Meet                                                         |            |
 |                    | `Core` Autorespond, Backup, Dagent, Gateway, ICAL, KDAV, Monitor, Server, Spamd, Spooler, Webapp, Z-Push             |            |
 |                    | `WEB` Webapp, Z-Push                                                                                                 |            |
@@ -110,7 +110,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 |                    | `MIGRATOR` - Gateway with Migration mode active (no authentication)                                                  |            |
 |                    | `MONITOR` - Monitor                                                                                                  |            |
 |                    | `SERVER` - Server                                                                                                    |            |
-|                    | `PROMETHEUS_EXPORTER` - Prometheus Exporter                                                                    |            |
+|                    | `PROMETHEUS_EXPORTER` - Prometheus Exporter                                                                          |            |
 |                    | `SPAMD` - Spamd                                                                                                      |            |
 |                    | `SPOOLER` - Spooler                                                                                                  |            |
 |                    | `WEBAPP` - Webapp                                                                                                    |            |

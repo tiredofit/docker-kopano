@@ -1,3 +1,9 @@
+## 2.10.1 2021-12-07 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Bugfix for 2.10.1 specifically relating around Prometheus Exporter
+
+
 ## 2.10.0 2021-12-06 <dave at tiredofit dot ca>
 
    ### Added
