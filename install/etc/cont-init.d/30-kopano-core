@@ -1,8 +1,10 @@
 #!/usr/bin/with-contenv bash
 
 source /assets/functions/00-container
+source /assets/defaults/03-monitoring
 source /assets/defaults/kopano-global
 source /assets/functions/kopano
+
 setup_container_mode
 
 PROCESS_NAME="kopano-core"
@@ -23,6 +25,11 @@ if var_true "${ENABLE_SERVER}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-server ${LOG_PATH_KOPANO}/${LOG_FILE_SERVER} kopano-server kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-server.conf
+# Zabbix Kopano Server Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kserver
+EOF
 	print_debug "Finished Configuring Kopano Server"
 else
 	service_stop 31-kopano-server
@@ -45,6 +52,11 @@ if var_true "${ENABLE_BACKUP}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-backup ${LOG_PATH_KOPANO}/${LOG_FILE_BACKUP} kopano-backup kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-backup.conf
+# Zabbix Kopano Backup Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kbackup
+EOF
 	print_debug "Finished Configuring Backup"
 fi
 
@@ -56,6 +68,11 @@ if var_true "${ENABLE_DAGENT}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-dagent ${LOG_PATH_KOPANO}/${LOG_FILE_DAGENT} kopano-dagent kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-dagent.conf
+# Zabbix Kopano DAgent Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kbackup
+EOF
 	print_debug "Finished Configuring DAgent"
 else
 	service_stop 34-kopano-dagent
@@ -69,6 +86,11 @@ if var_true "${ENABLE_GATEWAY}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-gateway ${LOG_PATH_KOPANO}/${LOG_FILE_GATEWAY} kopano-gateway kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-gateway.conf
+# Zabbix Kopano Gateway Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kgateway
+EOF
 	print_debug "Finished Configuring Gateway"
 else
     service_stop 33-kopano-gateway
@@ -82,6 +104,11 @@ if var_true "${ENABLE_ICAL}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-ical ${LOG_PATH_KOPANO}/${LOG_FILE_ICAL} kopano-ical kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-ical.conf
+# Zabbix Kopano ICAL Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kical
+EOF
 	print_debug "Finished Configuring ICAL"
 else
 	service_stop 35-kopano-ical
@@ -95,6 +122,11 @@ if var_true "${ENABLE_MIGRATOR}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-migrator ${LOG_PATH_KOPANO}/${LOG_FILE_MIGRATOR} kopano-gateway kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-migrator.conf
+# Zabbix Kopano Gateway Migrator Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kmigrator
+EOF
 	print_debug "Finished Configuring Migrator"
 else
 	service_stop 92-kopano-gateway-migrator
@@ -109,6 +141,11 @@ if var_true "${ENABLE_MONITOR}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-monitor ${LOG_PATH_KOPANO}/${LOG_FILE_MONITOR} none kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-monitor.conf
+# Zabbix Kopano Gateway Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=monitor
+EOF
 	print_debug "Finished Configuring Monitor"
 else
 	service_stop 38-kopano-monitor
@@ -122,6 +159,11 @@ if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-prometheus-exporter ${LOG_PATH_KOPANO}/${LOG_FILE_PROMETHEUS_EXPORTER} none kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-prometheus_exporter.conf
+# Zabbix Kopano Prometheus Exporter Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kprometheus
+EOF
 	print_debug "Finished Configuring Prometheus Exporter"
 else
 	service_stop 39-kopano-prometheus-exporter
@@ -135,6 +177,11 @@ if var_true "${ENABLE_SEARCH}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-search ${LOG_PATH_KOPANO}/${LOG_FILE_SEARCH} kopano-search kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-search.conf
+# Zabbix Kopano Search Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=ksearch
+EOF
 	print_debug "Finished Configuring Search"
 else
 	service_stop 37-kopano-search
@@ -149,6 +196,11 @@ if var_true "${ENABLE_SPAMD}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-spamd ${LOG_PATH_KOPANO}/${LOG_FILE_SPAMD} kopano-spamd kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-spamd.conf
+# Zabbix Kopano Spamd Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kspamd
+EOF
 	print_debug "Finished Configuring Spamd"
 else
 	service_stop 36-kopano-spamd
@@ -162,6 +214,11 @@ if var_true "${ENABLE_SPOOLER}" ; then
 	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
 		create_logrotate kopano-spooler ${LOG_PATH_KOPANO}/${LOG_FILE_SPOOLER} kopano-spooler kopano kopano
 	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-spooler.conf
+# Zabbix Kopano Spooler Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kspooler
+EOF
 	print_debug "Finished Configuring Spooler"
 else
 	service_stop 32-kopano-spooler

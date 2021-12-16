@@ -1,3 +1,9 @@
+## 2.10.2 2021-12-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Zabbix Autoregistration support for each module
+
+
 ## 2.10.1 2021-12-07 <dave at tiredofit dot ca>
 
    ### Changed
