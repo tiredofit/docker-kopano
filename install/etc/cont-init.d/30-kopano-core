@@ -114,7 +114,7 @@ else
 	service_stop 35-kopano-ical
 fi
 
-### Monitor Config
+### Migrator Config
 if var_true "${ENABLE_MIGRATOR}" ; then
 	print_debug "Configuring Migrator"
 	source /assets/defaults/kopano-gateway
@@ -123,7 +123,7 @@ if var_true "${ENABLE_MIGRATOR}" ; then
 		create_logrotate kopano-migrator ${LOG_PATH_KOPANO}/${LOG_FILE_MIGRATOR} kopano-gateway kopano kopano
 	fi
 	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-migrator.conf
-# Zabbix Kopano Gateway Migrator Configuration - Automatically Generated
+# Zabbix Kopano Migrator Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kmigrator
 EOF
@@ -142,9 +142,9 @@ if var_true "${ENABLE_MONITOR}" ; then
 		create_logrotate kopano-monitor ${LOG_PATH_KOPANO}/${LOG_FILE_MONITOR} none kopano kopano
 	fi
 	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-monitor.conf
-# Zabbix Kopano Gateway Configuration - Automatically Generated
+# Zabbix Kopano Monitor Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
-# Autoregister=monitor
+# Autoregister=lmonitor
 EOF
 	print_debug "Finished Configuring Monitor"
 else

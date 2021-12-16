@@ -1,3 +1,9 @@
+## 2.10.5 2021-12-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Zabbix Autoregistration
+
+
 ## 2.10.4 2021-12-16 <dave at tiredofit dot ca>
 
    ### Changed
