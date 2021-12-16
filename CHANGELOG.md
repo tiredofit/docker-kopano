@@ -1,3 +1,9 @@
+## 2.10.3 2021-12-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update Fail2ban Zabbix monitoring template
+
+
 ## 2.10.2 2021-12-16 <dave at tiredofit dot ca>
 
    ### Added
