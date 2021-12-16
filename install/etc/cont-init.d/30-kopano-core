@@ -71,7 +71,7 @@ if var_true "${ENABLE_DAGENT}" ; then
 	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-dagent.conf
 # Zabbix Kopano DAgent Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
-# Autoregister=kbackup
+# Autoregister=kdagent
 EOF
 	print_debug "Finished Configuring DAgent"
 else
