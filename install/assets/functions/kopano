@@ -375,9 +375,9 @@ EOF
                 dagent_spam_header_value="spam_header_value = ${DAGENT_SPAM_HEADER_VALUE}"
             fi
 
-            if var_true ${ENABLE_PROMETHEUS_EXPORTER} ; then
+            if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
                 dagent_stats=$(cat<<EOF
-statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+statsclient_url=${PROMETHEUS_EXPORTER_SOCKET}
 statsclient_interval=${STATS_INTERVAL}
 EOF
                             )
@@ -1242,7 +1242,7 @@ configure_prometheus_exporter() {
 
 listen = ${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
 socket = ${PROMETHEUS_EXPORTER_SOCKET}
-log_level = ${PROMETHEUS_EXPORTER_LOG_LEVEL}
+log_level = ${PROMETHEUS_EXPORTER_LOG_LEVEL,,}
 EOF
         else
             print_info "Prometheus Exporter: Skipping Auto Configuration"
@@ -1358,13 +1358,14 @@ EOF
                             )
             fi
 
-            if var_true ${ENABLE_PROMETHEUS_EXPORTER} ; then
+            if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
                 server_stats=$(cat<<EOF
-statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+statsclient_url=${PROMETHEUS_EXPORTER_SOCKET}
 statsclient_interval=${STATS_INTERVAL}
 EOF
                             )
             fi
+
 
             truefalse_yesno SERVER_ALLOW_LOCAL_USERS
             truefalse_yesno SERVER_ATTACHMENT_BACKEND_FILES_FSYNC
@@ -1580,9 +1581,9 @@ EOF
                     )
                 fi
 
-                if var_true ${ENABLE_PROMETHEUS_EXPORTER} ; then
+                if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
                     spooler_stats=$(cat<<EOF
-statsclient_url=${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT}
+statsclient_url=${PROMETHEUS_EXPORTER_SOCKET}
 statsclient_interval=${STATS_INTERVAL}
 EOF
                                 )

@@ -20,9 +20,9 @@ else
     service_stop 10-nginx
     service_stop 11-nginx-config-reload
     service_stop 20-php-fpm
-	rm -rf /etc/zabbix/zabbix_agentd.d/nginx.conf
-	rm -rf /etc/zabbix/zabbix_agentd.d/*php*.conf
-	rm -rf /etc/logrotate.d/{nginx,php-fpm,apache}
+	rm -rf /etc/zabbix/zabbix_agentd.conf.d/nginx.conf
+	rm -rf /etc/zabbix/zabbix_agentd.conf.d/*php*.conf
+	rm -rf /etc/logrotate.d/{nginx*,php-fpm*,apache*}
 fi
 
 ### Calendar Config

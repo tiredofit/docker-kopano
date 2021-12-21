@@ -1,3 +1,9 @@
+## 2.10.6 2021-12-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fixups for monitoring
+
+
 ## 2.10.5 2021-12-16 <dave at tiredofit dot ca>
 
    ### Changed

@@ -12,6 +12,24 @@ PROCESS_NAME="kopano-core"
 mkdir -p "${CONFIG_PATH}"
 configure_logging
 
+### Prometheus Exporter Config
+if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
+	print_debug "Configuring Prometheus Exporter"
+	source /assets/defaults/kopano-prometheus-exporter
+	configure_prometheus_exporter
+	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		create_logrotate kopano-prometheus-exporter ${LOG_PATH_KOPANO}/${LOG_FILE_PROMETHEUS_EXPORTER} none kopano kopano
+	fi
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-prometheus_exporter.conf
+# Zabbix Kopano Prometheus Exporter Configuration - Automatically Generated
+# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
+# Autoregister=kprometheus
+EOF
+	print_debug "Finished Configuring Prometheus Exporter"
+else
+	service_stop 39-kopano-prometheus-exporter
+fi
+
 ### Server Config
 if var_true "${ENABLE_SERVER}" ; then
 	print_debug "Configuring Kopano Server"
@@ -29,6 +47,8 @@ if var_true "${ENABLE_SERVER}" ; then
 # Zabbix Kopano Server Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kserver
+
+UserParameter=kopano.server.get.statistics,echo $(date) ; kopano-stats --system -d | tail -n +2 | sort
 EOF
 	print_debug "Finished Configuring Kopano Server"
 else
@@ -72,6 +92,8 @@ if var_true "${ENABLE_DAGENT}" ; then
 # Zabbix Kopano DAgent Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kdagent
+
+UserParameter=kopano.dagent.get.statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
 EOF
 	print_debug "Finished Configuring DAgent"
 else
@@ -144,29 +166,11 @@ if var_true "${ENABLE_MONITOR}" ; then
 	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-monitor.conf
 # Zabbix Kopano Monitor Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
-# Autoregister=lmonitor
+# Autoregister=kmonitor
 EOF
 	print_debug "Finished Configuring Monitor"
 else
 	service_stop 38-kopano-monitor
-fi
-
-### Prometheus Exporter Config
-if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
-	print_debug "Configuring Prometheus Exporter"
-	source /assets/defaults/kopano-prometheus-exporter
-	configure_prometheus_exporter
-	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
-		create_logrotate kopano-prometheus-exporter ${LOG_PATH_KOPANO}/${LOG_FILE_PROMETHEUS_EXPORTER} none kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/kopano-prometheus_exporter.conf
-# Zabbix Kopano Prometheus Exporter Configuration - Automatically Generated
-# Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
-# Autoregister=kprometheus
-EOF
-	print_debug "Finished Configuring Prometheus Exporter"
-else
-	service_stop 39-kopano-prometheus-exporter
 fi
 
 ### Search Config
@@ -218,6 +222,8 @@ if var_true "${ENABLE_SPOOLER}" ; then
 # Zabbix Kopano Spooler Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kspooler
+
+UserParameter=kopano.spooler.get.statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
 EOF
 	print_debug "Finished Configuring Spooler"
 else
