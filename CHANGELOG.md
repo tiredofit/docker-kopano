@@ -1,3 +1,9 @@
+## 2.10.10 2021-12-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - More Monitoring :)
+
+
 ## 2.10.9 2021-12-21 <dave at tiredofit dot ca>
 
    ### Changed
