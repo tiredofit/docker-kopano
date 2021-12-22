@@ -1,3 +1,9 @@
+## 2.10.7 2021-12-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Prometheus exporter startup
+
+
 ## 2.10.6 2021-12-21 <dave at tiredofit dot ca>
 
    ### Changed
