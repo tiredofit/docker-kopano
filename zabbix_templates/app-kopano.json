@@ -1,7 +1,7 @@
 {
     "zabbix_export": {
         "version": "5.4",
-        "date": "2021-12-21T23:05:11Z",
+        "date": "2021-12-22T00:51:56Z",
         "groups": [
             {
                 "uuid": "a571c0d144b14fd4a87a9d9b2aa9fcd6",
@@ -17,36 +17,6 @@
                 "groups": [
                     {
                         "name": "Templates/Applications"
-                    }
-                ],
-                "items": [
-                    {
-                        "uuid": "6f1aa46b6415458c84a20f0e7b51f53f",
-                        "name": "Kopano SpamD: Memory usage (rss)",
-                        "type": "ZABBIX_ACTIVE",
-                        "key": "proc.mem['kopano-spamd',,,,rss]",
-                        "history": "7d",
-                        "units": "B",
-                        "tags": [
-                            {
-                                "tag": "Application",
-                                "value": "Kopano"
-                            }
-                        ]
-                    },
-                    {
-                        "uuid": "bb89459027844d47987ddf4c8e6e6569",
-                        "name": "Kopano SpamD: Memory usage (Virtual)",
-                        "type": "ZABBIX_ACTIVE",
-                        "key": "proc.mem['kopano-spamd',,,,vsize]",
-                        "history": "7d",
-                        "units": "B",
-                        "tags": [
-                            {
-                                "tag": "Application",
-                                "value": "Kopano"
-                            }
-                        ]
                     }
                 ],
                 "tags": [
@@ -75,6 +45,24 @@
                     }
                 ],
                 "items": [
+                    {
+                        "uuid": "3a25d0a1f5654b9db62a0a7a3503fb8e",
+                        "name": "Kopano DAgent: Get Statistics",
+                        "key": "kopano.dagent.get_statistics",
+                        "history": "60m",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Kopano"
+                            },
+                            {
+                                "tag": "Kopano",
+                                "value": "DAgent"
+                            }
+                        ]
+                    },
                     {
                         "uuid": "b3d28a8149f34ddc9cbdb6afbab2570e",
                         "name": "Kopano DAgent: CPU Utilization",
@@ -123,6 +111,10 @@
                             {
                                 "tag": "Application",
                                 "value": "Kopano"
+                            },
+                            {
+                                "tag": "Kopano",
+                                "value": "DAgent"
                             }
                         ]
                     },
@@ -894,6 +886,22 @@
                 ],
                 "items": [
                     {
+                        "uuid": "479c737e22e84fc89262bc183d919181",
+                        "name": "Kopano Prometheus Exporter: Version",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "kopano.prometheusexporter.version",
+                        "delay": "60m",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Kopano"
+                            }
+                        ]
+                    },
+                    {
                         "uuid": "97b44c4778eb4565aec9a97fecf75dcc",
                         "name": "Kopano Prometheus Exporter: CPU Utilization",
                         "type": "ZABBIX_ACTIVE",
@@ -958,22 +966,6 @@
                                 "expression": "sum(/Kopano Prometheus Exporter/proc.num[prometheus-kopano-exporter],#3)=0",
                                 "name": "Kopano Prometheus Exporter: Process is not running",
                                 "priority": "HIGH"
-                            }
-                        ]
-                    },
-                    {
-                        "uuid": "479c737e22e84fc89262bc183d919181",
-                        "name": "Kopano Prometheus Exporter: Version",
-                        "type": "ZABBIX_ACTIVE",
-                        "key": "system.run[\"prometheus-kopano-exporter version | head -n 1 | awk '{print $3}'\"]",
-                        "delay": "60m",
-                        "history": "7d",
-                        "trends": "0",
-                        "value_type": "CHAR",
-                        "tags": [
-                            {
-                                "tag": "Application",
-                                "value": "Kopano"
                             }
                         ]
                     }
@@ -1044,6 +1036,22 @@
                 ],
                 "items": [
                     {
+                        "uuid": "5e7a5bfcffe84fb49c901acc4e7cd311",
+                        "name": "Kopano Search: Version",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "kopano.search.version",
+                        "delay": "60m",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Kopano"
+                            }
+                        ]
+                    },
+                    {
                         "uuid": "a6cf96e22a2b493aad91d64f844fd99b",
                         "name": "Kopano Search: CPU Utilization",
                         "type": "ZABBIX_ACTIVE",
@@ -1107,21 +1115,6 @@
                                 "expression": "sum(/Kopano Search/proc.num[kopano-search],#3)=0",
                                 "name": "Kopano Search: Process is not running",
                                 "priority": "HIGH"
-                            }
-                        ]
-                    },
-                    {
-                        "uuid": "5e7a5bfcffe84fb49c901acc4e7cd311",
-                        "name": "Kopano Search: Version",
-                        "type": "ZABBIX_ACTIVE",
-                        "key": "system.run[kopano-search --version]",
-                        "history": "7d",
-                        "trends": "0",
-                        "value_type": "CHAR",
-                        "tags": [
-                            {
-                                "tag": "Application",
-                                "value": "Kopano"
                             }
                         ]
                     }
@@ -1208,7 +1201,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1238,7 +1231,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1269,7 +1262,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1299,7 +1292,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1330,7 +1323,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1360,7 +1353,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1390,7 +1383,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1421,7 +1414,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1451,7 +1444,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1482,7 +1475,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1512,7 +1505,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1542,7 +1535,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1573,7 +1566,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1603,7 +1596,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1634,7 +1627,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1664,7 +1657,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1694,7 +1687,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1725,7 +1718,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1755,7 +1748,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1786,7 +1779,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1816,7 +1809,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1846,7 +1839,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1877,7 +1870,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1907,7 +1900,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1938,7 +1931,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1968,7 +1961,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -1998,7 +1991,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2029,7 +2022,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2059,7 +2052,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2090,7 +2083,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2120,7 +2113,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2150,7 +2143,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2181,7 +2174,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2211,7 +2204,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2242,7 +2235,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2272,7 +2265,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2303,7 +2296,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2334,7 +2327,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2364,7 +2357,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2395,7 +2388,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2425,7 +2418,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2455,7 +2448,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2486,7 +2479,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2516,7 +2509,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2547,7 +2540,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2577,7 +2570,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2607,7 +2600,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2638,7 +2631,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2668,7 +2661,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2699,7 +2692,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2729,7 +2722,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2759,7 +2752,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2790,7 +2783,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2820,7 +2813,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2851,7 +2844,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2881,7 +2874,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2911,7 +2904,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2942,7 +2935,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -2972,7 +2965,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3003,7 +2996,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3033,7 +3026,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3064,7 +3057,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3094,7 +3087,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3125,7 +3118,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3156,7 +3149,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3187,7 +3180,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3203,12 +3196,10 @@
                     {
                         "uuid": "806be646b8ff41dba84c8e034830f388",
                         "name": "Kopano Server: Get Statistics",
-                        "key": "kopano.server.get.statistics",
-                        "delay": "15s",
+                        "key": "kopano.server.get_statistics",
                         "history": "60m",
                         "trends": "0",
                         "value_type": "TEXT",
-                        "description": "system.run[sudo kopano-stats --system -d | tail -n +2]",
                         "tags": [
                             {
                                 "tag": "Application",
@@ -3238,7 +3229,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3269,7 +3260,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3301,7 +3292,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3331,7 +3322,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3361,7 +3352,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3391,7 +3382,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3421,7 +3412,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3451,7 +3442,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3481,7 +3472,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3511,7 +3502,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3541,7 +3532,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3571,7 +3562,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3601,7 +3592,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3631,7 +3622,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3661,7 +3652,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3692,7 +3683,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3723,7 +3714,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3754,7 +3745,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3784,7 +3775,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3814,7 +3805,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3845,7 +3836,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3877,7 +3868,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3907,7 +3898,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3937,7 +3928,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3967,7 +3958,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -3998,7 +3989,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4030,7 +4021,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4061,7 +4052,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4091,7 +4082,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4121,7 +4112,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4152,7 +4143,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4183,7 +4174,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4214,7 +4205,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4245,7 +4236,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4276,7 +4267,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4308,7 +4299,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4340,7 +4331,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4371,7 +4362,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4402,7 +4393,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4433,7 +4424,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4464,7 +4455,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4495,7 +4486,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4525,7 +4516,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4556,7 +4547,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4586,7 +4577,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4616,7 +4607,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4646,7 +4637,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4678,7 +4669,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4709,7 +4700,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4740,7 +4731,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4771,7 +4762,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4802,7 +4793,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4832,7 +4823,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4863,7 +4854,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4894,7 +4885,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4925,7 +4916,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4956,7 +4947,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -4987,7 +4978,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5018,7 +5009,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5049,7 +5040,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5080,7 +5071,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5111,7 +5102,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5142,7 +5133,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5172,7 +5163,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5204,7 +5195,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5235,7 +5226,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5265,7 +5256,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5295,7 +5286,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5325,7 +5316,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5355,7 +5346,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5385,7 +5376,7 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
                         "tags": [
                             {
@@ -5415,8 +5406,28 @@
                             }
                         ],
                         "master_item": {
-                            "key": "kopano.server.get.statistics"
+                            "key": "kopano.server.get_statistics"
                         },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Kopano"
+                            },
+                            {
+                                "tag": "Kopano",
+                                "value": "Server"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5f2916682bf94a2ca6e41c41502cf999",
+                        "name": "Kopano Server: Version",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "kopano.server.version",
+                        "delay": "60m",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
                         "tags": [
                             {
                                 "tag": "Application",
@@ -5505,26 +5516,6 @@
                                 "expression": "sum(/Kopano Server/proc.num[kopano-server],#3)=0",
                                 "name": "Kopano Server: Process is not running",
                                 "priority": "HIGH"
-                            }
-                        ]
-                    },
-                    {
-                        "uuid": "5f2916682bf94a2ca6e41c41502cf999",
-                        "name": "Kopano Server: Version",
-                        "type": "ZABBIX_ACTIVE",
-                        "key": "system.run[\"kopano-server -V | awk '{print $2}'\"]",
-                        "delay": "60m",
-                        "history": "7d",
-                        "trends": "0",
-                        "value_type": "CHAR",
-                        "tags": [
-                            {
-                                "tag": "Application",
-                                "value": "Kopano"
-                            },
-                            {
-                                "tag": "Kopano",
-                                "value": "Server"
                             }
                         ]
                     }
@@ -5736,6 +5727,25 @@
                     }
                 ],
                 "items": [
+                    {
+                        "uuid": "8b9321047bad4e8f91c0748c93421370",
+                        "name": "Kopano Spooler: Get Statistics",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "kopano.spooler.get.statistics",
+                        "history": "60m",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Kopano"
+                            },
+                            {
+                                "tag": "Kopano",
+                                "value": "Spooler"
+                            }
+                        ]
+                    },
                     {
                         "uuid": "4f819610f280466a953b8d65aa7cd3f2",
                         "name": "Kopano Spooler: CPU Utilization",
