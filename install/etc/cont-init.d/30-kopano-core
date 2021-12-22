@@ -50,7 +50,7 @@ if var_true "${ENABLE_SERVER}" ; then
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kserver
 
-UserParameter=kopano.server.get_statistics,echo $(date) ; kopano-stats --system -d | tail -n +2 | sort
+UserParameter=kopano.server.get_statistics,echo \$(date) ; kopano-stats --system -d | tail -n +2 | sort
 UserParameter=kopano.server.version,kopano-server -V | awk '{print $2}'
 
 EOF
@@ -238,8 +238,8 @@ if var_true "${ENABLE_SPOOLER}" ; then
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kspooler
 
-UserParameter=kopano.spooler.get_statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
-UserParameter=kopano.spooler.version,kopano-spooler -V | awk '{print $2}'
+UserParameter=kopano.spooler.get_statistics,echo \$(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
+UserParameter=kopano.spooler.version,kopano-spooler -V | awk '{print $2}' | tail -n 1
 
 EOF
 	print_debug "Finished Configuring Spooler"
