@@ -1,3 +1,9 @@
+## 2.10.8 2021-12-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Statistics
+
+
 ## 2.10.7 2021-12-21 <dave at tiredofit dot ca>
 
    ### Changed

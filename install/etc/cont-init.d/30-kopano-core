@@ -48,7 +48,8 @@ if var_true "${ENABLE_SERVER}" ; then
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kserver
 
-UserParameter=kopano.server.get.statistics,echo $(date) ; kopano-stats --system -d | tail -n +2 | sort
+UserParameter=kopano.server.get_statistics,echo $(date) ; kopano-stats --system -d | tail -n +2 | sort
+
 EOF
 	print_debug "Finished Configuring Kopano Server"
 else
@@ -93,7 +94,7 @@ if var_true "${ENABLE_DAGENT}" ; then
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kdagent
 
-UserParameter=kopano.dagent.get.statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
+UserParameter=kopano.dagent.get_statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_dagent | sort
 EOF
 	print_debug "Finished Configuring DAgent"
 else
@@ -223,7 +224,7 @@ if var_true "${ENABLE_SPOOLER}" ; then
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kspooler
 
-UserParameter=kopano.spooler.get.statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
+UserParameter=kopano.spooler.get_statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_spooler | sort
 EOF
 	print_debug "Finished Configuring Spooler"
 else
