@@ -45,6 +45,8 @@ if var_true "${ENABLE_KDAV}" ; then
 # Zabbix Apache Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=apache
+
+UserParameter=apache.get_statistics,curl -s localhost:7373/server-status?auto
 EOF
 		fi
 		uniq /etc/apache2/ports.conf > /tmp/ports.conf
@@ -87,6 +89,8 @@ if var_true "${ENABLE_ZPUSH}" ; then
 # Zabbix Apache Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=apache
+
+UserParameter=apache.get_statistics,curl -s localhost:7373/server-status?auto
 EOF
 		fi
 		uniq /etc/apache2/ports.conf > /tmp/ports.conf
@@ -127,6 +131,8 @@ if var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
 # Zabbix Apache Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=apache
+
+UserParameter=apache.get_statistics,curl -s localhost:7373/server-status?auto
 EOF
 		fi
 		uniq /etc/apache2/ports.conf > /tmp/ports.conf

@@ -202,6 +202,11 @@ EOF
 
     sed -i "s|<PHP_MEMORY_LIMIT>|${PHP_MEMORY_LIMIT}|g" /etc/apache2/sites-available/*.conf
     sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/apache2/sites-available/*.conf
+
+    if var_true "${CONTAINER_ENABLE_MONITORING}" ; then
+        echo "Listen 7373" >> /etc/apache2/ports.conf
+        ln -s /etc/apache2/sites-available/monitor.conf /etc/apache2/sites-enabled/
+    fi
 }
 
 configure_autorespond() {

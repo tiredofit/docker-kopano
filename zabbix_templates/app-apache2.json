@@ -1,0 +1,1248 @@
+{
+    "zabbix_export": {
+        "version": "5.4",
+        "date": "2021-12-27T21:17:57Z",
+        "groups": [
+            {
+                "uuid": "a571c0d144b14fd4a87a9d9b2aa9fcd6",
+                "name": "Templates/Applications"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "86702e8bc514434e8c914d50c206cb94",
+                "template": "Apache",
+                "name": "Apache",
+                "description": "Get metrics from mod_status module\nhttps://httpd.apache.org/docs/current/mod/mod_status.html\n\nThis template is meant specifically for usage with https://github.com/tiredofit/docker-kopano",
+                "groups": [
+                    {
+                        "name": "Templates/Applications"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "b9fe6f0bbe174e9f81af84a3bc0b0e7c",
+                        "name": "Apache: Total bytes",
+                        "type": "DEPENDENT",
+                        "key": "apache.bytes",
+                        "delay": "0",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "B",
+                        "description": "Total bytes served",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Total kBytes\"]"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b36010be10874cf188eeacc81f2c366f",
+                        "name": "Apache: Bytes per second",
+                        "type": "DEPENDENT",
+                        "key": "apache.bytes.rate",
+                        "delay": "0",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "Bps",
+                        "description": "Calculated as change rate for 'Total bytes' stat.\nBytesPerSec is not used, as it counts average since last Apache server start.",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Total kBytes\"]"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            },
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e61be8ad92004100aca55fcedd2a3807",
+                        "name": "Apache: Get statistics",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "apache.get_statistics",
+                        "history": "1h",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "description": "Getting data from a machine-readable version of the Apache status page.\nhttps://httpd.apache.org/docs/current/mod/mod_status.html",
+                        "preprocessing": [
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "// Convert Apache status to JSON\nvar lines = value.split('\\n');\nvar output = {},\n    workers = {\n        '_': 0, 'S': 0, 'R': 0, 'W': 0,\n        'K': 0, 'D': 0, 'C': 0, 'L': 0,\n        'G': 0, 'I': 0, '.': 0\n    };\n\n// Get all \"Key: Value\" pairs as an object\nfor (var i = 0; i < lines.length; i++) {\n    var line = lines[i].match(/([A-z0-9 ]+): (.*)/);\n\n    if (line !== null) {\n        output[line[1]] = isNaN(line[2]) ? line[2] : Number(line[2]);\n    }\n}\n\n// Multiversion metrics\noutput.ServerUptimeSeconds = output.ServerUptimeSeconds || output.Uptime;\noutput.ServerVersion = output.Server || output.ServerVersion;\n\n// Parse \"Scoreboard\" to get worker count.\nif (typeof output.Scoreboard === 'string') {\n    for (var i = 0; i < output.Scoreboard.length; i++) {\n        var char = output.Scoreboard[i];\n\n        workers[char]++;\n    }\n}\n\n// Add worker data to the output\noutput.Workers = {\n    waiting: workers['_'], starting: workers['S'], reading: workers['R'],\n    sending: workers['W'], keepalive: workers['K'], dnslookup: workers['D'],\n    closing: workers['C'], logging: workers['L'], finishing: workers['G'],\n    cleanup: workers['I'], slot: workers['.']\n};\n\n// Return JSON string\nreturn JSON.stringify(output);"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zabbix raw items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "db396445cc5042f89f31dc12cb99c32e",
+                                "expression": "nodata(/Apache/apache.get_statistics,30m)=1",
+                                "name": "Apache: Failed to fetch status page (or no data for 30m)",
+                                "priority": "WARNING",
+                                "description": "Zabbix has not received data for items for the last 30 minutes.",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5fb5101de70a43fab50d55f418462255",
+                        "name": "Apache: Total requests",
+                        "type": "DEPENDENT",
+                        "key": "apache.requests",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "A total number of accesses",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Total Accesses\"]"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ee15f4958040459da53251cc3561ed39",
+                        "name": "Apache: Requests per second",
+                        "type": "DEPENDENT",
+                        "key": "apache.requests.rate",
+                        "delay": "0",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "description": "Calculated as change rate for 'Total requests' stat.\nReqPerSec is not used, as it counts average since last Apache server start.",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Total Accesses\"]"
+                                ]
+                            },
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3dd8ba505d584b028c7ac08d8b959eb3",
+                        "name": "Apache: Uptime",
+                        "type": "DEPENDENT",
+                        "key": "apache.uptime",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "uptime",
+                        "description": "Service uptime in seconds",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.ServerUptimeSeconds"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "76cfa6ebf39f4c8fbd8fde9e0f36d3ed",
+                                "expression": "last(/Apache/apache.uptime)<10m",
+                                "name": "Apache: has been restarted (uptime < 10m)",
+                                "priority": "INFO",
+                                "description": "Uptime is less than 10 minutes",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fe0de2eb1478482f99b38c13bd20564c",
+                        "name": "Apache: Version",
+                        "type": "DEPENDENT",
+                        "key": "apache.version",
+                        "delay": "0",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "description": "Service version",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.ServerVersion"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1d"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "5296d69af0704d0e8a07398f0b4c9685",
+                                "expression": "last(/Apache/apache.version,#1)<>last(/Apache/apache.version,#2) and length(last(/Apache/apache.version))>0",
+                                "name": "Apache: Version has changed (new version: {ITEM.VALUE})",
+                                "priority": "INFO",
+                                "description": "Apache version has changed. Ack to close.",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f74ffb92e30e48958b5b82f7dfbe5147",
+                        "name": "Apache: Workers idle cleanup",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.cleanup",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in cleanup state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.cleanup"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d664bee9a330480bbaee7273b871a8d3",
+                        "name": "Apache: Workers closing connection",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.closing",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in closing state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.closing"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a6fb3444585749be998ec840cd8e4511",
+                        "name": "Apache: Workers DNS lookup",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.dnslookup",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in dnslookup state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.dnslookup"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fcf771f2a9b64a81a37db679f0494ed3",
+                        "name": "Apache: Workers finishing",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.finishing",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in finishing state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.finishing"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "cb81a6a77395444283bc5e065fcbfc2e",
+                        "name": "Apache: Workers keepalive (read)",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.keepalive",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in keepalive state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.keepalive"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7fc0002a279b4541af569a03c1aca2ac",
+                        "name": "Apache: Workers logging",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.logging",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in logging state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.logging"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "78b0bd7d8bec49549fc003d460af9177",
+                        "name": "Apache: Workers reading request",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.reading",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in reading state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.reading"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "379ac66397b94463ad17b24fbd20c615",
+                        "name": "Apache: Workers sending reply",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.sending",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in sending state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.sending"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1c90055e02a244fc8d18e73b23daa0f1",
+                        "name": "Apache: Workers slot with no current process",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.slot",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of slots with no current process",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.slot"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ae21ea113e8840349aff81ab582d92b4",
+                        "name": "Apache: Workers starting up",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.starting",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in starting state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.starting"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "be1a05a6eab84b64ac4d51c966ea91e8",
+                        "name": "Apache: Workers waiting for connection",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers.waiting",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of workers in waiting state",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.Workers.waiting"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1752b9bcf7b34abbaf105f5261638271",
+                        "name": "Apache: Total workers busy",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers_total.busy",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Total number of busy worker threads/processes",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.BusyWorkers"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b1b1c86a12964ae2813c63481e464ec7",
+                        "name": "Apache: Total workers idle",
+                        "type": "DEPENDENT",
+                        "key": "apache.workers_total.idle",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Total number of idle worker threads/processes",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.IdleWorkers"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f1c8a0e0cea64d59a65196126ac40612",
+                        "name": "Apache: CPU utilization",
+                        "key": "proc.cpu.util[apache2]",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Process CPU utilization percentage.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "60b4e64877b34c0c8a700843bae8e5c1",
+                        "name": "Apache: Memory usage (Physical)",
+                        "key": "proc.mem[apache2,,,,rss]",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Resident set size memory used by process in bytes.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5bca706e70e545ceb8951b355a7a01dc",
+                        "name": "Apache: Memory usage (Virtual)",
+                        "key": "proc.mem[apache2,,,,vsize]",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Virtual memory size used by process in bytes.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "89d9b2cf7bc84a7fa694164c2096bc6b",
+                        "name": "Apache: Number of processes running",
+                        "key": "proc.num[apache2]",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Apache"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "60fb87f90ad146729f1bf3a3ed3c700b",
+                                "expression": "last(/Apache/proc.num[apache2])=0",
+                                "name": "Apache: Process is not running"
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "eee8abd3174d426092e8bca9b3ba982e",
+                        "name": "Event MPM discovery",
+                        "type": "DEPENDENT",
+                        "key": "apache.mpm.event.discovery",
+                        "delay": "0",
+                        "description": "Additional metrics if event MPM is used\nhttps://httpd.apache.org/docs/current/mod/event.html",
+                        "item_prototypes": [
+                            {
+                                "uuid": "f52700379f9a4ee8b378a2eb9caea070",
+                                "name": "Apache: Bytes per request",
+                                "type": "DEPENDENT",
+                                "key": "apache.bytes[per_request{#SINGLETON}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "units": "B",
+                                "description": "Average number of client requests per second",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.BytesPerReq"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "apache.get_statistics"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Apache"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "062d7c941f0c468d8b63fa76ae0610f6",
+                                "name": "Apache: Connections async closing",
+                                "type": "DEPENDENT",
+                                "key": "apache.connections[async_closing{#SINGLETON}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "description": "Number of async connections in closing state (only applicable to event MPM)",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.ConnsAsyncClosing"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "apache.get_statistics"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Apache"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "6cb8b255ad8343a48e622912bc298366",
+                                "name": "Apache: Connections async keep alive",
+                                "type": "DEPENDENT",
+                                "key": "apache.connections[async_keep_alive{#SINGLETON}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "description": "Number of async connections in keep-alive state (only applicable to event MPM)",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.ConnsAsyncKeepAlive"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "apache.get_statistics"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Apache"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "997b3452aac24ad6afbad775d649c727",
+                                "name": "Apache: Connections async writing",
+                                "type": "DEPENDENT",
+                                "key": "apache.connections[async_writing{#SINGLETON}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "description": "Number of async connections in writing state (only applicable to event MPM)",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.ConnsAsyncWriting"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "apache.get_statistics"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Apache"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "31cb044eed904ca19150921fe36f3285",
+                                "name": "Apache: Connections total",
+                                "type": "DEPENDENT",
+                                "key": "apache.connections[total{#SINGLETON}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "description": "Number of total connections",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.ConnsTotal"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "apache.get_statistics"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Apache"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "34555340f3ad4b878504df188f54a9c9",
+                                "name": "Apache: Number of async processes",
+                                "type": "DEPENDENT",
+                                "key": "apache.process[num{#SINGLETON}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "description": "Number of async processes",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.Processes"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "apache.get_statistics"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Apache"
+                                    }
+                                ]
+                            }
+                        ],
+                        "graph_prototypes": [
+                            {
+                                "uuid": "066b53ed2244414ca3090498eb035c27",
+                                "name": "Apache: Current async connections{#SINGLETON}",
+                                "graph_items": [
+                                    {
+                                        "color": "1A7C11",
+                                        "item": {
+                                            "host": "Apache",
+                                            "key": "apache.connections[async_closing{#SINGLETON}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "color": "2774A4",
+                                        "item": {
+                                            "host": "Apache",
+                                            "key": "apache.connections[async_keep_alive{#SINGLETON}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "2",
+                                        "color": "F63100",
+                                        "item": {
+                                            "host": "Apache",
+                                            "key": "apache.connections[async_writing{#SINGLETON}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "3",
+                                        "drawtype": "BOLD_LINE",
+                                        "color": "A54F10",
+                                        "item": {
+                                            "host": "Apache",
+                                            "key": "apache.connections[total{#SINGLETON}]"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "dbaa0c2468cc40fca977fb382d19cb78",
+                                "name": "Apache: Current async processes{#SINGLETON}",
+                                "graph_items": [
+                                    {
+                                        "drawtype": "GRADIENT_LINE",
+                                        "color": "1A7C11",
+                                        "item": {
+                                            "host": "Apache",
+                                            "key": "apache.process[num{#SINGLETON}]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "apache.get_statistics"
+                        },
+                        "preprocessing": [
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "return JSON.stringify(JSON.parse(value).ServerMPM === 'event'\n    ? [{'{#SINGLETON}': ''}] : []);"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "3h"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "Service",
+                        "value": "Webserver"
+                    }
+                ],
+                "dashboards": [
+                    {
+                        "uuid": "5faf85e30e4d47d1a7345b30983e3b89",
+                        "name": "Apache: Process information",
+                        "pages": [
+                            {
+                                "widgets": [
+                                    {
+                                        "type": "GRAPH_CLASSIC",
+                                        "width": "24",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "GRAPH",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: CPU Utilization",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "GRAPH_CLASSIC",
+                                        "y": "5",
+                                        "width": "24",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "GRAPH",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: Memory Usage",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a328c9e713424465a8e1adec7322b0dc",
+                        "name": "Apache performance",
+                        "pages": [
+                            {
+                                "widgets": [
+                                    {
+                                        "type": "GRAPH_CLASSIC",
+                                        "width": "12",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "GRAPH",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: Requests per second",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "GRAPH_CLASSIC",
+                                        "x": "12",
+                                        "width": "12",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "GRAPH",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: Workers total",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "GRAPH_PROTOTYPE",
+                                        "y": "5",
+                                        "width": "12",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "INTEGER",
+                                                "name": "columns",
+                                                "value": "1"
+                                            },
+                                            {
+                                                "type": "GRAPH_PROTOTYPE",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: Current async connections{#SINGLETON}",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "GRAPH_PROTOTYPE",
+                                        "x": "12",
+                                        "y": "5",
+                                        "width": "12",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "INTEGER",
+                                                "name": "columns",
+                                                "value": "1"
+                                            },
+                                            {
+                                                "type": "GRAPH_PROTOTYPE",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: Current async processes{#SINGLETON}",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "GRAPH_CLASSIC",
+                                        "y": "10",
+                                        "width": "12",
+                                        "height": "6",
+                                        "fields": [
+                                            {
+                                                "type": "GRAPH",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "name": "Apache: Worker states",
+                                                    "host": "Apache"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "a5d1f911fb264bd4bc087ea582626d7f",
+                        "name": "Service state",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "Down"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "Up"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "graphs": [
+            {
+                "uuid": "18323567ab4e4ec382f2cda8d9f83acc",
+                "name": "Apache: CPU Utilization",
+                "graph_items": [
+                    {
+                        "sortorder": "1",
+                        "color": "199C0D",
+                        "item": {
+                            "host": "Apache",
+                            "key": "proc.cpu.util[apache2]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "bf2b658b5a2142bb8b644d7644fee01e",
+                "name": "Apache: Memory Usage",
+                "graph_items": [
+                    {
+                        "sortorder": "1",
+                        "color": "199C0D",
+                        "item": {
+                            "host": "Apache",
+                            "key": "proc.mem[apache2,,,,rss]"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "F63100",
+                        "item": {
+                            "host": "Apache",
+                            "key": "proc.mem[apache2,,,,vsize]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "a3998992f7504a12826e3c4d592836b5",
+                "name": "Apache: Requests per second",
+                "graph_items": [
+                    {
+                        "drawtype": "GRADIENT_LINE",
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.requests.rate"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "1629062b5cd74b67af9a60226a79f8f1",
+                "name": "Apache: Worker states",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.dnslookup"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.cleanup"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "F63100",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.logging"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.reading"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.sending"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.starting"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "AC8C14",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.closing"
+                        }
+                    },
+                    {
+                        "sortorder": "7",
+                        "color": "611F27",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.finishing"
+                        }
+                    },
+                    {
+                        "sortorder": "8",
+                        "color": "F230E0",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.keepalive"
+                        }
+                    },
+                    {
+                        "sortorder": "9",
+                        "color": "FFAD40",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.slot"
+                        }
+                    },
+                    {
+                        "sortorder": "10",
+                        "color": "40CDFF",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers.waiting"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "78e59f1b5eb747019f92921ac5ef48b0",
+                "name": "Apache: Workers total",
+                "type": "STACKED",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers_total.busy"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "Apache",
+                            "key": "apache.workers_total.idle"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

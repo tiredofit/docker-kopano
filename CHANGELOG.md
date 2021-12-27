@@ -1,3 +1,9 @@
+## 2.10.13 2021-12-27 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Apache 2 zabbix monitoring functionality
+
+
 ## 2.10.12 2021-12-22 <dave at tiredofit dot ca>
 
    ### Changed
