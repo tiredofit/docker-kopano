@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 SPAMD_FILES_HAM_PATH=${SPAMD_FILES_HAM_PATH:-"/data/spamd/ham"}
 SPAMD_FILES_SPAM_PATH=${SPAMD_FILES_SPAM_PATH:-"/data/spamd/spam"}

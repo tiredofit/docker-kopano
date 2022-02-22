@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 LDAP_ATTRIBUTE_ADDRESSBOOK_HIDDEN=${LDAP_ATTRIBUTE_ADDRESSBOOK_HIDDEN:-"kopanoHidden"}
 LDAP_ATTRIBUTE_ADDRESSLIST_FILTER=${LDAP_ATTRIBUTE_ADDRESSLIST_FILTER:-"kopanoFilter"}

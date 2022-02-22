@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 KDAV_CONFIG_FILE=${KDAV_CONFIG_FILE:-"kdav.php"}
 KDAV_DEVELOPER_MODE=${KDAV_DEVELOPER_MODE:-"TRUE"}

@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 ICAL_ENABLE_HTTP=${ICAL_ENABLE_HTTP:-"TRUE"}
 ICAL_ENABLE_HTTPS=${ICAL_ENABLE_HTTPS:-"TRUE"}

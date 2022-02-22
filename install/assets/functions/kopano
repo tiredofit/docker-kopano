@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 certificates() {
     CA_NAME=${CA_NAME:-"kopano-selfsigned-ca"}
@@ -185,7 +185,7 @@ configure_apache() {
     mkdir -p /etc/services.available/41-apache
     ## Create Service
     cat <<EOF > /etc/services.available/41-apache/run
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 source /assets/functions/00-container
 prepare_service functions kopano
@@ -1647,7 +1647,7 @@ configure_user_backend() {
 configure_webapp() {
     if var_true "$ENABLE_WEBAPP" ; then
         print_debug "Webapp: Enabled"
-        mkdir -p "${CONFIG_PATH}"webapp/
+        mkdir -p "${CONFIG_PATH}/"webapp/
         mkdir -p "${LOG_PATH_WEBAPP}"
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" "${LOG_PATH_WEBAPP}"
         mkdir -p "${WEBAPP_TMP_PATH}"

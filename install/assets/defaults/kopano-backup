@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 BACKUP_WORKER_PROCESSES=${BACKUP_WORKER_PROCESSES:-"1"}
 BACKUP_SSL_CERT_FILE=${BACKUP_SSL_CERT_FILE:-"/certs/core/backup.crt"}

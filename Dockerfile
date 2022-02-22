@@ -1,4 +1,4 @@
-FROM docker.io/tiredofit/kopano-core:debian-7.3-buster-2.3.0 as kopano-core
+FROM docker.io/tiredofit/kopano-core:debian-7.3-buster-2.3.1 as kopano-core
 FROM docker.io/tiredofit/kopano-webservices:debian-7.3-buster-2.3.3 as kopano-webservices
 ##
 
@@ -36,7 +36,9 @@ ENV NGINX_LOG_ACCESS_LOCATION=/logs/nginx \
     PHP_ENABLE_SYSVSHM=TRUE \
     PHP_ENABLE_XMLWRITER=TRUE \
     PHP_ENABLE_TOKENIZER=TRUE \
-    PHP_LOG_LOCATION=/logs/php-fpm
+    PHP_LOG_LOCATION=/logs/php-fpm \
+    IMAGE_NAME="tiredofit/kopano" \
+    IMAGE_REPO_URL="https://github.com/tiredofit/docker-kopano/"
 
 RUN set -x && \
     ### Add user and Group

@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 WEBAPP_BLOCK_SIZE=${WEBAPP_BLOCK_SIZE:-1048576}
 WEBAPP_CLIENT_TIMEOUT=${WEBAPP_CLIENT_TIMEOUT:-0}

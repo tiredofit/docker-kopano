@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 SEARCH_CACHE_SIZE_TERM=${SEARCH_CACHE_SIZE_TERM:-"256M"}
 SEARCH_ENABLE_HTTP=${SEARCH_ENABLE_HTTP:-"FALSE"}

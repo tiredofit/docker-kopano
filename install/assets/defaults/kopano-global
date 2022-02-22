@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 CONFIG_PATH=${CONFIG_PATH:-"/config/"}
 DB_PORT=${DB_PORT:-3306}

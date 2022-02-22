@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 TEMPLATE_ZPUSH_NOTIFY=${TEMPLATE_ZPUSH_NOTIFY:-"notify.mail"}
 TEMPLATE_ZPUSH_PATH=${TEMPLATE_ZPUSH_PATH:-"/data/templates/zpush/"}
