@@ -1,4 +1,4 @@
-FROM docker.io/tiredofit/kopano-core:debian-7.3-buster-2.3.1 as kopano-core
+FROM docker.io/tiredofit/kopano-core:debian-7.3-buster-2.4.0 as kopano-core
 FROM docker.io/tiredofit/kopano-webservices:debian-7.3-buster-2.3.5 as kopano-webservices
 ##
 
