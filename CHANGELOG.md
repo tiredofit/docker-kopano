@@ -1,3 +1,9 @@
+## 2.10.14 2022-03-01 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update to tiredofit/kopano-webservices:2.3.5
+
+
 ## 2.10.13 2021-12-27 <dave at tiredofit dot ca>
 
    ### Added
