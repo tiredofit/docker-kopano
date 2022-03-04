@@ -1,3 +1,9 @@
+## 2.12.0 2022-03-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - BUmp version to 2.12.0 to support branching
+
+
 ## 2.11.0 2022-03-01 <dave at tiredofit dot ca>
 
    ### Added
