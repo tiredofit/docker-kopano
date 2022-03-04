@@ -36,12 +36,12 @@ fi
 if var_true "${ENABLE_KDAV}" ; then
 	source /assets/defaults/kopano-kdav
 	configure_kdav
-	if [ "${KDAV_SERVE_MODE}" = "APACHE" ]; then
+	if [ "${KDAV_SERVE_MODE,,}" = "apache" ]; then
 		if [ "$apache_configured" != "true" ]; then
 			print_notice "Adding Apache to startup for KDAV"
 			configure_apache
 			apache_configured=true
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/apache.conf
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/apache.conf
 # Zabbix Apache Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=apache
@@ -52,17 +52,17 @@ EOF
 		uniq /etc/apache2/ports.conf > /tmp/ports.conf
 		cp -R /tmp/ports.conf /etc/apache2/
 		rm /tmp/ports.conf
-		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		if [ "${LOG_TYPE,,}" = "file" ] ; then
 			create_logrotate kopano-kdav-apache-access /logs/apache/kdav-access.log apache ${NGINX_USER} ${NGINX_GROUP}
 			create_logrotate kopano-kdav-apache-error /logs/apache/kdav-error.log apache-error ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	else
-		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		if [ "${LOG_TYPE,,}" = "file" ] ; then
 			create_logrotate kopano-kdav-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/kdav-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
 			create_logrotate kopano-kdav-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/kdav-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
-	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+	if [ "${LOG_TYPE,,}" = "file" ] ; then
 		create_logrotate kopano-kdav ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV} kopano-kdav ${NGINX_USER} ${NGINX_GROUP}
 	fi
 fi
@@ -80,12 +80,12 @@ fi
 if var_true "${ENABLE_ZPUSH}" ; then
 	source /assets/defaults/z-push
 	configure_zpush
-	if [ "${ZPUSH_SERVE_MODE}" = "APACHE" ]; then
+	if [ "${ZPUSH_SERVE_MODE,,}" = "apache" ]; then
 		if [ "$apache_configured" != "true" ]; then
 			print_notice "Adding Apache to startup for Z-Push"
 			configure_apache
 			apache_configured=true
-			cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/apache.conf
+			cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/apache.conf
 # Zabbix Apache Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=apache
@@ -96,21 +96,21 @@ EOF
 		uniq /etc/apache2/ports.conf > /tmp/ports.conf
 		cp -R /tmp/ports.conf /etc/apache2/
 		rm /tmp/ports.conf
-		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		if [ "${LOG_TYPE,,}" = "file" ] ; then
 			create_logrotate zpush-apache-access /logs/apache/zpush-access.log apache ${NGINX_USER} ${NGINX_GROUP}
 			create_logrotate zpush-apache-error /logs/apache/zpush-error.log apache-error ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	else
-		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		if [ "${LOG_TYPE,,}" = "file" ] ; then
 			create_logrotate zpush-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/zpush-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
 			create_logrotate zpush-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/zpush-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
-	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+	if [ "${LOG_TYPE,,}" = "file" ] ; then
 		create_logrotate zpush ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH} zpush,zpush-detailed ${NGINX_USER} ${NGINX_GROUP}
 		create_logrotate zpush-error ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_ERROR} zpush-error ${NGINX_USER} ${NGINX_GROUP}
 	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/zpush.conf
+	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/zpush.conf
 # Zabbix ZPush Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=zpush
@@ -122,12 +122,12 @@ fi
 if var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
 	source /assets/defaults/z-push
 	configure_zpush_autodiscover
-	if [ "${ZPUSH_SERVE_MODE}" = "APACHE" ]; then
+	if [ "${ZPUSH_SERVE_MODE,,}" = "apache" ]; then
 		if [ "$apache_configured" != "true" ]; then
 			print_notice "Adding Apache to startup for Z-Push Autodiscover"
 			configure_apache
 			apache_configured=true
-			cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}.d"/apache.conf
+			cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/apache.conf
 # Zabbix Apache Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=apache
@@ -138,17 +138,17 @@ EOF
 		uniq /etc/apache2/ports.conf > /tmp/ports.conf
 		cp -R /tmp/ports.conf /etc/apache2/
 		rm /tmp/ports.conf
-		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		if [ "${LOG_TYPE,,}" = "file" ] ; then
 			create_logrotate autodiscover-apache-access /logs/apache/autodiscover-access.log apache ${NGINX_USER} ${NGINX_GROUP}
 			create_logrotate autodiscover-apache-error /logs/apache/autodiscover-error.log apache-error ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	else
-		if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+		if [ "${LOG_TYPE,,}" = "file" ] ; then
 			create_logrotate autodiscover-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/zpush-autodiscover-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
 			create_logrotate autodiscover-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/zpush-autodiscover-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
 		fi
 	fi
-	if [ "${LOG_TYPE}" = "FILE" ] || [ "${LOG_TYPE}" = "file" ] ; then
+	if [ "${LOG_TYPE,,}" = "file" ] ; then
 		create_logrotate autodiscover ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_AUTODISCOVER} zpush-autodiscover ${NGINX_USER} ${NGINX_GROUP}
 		create_logrotate autodiscover-error ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_AUTODISCOVER_ERROR} zpush-autodiscover-error ${NGINX_USER} ${NGINX_GROUP}
 	fi
