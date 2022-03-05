@@ -100,6 +100,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -197,6 +198,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -303,6 +305,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -507,6 +510,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -604,6 +608,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -807,6 +812,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -913,6 +919,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -1010,6 +1017,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -1116,6 +1124,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
@@ -1213,6 +1222,7 @@ jobs:
       - name: Switch
         id: Switch
         run: |
+          set -x
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
