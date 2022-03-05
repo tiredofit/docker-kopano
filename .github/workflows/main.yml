@@ -516,7 +516,7 @@ jobs:
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
           sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-${web_sourcetag} as kopano-webservices|g" Dockerfile
           sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-.*|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-${PHP_VERSION}-${DISTRO_VARIANT}|g" Dockerfile
-          head -n 10 Dockerfile
+          head -n 20 Dockerfile
       - name: Build
         uses: docker/build-push-action@v2
         with:
@@ -615,7 +615,7 @@ jobs:
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
           sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-${web_sourcetag} as kopano-webservices|g" Dockerfile
           sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-.*|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-${PHP_VERSION}-${DISTRO_VARIANT}|g" Dockerfile
-          head -n 10 Dockerfile
+          head -n 20 Dockerfile
       - name: Build
         uses: docker/build-push-action@v2
         with:
