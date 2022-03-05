@@ -1,4 +1,7 @@
-  server {
+  ### Multiple PHP-FPM Backends configuration
+  include /etc/nginx/nginx.conf.d/php-fpm-upstream.conf;
+
+    server {
      ### Don't Touch This
      server_name <WEBAPP_HOSTNAME>;
      listen <WEBAPP_LISTEN_PORT>;

@@ -13,10 +13,10 @@ sleep 3
 
 create_store
 
-if [ "$SERVER_USER_PLUGIN" = "LDAP" ] || [ "$SERVER_USER_PLUGIN" = "ldap" ] ; then
+if [ "${SERVER_USER_PLUGIN,,}" = "ldap" ] ; then
 	print_info "Performing Initial Container Start LDAP Sync"
 	sleep 10
 	silent kopano-admin --sync
 fi
 
-s6-svc -d /var/run/s6/services/90-post-server-startup-routines
+s6-svc -d /var/run/s6/legacy-services/90-post-server-startup-routines

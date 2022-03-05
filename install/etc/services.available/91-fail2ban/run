@@ -12,7 +12,7 @@ print_debug "Sleeping for 180 seconds before starting Fail2ban to make sure logs
 sleep 180
 
 print_start "Starting Fail2ban"
-if [ "$FAIL2BAN_LOG_TYPE" = "FILE" ] ; then
+if [ "${FAIL2BAN_LOG_TYPE,,}" = "file" ] ; then
     silent fail2ban-server -f
 else
     fail2ban-server -f

@@ -1661,9 +1661,10 @@ configure_webapp() {
         case "${NGINX_AUTHENTICATION_TYPE,,}" in
           "llng")
               print_notice "Setting Webapp LLNG Authentication"
-
               sed -i '/server {/a\ \ \ \ \  include /etc/nginx/nginx.conf.d/authentication/llng_location_block;' /etc/nginx/conf.available/webapp.template
-              sed -i '/server {/a\ \ \ \ \  ### LLNG Authentication handler' /etc/nginx/conf.available/webapp.template
+              sed -i '/server {/a\ \ \ \ \  ### LLNG Authentication Checkpoint' /etc/nginx/conf.available/webapp.template
+              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ include /etc/nginx/nginx.conf.d/authentication/llng_auth_request;' /etc/nginx/conf.available/webapp.template
+              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ ### LLNG Authentication handler' /etc/nginx/conf.available/webapp.template
               ;;
           "none")
             :
