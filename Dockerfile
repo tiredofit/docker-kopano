@@ -1,5 +1,5 @@
-FROM docker.io/tiredofit/kopano-core:debian-buster-php7.3-kc11-2.4.2 as kopano-core
-FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.0 as kopano-webservices
+FROM docker.io/tiredofit/kopano-core:debian-buster-php7.3-kc11-2.4.3 as kopano-core
+FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.1 as kopano-webservices
 ##
 
 FROM docker.io/tiredofit/nginx-php-fpm:debian-7.3-buster
