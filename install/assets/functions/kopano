@@ -1326,21 +1326,37 @@ configure_server() {
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
         ### Server
             print_notice "Configuring Kopano Server"
-            if var_true "$SERVER_ENABLE_HTTP" ; then
+            if var_true "${SERVER_ENABLE_HTTP}" ; then
                 print_notice "Server: Enabling HTTP Soap Endpoint"
                 server_http="server_listen = ${SERVER_LISTEN_HOST}:${SERVER_LISTEN_PORT}"
+            else
+                print_notice "Server: Disabling HTTP Soap Endpoint"
+                server_http="server_listen = "
             fi
 
-            if var_true "$SERVER_ENABLE_HTTPS" ; then
+            if var_true "${SERVER_ENABLE_HTTPS}" ; then
                 print_notice "Server: Enabling HTTPS Soap Endpoint"
                 certificates "${SERVER_SSL_KEY_FILE}"
                 certificates "${CA_CERT_FILE}"
+                case "${KC_BASE}" in
+                    8.7.* )
+                    server_https_differences=$(cat<<EOF
+server_tls_min_proto = ${SERVER_TLS_MIN_PROTOCOL}
+EOF
+                    ;;
+                    10.*|11.*)
+                    server_https_differences=$(cat<<EOF
+server_tls_min_proto = ${SERVER_TLS_MIN_PROTOCOL}
+EOF
+                    )
+                    ;;
+                esac
                 server_https=$(cat <<EOF
 server_listen_tls = ${SERVER_LISTEN_HOST}:${SERVER_LISTEN_PORT_SECURE}
 server_ssl_key_file = ${SERVER_SSL_KEY_FILE}
 server_ssl_ca_file = ${CA_CERT_FILE}
-server_tls_min_proto = ${SERVER_TLS_MIN_PROTOCOL}
 sslkeys_path = ${SERVER_SSL_PUBLIC_PATH}
+${server_https_differences}
 EOF
                             )
 
@@ -1350,6 +1366,9 @@ server_ssl_key_pass = ${SERVER_SSL_KEY_PASS}
 EOF
                     )
                 fi
+            else
+                    print_notice "Server: Disabling HTTPS Soap Endpoint"
+                    server_https="server_listen_tls = "
             fi
 
 
