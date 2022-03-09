@@ -718,7 +718,7 @@ jobs:
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
-          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-ph7.4-${web_sourcetag} as kopano-webservices|g" Dockerfile
+          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-php7.4-${web_sourcetag} as kopano-webservices|g" Dockerfile
           sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-.*|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-${PHP_VERSION}-${DISTRO_VARIANT}|g" Dockerfile
           head -n 20 Dockerfile
       - name: Build
@@ -1338,7 +1338,7 @@ jobs:
           export core_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-core" Dockerfile | cut -d - -f 6 | cut -d ' ' -f 1)
           export web_sourcetag=$(grep "FROM docker.io/tiredofit/kopano-webservices" Dockerfile | cut -d - -f 5 | cut -d ' ' -f 1)
           sed -i "s|FROM docker.io/tiredofit/kopano-core:.* as kopano-core|FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_VERSION}-kc${KC_VERSION}-${core_sourcetag} as kopano-core|g" Dockerfile
-          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-ph7.4-${web_sourcetag} as kopano-webservices|g" Dockerfile
+          sed -i "s|FROM docker.io/tiredofit/kopano-webservices:.* as kopano-webservices|FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-php7.4-${web_sourcetag} as kopano-webservices|g" Dockerfile
           sed -i "s|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-.*|FROM docker.io/tiredofit/nginx-php-fpm:${DISTRO}-${PHP_VERSION}-${DISTRO_VARIANT}|g" Dockerfile
           head -n 20 Dockerfile
       - name: Build
