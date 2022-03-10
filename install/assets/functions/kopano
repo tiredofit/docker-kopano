@@ -218,17 +218,20 @@ configure_autorespond() {
     truefalse_yesno AUTORESPOND_COPY_TO_SENTMAIL
     if [ "${SETUP_TYPE,,}" = "auto" ]; then
         print_notice "Autorespond: Auto Configuring"
-        cat <<EOF > "${CONFIG_PATH}"autorespond.cfg
+        cat <<EOF > "${CONFIG_PATH}"/autorespond.cfg
 ## Custom Generated Kopano Autoresponder Configuration! Do not edit, instead set ENV Vars
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Database options
+senddb = ${AUTORESPOND_PATH}/${AUTORESPOND_FILE}
+
+## Autorespond Options
 autorespond_cc = ${AUTORESPOND_AUTORESPOND_CC}
 autorespond_bcc = ${AUTORESPOND_AUTORESPOND_BCC}
 autorespond_norecip = ${AUTORESPOND_AUTORESPOND_NORECIPIENTS}
-timelimit = ${AUTORESPOND_REPLY_TIME_LIMIT}
-senddb = ${AUTORESPOND_PATH}${AUTORESPOND_FILE}
 copy_to_sentmail = ${AUTORESPOND_COPY_TO_SENTMAIL}
+timelimit = ${AUTORESPOND_REPLY_TIME_LIMIT}
 EOF
     else
         print_info "Autorespond: Skipping Auto Configuration"
@@ -257,12 +260,17 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 server_socket = ${BACKUP_SOCKET_SERVER}
 ${backup_sslkey}
+
+## Logging
 log_method = file
 log_level = ${BACKUP_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_BACKUP}
 log_timestamp = ${LOG_TIMESTAMPS}
+
+## Backup options
 worker_processes = ${BACKUP_WORKER_PROCESSES}
 EOF
     else
@@ -336,16 +344,16 @@ EOF
                 fi
             fi
 
-            case "$DAGENT_LOG_RAW_MESSAGES" in
-                "TRUE" | "true" | "YES" | "yes" )
+            case "${DAGENT_LOG_RAW_MESSAGES,,}" in
+                "true" | "yes" )
                     mkdir -p "${DAGENT_PATH_RAW_MESSAGES}"
                     chown -R kopano:kopano "${DAGENT_PATH_RAW_MESSAGES}"
                     dagent_log_raw_message="yes"
                 ;;
-                "FALSE" | "false" | "NO" | "no" )
+                "false" | "no" )
                     dagent_log_raw_message="no"
                 ;;
-                "ALL" | "all" )
+                "all" )
                     dagent_log_raw_message="all"
                 ;;
                 *)
@@ -382,6 +390,8 @@ EOF
 
             if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
                 dagent_stats=$(cat<<EOF
+
+## Statistics
 statsclient_url=${PROMETHEUS_EXPORTER_SOCKET}
 statsclient_interval=${STATS_INTERVAL}
 EOF
@@ -394,30 +404,39 @@ EOF
             truefalse_yesno DAGENT_NO_DOUBLE_FORWARD
             truefalse_yesno DAGENT_INSECURE_HTML_JOIN
 
-            cat <<EOF > "${CONFIG_PATH}"dagent.cfg
+            cat <<EOF > "${CONFIG_PATH}"/dagent.cfg
 ## Custom Generated Kopano DAgent Configuration! Do not edit, instead set ENV Vars
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 lmtp_listen = ${DAGENT_LISTEN_HOST}:${DAGENT_LISTEN_PORT}
 server_socket = ${DAGENT_SOCKET_SERVER}
 ${dagent_sslkey}
-coredump_enabled = ${ENABLE_COREDUMPS}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+lmtp_max_threads = ${DAGENT_LMTP_MAX_THREADS}
+
+## Logging
 log_level = ${DAGENT_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_DAGENT}
 log_timestamp = ${LOG_TIMESTAMPS}
 log_raw_message = ${dagent_log_raw_message}
 log_raw_message_path = ${DAGENT_PATH_RAW_MESSAGES}
-lmtp_max_threads = ${DAGENT_LMTP_MAX_THREADS}
-spam_header_name = ${DAGENT_SPAM_HEADER_NAME}
-archive_on_delivery = ${DAGENT_ARCHIVE_ON_DELIVERY}
+
+## Plugins
 plugin_enabled = ${DAGENT_ENABLE_PLUGIN}
 plugin_path = ${DAGENT_PATH_PLUGIN}
+
+## DAgent settings
+spam_header_name = ${DAGENT_SPAM_HEADER_NAME}
+archive_on_delivery = ${DAGENT_ARCHIVE_ON_DELIVERY}
 set_rule_headers = ${DAGENT_SET_RULE_HEADERS}
 no_double_forward = ${DAGENT_NO_DOUBLE_FORWARD}
 insecure_html_join = ${DAGENT_INSECURE_HTML_JOIN}
 inhibit_forward_headers = ${DAGENT_INHIBIT_FORWARD_HEADERS}
-inhibit_auto_reply_headers= ${DAGENT_INHIBIT_AUTOREPLY_HEADERS}
+inhibit_auto_reply_headers = ${DAGENT_INHIBIT_AUTOREPLY_HEADERS}
 ${dagent_forward_whitelist}
 ${dagent_spam_header_value}
 ${dagent_stats}
@@ -440,7 +459,13 @@ configure_gateway() {
                 gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
 pop3_listen = ${GATEWAY_LISTEN_HOST_POP3}:${GATEWAY_LISTEN_PORT_POP3}
 EOF
-                    )
+                                    )
+            else
+                print_debug "Gateway: Disabling POP3"
+                gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
+pop3_listen =
+EOF
+                                    )
             fi
 
             if var_true "${GATEWAY_ENABLE_POP3S}" ; then
@@ -448,7 +473,14 @@ EOF
                 gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
 pop3s_listen = ${GATEWAY_LISTEN_HOST_POP3_SECURE}:${GATEWAY_LISTEN_PORT_POP3_SECURE}
 EOF
-                    )
+                                    )
+            else
+                print_debug "Gateway: Disabling POP3S"
+                gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
+pop3s_listen =
+EOF
+                                    )
+
             fi
 
             if var_true "${GATEWAY_ENABLE_IMAP}" ; then
@@ -456,7 +488,13 @@ EOF
                 gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
 imap_listen = ${GATEWAY_LISTEN_HOST_IMAP}:${GATEWAY_LISTEN_PORT_IMAP}
 EOF
-                    )
+                                    )
+            else
+                print_debug "Gateway: Disabling IMAP"
+                gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
+imap_listen =
+EOF
+                                    )
             fi
 
             if var_true "${GATEWAY_ENABLE_IMAPS}" ; then
@@ -464,7 +502,12 @@ EOF
                 gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
 imaps_listen = ${GATEWAY_LISTEN_HOST_IMAP_SECURE}:${GATEWAY_LISTEN_PORT_IMAP_SECURE}
 EOF
-                )
+                                    )
+                print_debug "Gateway: Disabling IMAPS"
+                gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
+imaps_listen =
+EOF
+                                    )
             fi
 
             truefalse_yesno GATEWAY_BYPASS_AUTHENTICATION_ADMIN
@@ -478,23 +521,31 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 ${gateway_interfaces}
 ssl_private_key_file = ${GATEWAY_SSL_KEY_FILE}
 ssl_certificate_file = ${GATEWAY_SSL_CERT_FILE}
-disable_plaintext_auth = ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH}
 ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
 server_socket = ${GATEWAY_SOCKET_SERVER}
-bypass_auth = ${GATEWAY_BYPASS_AUTHENTICATION_ADMIN}
-server_hostname_greeting = ${GATEWAY_GREETING_SHOW_HOSTNAME}
-server_hostname = ${GATEWAY_HOSTNAME}
-coredump_enabled = ${ENABLE_COREDUMPS}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+
+## Logging
 log_level = ${GATEWAY_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_GATEWAY}
 log_timestamp = ${LOG_TIMESTAMPS}
+
+## Gateway settings
+bypass_auth = ${GATEWAY_BYPASS_AUTHENTICATION_ADMIN}
+disable_plaintext_auth = ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH}
 imap_only_mailfolders = ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS}
 imap_public_folders = ${GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS}
 imap_max_messagesize = ${GATEWAY_IMAP_MAX_MESSAGE_SIZE}
 imap_max_fail_commands = ${GATEWAY_IMAP_MAX_FAIL_COMMANDS}
+server_hostname_greeting = ${GATEWAY_GREETING_SHOW_HOSTNAME}
+server_hostname = ${GATEWAY_HOSTNAME}
+
 EOF
         else
             print_info "Gateway: Skipping Auto Configuration"
@@ -509,13 +560,18 @@ configure_ical() {
         certificates "${ICAL_SSL_KEY_FILE}"
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
             print_notice "ICAL: Auto Configuring"
-
             if var_true "${ICAL_ENABLE_HTTP}" ; then
                 print_debug "ICAL: Enabling HTTP"
                 ical_interfaces=$(echo "${ical_interfaces}" ; cat<<EOF
 ical_listen = ${ICAL_LISTEN_HOST}:${ICAL_LISTEN_PORT}
 EOF
-                    )
+                                )
+            else
+                print_debug "ICAL: Disabling HTTP"
+                ical_interfaces=$(echo "${ical_interfaces}" ; cat<<EOF
+ical_listen =
+EOF
+                                )
             fi
 
             if var_true "${ICAL_ENABLE_HTTPS}" ; then
@@ -523,7 +579,13 @@ EOF
                 ical_interfaces=$(echo "${ical_interfaces}" ; cat<<EOF
 icals_listen = ${ICAL_LISTEN_HOST_SECURE}:${ICAL_LISTEN_PORT_SECURE}
 EOF
-                    )
+                                )
+            else
+                print_debug "ICAL: Disabling HTTPS"
+                ical_interfaces=$(echo "${ical_interfaces}" ; cat<<EOF
+icals_listen =
+EOF
+                                )
             fi
 
             truefalse_yesno ICAL_ENABLE_ICAL_GET
@@ -532,15 +594,22 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 ${ical_interfaces}
 ssl_private_key_file = ${ICAL_SSL_KEY_FILE}
 ssl_certificate_file = ${ICAL_SSL_CERT_FILE}
 ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
 server_socket = ${ICAL_SOCKET_SERVER}
-coredump_enabled = ${ENABLE_COREDUMPS}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+
+## Logging
 log_level = ${ICAL_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_ICAL}
 log_timestamp = ${LOG_TIMESTAMPS}
+
+## ICal Options
 server_timezone = ${TIMEZONE}
 enable_ical_get = ${ICAL_ENABLE_ICAL_GET}
 EOF
@@ -1032,7 +1101,6 @@ configure_logging() {
             WEBAPP_PLUGIN_FILES_LOG_LEVEL=${WEBAPP_PLUGIN_FILES_LOG_LEVEL:-"DEBUG"}
             ZPUSH_LOG_LEVEL=${ZPUSH_LOG_LEVEL:-"WBXMLSTACK"}
         ;;
-
     esac
 
     truefalse_yesno LOG_TIMESTAMPS
@@ -1099,7 +1167,7 @@ configure_kdav() {
         sed -i "s|level value=\"TRACE\"|level value=\"${kdav_log_level}\"|g" /usr/share/kdav/log4php.xml
         sed -i "s|%date.*%n|%date{Y-m-d H:i:s} [%5pid] [%-5level] [%server{HTTP_X_REAL_IP}] %4logger %msg%n|g" /usr/share/kdav/log4php.xml
 
-        if [ "${KDAV_SERVE_MODE}" = "APACHE" ]; then
+        if [ "${KDAV_SERVE_MODE,,}" = "apache" ]; then
             print_debug "Using Apache for KDAV"
             ### Configure Apache
             sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/apache2/sites-available/kdav.conf
@@ -1166,27 +1234,35 @@ configure_migrator() {
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
-pid_file = /var/run/kopano/gateway-migrator.pid
+## Connectivity and Networking
 pop3_listen = *:1110
 pop3s_listen = *:9995
 imap_listen = *:1143
 imaps_listen = *:9993
-ssl_private_key_file = ${GATEWAY_SSL_KEY_FILE}
-ssl_certificate_file = ${GATEWAY_SSL_CERT_FILE}
-disable_plaintext_auth = ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH}
-ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
+
+pid_file = /var/run/kopano/gateway-migrator.pid
 server_socket = file:///var/run/kopano/server.sock
-bypass_auth = yes
 server_hostname_greeting = ${GATEWAY_GREETING_SHOW_HOSTNAME}
 server_hostname = ${GATEWAY_HOSTNAME}
-coredump_enabled = ${ENABLE_COREDUMPS}
+ssl_private_key_file = ${GATEWAY_SSL_KEY_FILE}
+ssl_certificate_file = ${GATEWAY_SSL_CERT_FILE}
+ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+
+## Logging
 log_level = ${MIGRATOR_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_MIGRATOR}
 log_timestamp = ${LOG_TIMESTAMPS}
+
+## Migrator
+bypass_auth = yes
+disable_plaintext_auth = ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH}
+imap_max_fail_commands = ${GATEWAY_IMAP_MAX_FAIL_COMMANDS}
+imap_max_messagesize = 100M
 imap_only_mailfolders = ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS}
 imap_public_folders = ${GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS}
-imap_max_messagesize = 100M
-imap_max_fail_commands = ${GATEWAY_IMAP_MAX_FAIL_COMMANDS}
 EOF
         else
             print_info "Gateway: Skipping Auto Configuration"
@@ -1216,18 +1292,27 @@ EOF
 # If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 # Last Generated on $(date)
 
+## Connectivity and Networking
 server_socket = ${MONITOR_SOCKET_SERVER}
 ${monitor_sslkey}
-coredump_enabled = ${ENABLE_COREDUMPS}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+
+## Logging
 log_level = ${MONITOR_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_MONITOR}
 log_timestamp = ${LOG_TIMESTAMPS}
-quota_check_interval = ${MONITOR_QUOTA_CHECK_INTERVAL}
+
+## Monitor Options
 mailquota_resend_interval = ${MONITOR_QUOTA_RESEND_INTERVAL}
-userquota_warning_template = ${TEMPLATE_MONITOR_PATH}${TEMPLATE_MONITOR_USER_QUOTA}
-userquota_soft_template = ${TEMPLATE_MONITOR_PATH}${TEMPLATE_MONITOR_USER_SOFT_QUOTA}
-userquota_hard_template = ${TEMPLATE_MONITOR_PATH}${TEMPLATE_MONITOR_USER_HARD_QUOTA}
-companyquota_warning_template = ${TEMPLATE_MONITOR_PATH}${TEMPLATE_MONITOR_COMPANY_QUOTA}
+quota_check_interval = ${MONITOR_QUOTA_CHECK_INTERVAL}
+
+## Templates
+userquota_soft_template = ${TEMPLATE_MONITOR_PATH}/${TEMPLATE_MONITOR_USER_SOFT_QUOTA}
+userquota_hard_template = ${TEMPLATE_MONITOR_PATH}/${TEMPLATE_MONITOR_USER_HARD_QUOTA}
+userquota_warning_template = ${TEMPLATE_MONITOR_PATH}/${TEMPLATE_MONITOR_USER_QUOTA}
+companyquota_warning_template = ${TEMPLATE_MONITOR_PATH}/${TEMPLATE_MONITOR_COMPANY_QUOTA}
 
 EOF
         else
@@ -1295,22 +1380,28 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 server_socket = ${SEARCH_SOCKET_SERVER}
 ${search_sslkey}
 server_bind_name = ${SOCKET_SEARCH_LISTEN}
 ${search_socket_sslkey}
-index_path = ${SEARCH_INDEX_PATH}
-limit_results = ${SEARCH_LIMIT_RESULTS}
-log_level = ${SEARCH_LOG_LEVEL}
+
+## Logging
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SEARCH}
+log_level = ${SEARCH_LOG_LEVEL}
 log_timestamp = ${LOG_TIMESTAMPS}
-term_cache_size = ${SEARCH_CACHE_SIZE_TERM}
-index_processes = ${SEARCH_INDEX_PROCESSES}
+
+## Search Options
+index_attachment_max_size = ${SEARCH_INDEX_ATTACHMENTS_MAX_SIZE}
+index_attachments = ${SEARCH_INDEX_ATTACHMENTS}
 index_drafts = ${SEARCH_INDEX_DRAFTS}
 index_junk = ${SEARCH_INDEX_JUNK}
+index_path = ${SEARCH_INDEX_PATH}
+index_processes = ${SEARCH_INDEX_PROCESSES}
+limit_results = ${SEARCH_LIMIT_RESULTS}
 suggestions = ${SEARCH_SUGGESTIONS}
-index_attachments = ${SEARCH_INDEX_ATTACHMENTS}
-index_attachment_max_size = ${SEARCH_INDEX_ATTACHMENTS_MAX_SIZE}
+term_cache_size = ${SEARCH_CACHE_SIZE_TERM}
+
 EOF
         else
             print_info "Search: Skipping Auto Configuration"
@@ -1327,11 +1418,17 @@ configure_server() {
         ### Server
             print_notice "Configuring Kopano Server"
             if var_true "${SERVER_ENABLE_HTTP}" ; then
-                print_notice "Server: Enabling HTTP Soap Endpoint"
-                server_http="server_listen = ${SERVER_LISTEN_HOST}:${SERVER_LISTEN_PORT}"
+                print_debug "Server: Enabling HTTP Soap Endpoint"
+                server_interfaces=$(echo "${server_interfaces}" ; cat <<EOF
+server_listen = ${SERVER_LISTEN_HOST}:${SERVER_LISTEN_PORT}
+EOF
+                                )
             else
-                print_notice "Server: Disabling HTTP Soap Endpoint"
-                server_http="server_listen = "
+                print_debug "Server: Disabling HTTP Soap Endpoint"
+                server_interfaces=$(echo "${server_interfaces}" ; cat <<EOF
+server_listen =
+EOF
+                                )
             fi
 
             if var_true "${SERVER_ENABLE_HTTPS}" ; then
@@ -1340,41 +1437,46 @@ configure_server() {
                 certificates "${CA_CERT_FILE}"
                 case "${KC_BASE}" in
                     8.7.* )
-                    server_https_differences=$(cat<<EOF
-server_tls_min_proto = ${SERVER_TLS_MIN_PROTOCOL}
+                        server_https_differences=$(cat<<EOF
 EOF
+                        )
                     ;;
                     10.*|11.*)
-                    server_https_differences=$(cat<<EOF
+                        server_https_differences=$(cat<<EOF
 server_tls_min_proto = ${SERVER_TLS_MIN_PROTOCOL}
 EOF
-                    )
+                        )
                     ;;
                 esac
-                server_https=$(cat <<EOF
+                server_interfaces=$(echo "${server_interfaces}" ; cat <<EOF
+### TLS
 server_listen_tls = ${SERVER_LISTEN_HOST}:${SERVER_LISTEN_PORT_SECURE}
 server_ssl_key_file = ${SERVER_SSL_KEY_FILE}
 server_ssl_ca_file = ${CA_CERT_FILE}
 sslkeys_path = ${SERVER_SSL_PUBLIC_PATH}
 ${server_https_differences}
 EOF
-                            )
+                                    )
 
                 if [ -v SERVER_SSL_KEY_PASS ]; then
-                    server_https=$(echo "${server_https}" ; cat<<EOF
+                    server_interfaces=$(echo "${server_interfaces}" ; cat<<EOF
 server_ssl_key_pass = ${SERVER_SSL_KEY_PASS}
 EOF
-                    )
+                                        )
                 fi
             else
-                    print_notice "Server: Disabling HTTPS Soap Endpoint"
-                    server_https="server_listen_tls = "
+                print_debug "Server: Disabling HTTPS Soap Endpoint"
+                server_interfaces=$(echo "${server_interfaces}" ; cat <<EOF
+server_listen_tls =
+EOF
+                                    )
             fi
 
 
             if var_true "${SERVER_ENABLE_SSO}" ; then
                 truefalse_yesno SERVER_OIDC_DISABLE_TLS_VALIDATION
                 server_oidc=$(cat<<EOF
+#### OIDC
 kcoidc_issuer_identifier = ${SERVER_OIDC_IDENTIFIER}
 kcoidc_insecure_skip_verify = ${SERVER_OIDC_DISABLE_TLS_VALIDATION}
 kcoidc_initialize_timeout = ${SERVER_OIDC_TIMEOUT_INITIALIZE}
@@ -1384,12 +1486,13 @@ EOF
 
             if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
                 server_stats=$(cat<<EOF
+
+### Statistics
 statsclient_url=${PROMETHEUS_EXPORTER_SOCKET}
 statsclient_interval=${STATS_INTERVAL}
 EOF
                             )
             fi
-
 
             truefalse_yesno SERVER_ALLOW_LOCAL_USERS
             truefalse_yesno SERVER_ATTACHMENT_BACKEND_FILES_FSYNC
@@ -1419,6 +1522,7 @@ EOF
                     sanity_var SERVER_ATTACHMENT_BACKEND_S3_HOST "S3/Minio Host"
                     SERVER_ATTACHMENT_BACKEND="s3"
                     server_attachment=$(cat <<EOF
+### S3
 attachment_path = ${SERVER_ATTACHMENT_BACKEND_S3_PATH}
 attachment_s3_hostname = ${SERVER_ATTACHMENT_BACKEND_S3_HOST}
 attachment_s3_region = ${SERVER_ATTACHMENT_BACKEND_S3_REGION}
@@ -1439,29 +1543,37 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
+${server_interfaces}
 server_pipe_name = ${SERVER_PIPE_NAME}
 server_pipe_priority = ${SERVER_PIPE_PRIORITY_NAME}
-${server_http}
-${server_https}
 
 server_name = ${SERVER_SERVER_NAME}
-enable_distributed_kopano = ${SERVER_ENABLE_MULTI_SERVER}
+server_hostname = ${SERVER_HOSTNAME}
 
+## Database
 database_engine = mysql
 mysql_host = ${DB_HOST}
 mysql_port = ${DB_PORT}
 mysql_user = ${DB_USER}
 mysql_password = ${DB_PASS}
 mysql_database = ${DB_NAME}
-enable_sql_procedures = ${SERVER_ENABLE_OPTIMIZED_SQL}
+enable_sql_procedures = $(translate_config ${SERVER_ENABLE_OPTIMIZED_SQL})
 
-coredump_enabled = ${ENABLE_COREDUMPS}
+## Logging
+log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SERVER}
+log_level = ${SERVER_LOG_LEVEL}
+log_timestamp = ${LOG_TIMESTAMPS}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+server_recv_timeout = ${SERVER_TIMEOUT_RECIEVE}
+server_send_timeout = ${SERVER_TIMEOUT_SEND}
 threads = ${SERVER_THREADS}
 watchdog_frequency = ${SERVER_WATCHDOG_FREQUENCY}
 watchdog_max_age = ${SERVER_WATCHDOG_MAX_AGE}
-server_recv_timeout = ${SERVER_TIMEOUT_RECIEVE}
-server_send_timeout = ${SERVER_TIMEOUT_SEND}
 
+### Caching
 cache_cell_size = ${SERVER_CACHE_CELL}
 cache_object_size = ${SERVER_CACHE_OBJECT}
 cache_indexedobject_size = ${SERVER_CACHE_INDEXED_OBJECT}
@@ -1475,25 +1587,42 @@ cache_userdetails_lifetime = ${SERVER_CACHE_USERDETAILS_LIFETIME}
 cache_server_size = ${SERVER_CACHE_SERVER}
 cache_server_lifetime = ${SERVER_CACHE_SERVER_LIFETIME}
 
-allow_local_users = ${SERVER_ALLOW_LOCAL_USERS}
-local_admin_users = ${SERVER_LOCAL_ADMIN_USERS}
-log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SERVER}
-log_level = ${SERVER_LOG_LEVEL}
-log_timestamp = ${LOG_TIMESTAMPS}
+## Server Settings
+### Attachment Storage
 attachment_storage = ${SERVER_ATTACHMENT_BACKEND}
 ${server_attachment}
-user_plugin = ${SERVER_USER_PLUGIN}
-user_plugin_config = ${CONFIG_PATH}ldap.cfg
-enable_sso = ${SERVER_ENABLE_SSO}
-server_hostname = ${SERVER_HOSTNAME}
 
-${server_oidc}
+### Disabled Features
+disabled_features = ${SERVER_DISABLED_FEATURES}
 
+### Global Address Book
+enable_gab = $(translate_config ${SERVER_ENABLE_GAB})
+hide_everyone = $(translate_config ${SERVER_GAB_HIDE_EVERYONE})
+hide_system = $(translate_config ${SERVER_GAB_HIDE_SYSTEM})
+sync_gab_realtime = $(translate_config ${SERVER_GAB_SYNC_REALTIME})
+
+### Multi Server / Tenancy
+enable_distributed_kopano = ${SERVER_ENABLE_MULTI_SERVER}
+enable_hosted_kopano = ${SERVER_ENABLE_MULTI_TENANT}
+loginname_format = ${SERVER_MULTI_TENANT_LOGINNAME_FORMAT}
+storename_format = ${SERVER_MULTI_TENANT_STORENAME_FORMAT}
+
+### Quotas
 quota_warn = ${SERVER_QUOTA_WARN}
 quota_soft = ${SERVER_QUOTA_SOFT}
 quota_hard = ${SERVER_QUOTA_HARD}
 companyquota_warn = ${SERVER_QUOTA_COMPANY_WARN}
 
+### Search
+search_enabled = ${SERVER_ENABLE_SEARCH}
+search_socket = ${SOCKET_SEARCH}
+search_timeout = ${SEARCH_TIMEOUT}
+
+### Single Sign On
+enable_sso = $(translate_config ${SERVER_ENABLE_SSO})
+${server_oidc}
+
+### Scripts
 createuser_script = ${SERVER_CUSTOM_USERSCRIPT_CREATEUSER}
 deleteuser_script = ${SERVER_CUSTOM_USERSCRIPT_DELETEUSER}
 creategroup_script = ${SERVER_CUSTOM_USERSCRIPT_CREATEGROUP}
@@ -1501,20 +1630,15 @@ deletegroup_script = ${SERVER_CUSTOM_USERSCRIPT_DELETEGROUP}
 createcompany_script = ${SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY}
 deletecompany_script = ${SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY}
 
+${server_stats}
+
+### User
+user_plugin = ${SERVER_USER_PLUGIN}
+user_plugin_config = ${CONFIG_PATH}/ldap.cfg
+allow_local_users = ${SERVER_ALLOW_LOCAL_USERS}
+local_admin_users = ${SERVER_LOCAL_ADMIN_USERS}
 system_email_address = ${SERVER_SYSTEM_EMAIL_ADDRESS}
 user_safe_mode = ${SERVER_USER_SAFE_MODE}
-enable_hosted_kopano = ${SERVER_ENABLE_MULTI_TENANT}
-storename_format = ${SERVER_MULTI_TENANT_STORENAME_FORMAT}
-loginname_format = ${SERVER_MULTI_TENANT_LOGINNAME_FORMAT}
-enable_gab = ${SERVER_ENABLE_GAB}
-hide_everyone = ${SERVER_GAB_HIDE_EVERYONE}
-hide_system = ${SERVER_GAB_HIDE_SYSTEM}
-sync_gab_realtime = ${SERVER_GAB_SYNC_REALTIME}
-search_enabled = ${SERVER_ENABLE_SEARCH}
-search_socket = ${SOCKET_SEARCH}
-search_timeout = ${SEARCH_TIMEOUT}
-disabled_features = ${SERVER_DISABLED_FEATURES}
-${server_stats}
 EOF
         else
             print_info "Server: Skipping Auto Configuration"
@@ -1547,17 +1671,23 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 server_socket = ${SPAMD_SOCKET_SERVER}
 ${spamd_sslkey}
 
+## Runtime
 run_as_user         = kopano
 run_as_group        = kopano
+
+## Logging
 log_level           = ${SPAMD_LOG_LEVEL}
 log_file            = ${LOG_PATH_KOPANO}${LOG_FILE_SPAMD}
 log_timestamp       = ${LOG_TIMESTAMPS}
-sa_group            = ${SPAMD_SA_GROUP}
-header_tag          = ${DAGENT_SPAM_HEADER_NAME}
+
+## SpamD Options
 ham_dir             = ${SPAMD_FILES_HAM_PATH}
+header_tag          = ${DAGENT_SPAM_HEADER_NAME}
+sa_group            = ${SPAMD_SA_GROUP}
 spam_dir            = ${SPAMD_FILES_SPAM_PATH}
 spam_db             = ${SPAMD_FILES_DB_PATH}${SPAMD_FILES_DB_FILE}
 EOF
@@ -1607,6 +1737,8 @@ EOF
 
                 if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
                     spooler_stats=$(cat<<EOF
+
+## Statistics
 statsclient_url=${PROMETHEUS_EXPORTER_SOCKET}
 statsclient_interval=${STATS_INTERVAL}
 EOF
@@ -1619,19 +1751,28 @@ EOF
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
 ## Last Generated on $(date)
 
+## Connectivity and Networking
 smtp_server = ${SPOOLER_SMTP_HOST}
 smtp_port = ${SPOOLER_SMTP_PORT}
 server_socket = ${SPOOLER_SOCKET_SERVER}
 ${spooler_sslkey}
-coredump_enabled = ${ENABLE_COREDUMPS}
-log_level = ${SPOOLER_LOG_LEVEL}
+
+## Performance
+coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+max_threads = ${SPOOLER_MAX_THREADS}
+
+## Logging
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SPOOLER}
-log_timestamp = ${LOG_TIMESTAMPS}
+log_level = ${SPOOLER_LOG_LEVEL}
 log_raw_message_path = ${SPOOLER_PATH_RAW_MESSAGES}
 log_raw_message_stage1 = ${SPOOLER_LOG_RAW_MESSAGE_STAGE1}
-max_threads = ${SPOOLER_MAX_THREADS}
+log_timestamp = ${LOG_TIMESTAMPS}
+
+## Plugins
 plugin_enabled = ${SPOOLER_PLUGIN_ENABLED}
 plugin_path = ${SPOOLER_PATH_PLUGIN}
+
+## Spooler Options
 enable_dsn = ${SPOOLER_ENABLE_DSN}
 always_send_delegates = ${SPOOLER_ALWAYS_SEND_DELEGATES}
 allow_redirect_spoofing = ${SPOOLER_ALLOW_REDIRECT_SPOOFING}
@@ -2767,6 +2908,35 @@ parse_config() {
         print_error "Tried to parse config '${1}' but it doesn't exist!"
     fi
 }
+
+translate_config() {
+     if [ "${$1,,}" = "true" ] || [ "${$1,,}" = "yes" ] || [ "${$1,,}" = "on" ] ; then
+        case "${KC_BASE}" in
+            8.7.* )
+                echo "yes"
+            ;;
+            10.* )
+                echo "true"
+            ;;
+            11.* )
+                echo "true"
+            ;;
+        esac
+    elif [ "${$1,,}" = "false" ] || [ "${$1,,}" = "no" ] || [ "${$1,,}" = "off" ] ; then
+        case "${KC_BASE}" in
+            8.7.* )
+                echo "yes"
+            ;;
+            10.* )
+                echo "true"
+            ;;
+            11.* )
+                echo "true"
+            ;;
+        esac
+    fi
+}
+
 
 setup_container_mode() {
     if [ -f "/tmp/state/.mode-env" ]; then
