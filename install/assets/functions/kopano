@@ -398,12 +398,6 @@ EOF
                             )
             fi
 
-            truefalse_yesno DAGENT_ENABLE_PLUGIN
-            truefalse_yesno DAGENT_ARCHIVE_ON_DELIVERY
-            truefalse_yesno DAGENT_SET_RULE_HEADERS
-            truefalse_yesno DAGENT_NO_DOUBLE_FORWARD
-            truefalse_yesno DAGENT_INSECURE_HTML_JOIN
-
             cat <<EOF > "${CONFIG_PATH}"/dagent.cfg
 ## Custom Generated Kopano DAgent Configuration! Do not edit, instead set ENV Vars
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
@@ -421,22 +415,22 @@ lmtp_max_threads = ${DAGENT_LMTP_MAX_THREADS}
 ## Logging
 log_level = ${DAGENT_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_DAGENT}
-log_timestamp = ${LOG_TIMESTAMPS}
+log_timestamp = $(translate_config ${LOG_TIMESTAMPS})
 log_raw_message = ${dagent_log_raw_message}
 log_raw_message_path = ${DAGENT_PATH_RAW_MESSAGES}
 
 ## Plugins
-plugin_enabled = ${DAGENT_ENABLE_PLUGIN}
+plugin_enabled = $(translate_config ${DAGENT_ENABLE_PLUGIN})
 plugin_path = ${DAGENT_PATH_PLUGIN}
 
 ## DAgent settings
-spam_header_name = ${DAGENT_SPAM_HEADER_NAME}
-archive_on_delivery = ${DAGENT_ARCHIVE_ON_DELIVERY}
-set_rule_headers = ${DAGENT_SET_RULE_HEADERS}
-no_double_forward = ${DAGENT_NO_DOUBLE_FORWARD}
-insecure_html_join = ${DAGENT_INSECURE_HTML_JOIN}
-inhibit_forward_headers = ${DAGENT_INHIBIT_FORWARD_HEADERS}
+archive_on_delivery = $(translate_config ${DAGENT_ARCHIVE_ON_DELIVERY})
 inhibit_auto_reply_headers = ${DAGENT_INHIBIT_AUTOREPLY_HEADERS}
+inhibit_forward_headers = ${DAGENT_INHIBIT_FORWARD_HEADERS}
+insecure_html_join = $(translate_config ${DAGENT_INSECURE_HTML_JOIN})
+no_double_forward = $(translate_config ${DAGENT_NO_DOUBLE_FORWARD})
+set_rule_headers = $(translate_config ${DAGENT_SET_RULE_HEADERS})
+spam_header_name = ${DAGENT_SPAM_HEADER_NAME}
 ${dagent_forward_whitelist}
 ${dagent_spam_header_value}
 ${dagent_stats}
@@ -510,12 +504,6 @@ EOF
                                     )
             fi
 
-            truefalse_yesno GATEWAY_BYPASS_AUTHENTICATION_ADMIN
-            truefalse_yesno GATEWAY_GREETING_SHOW_HOSTNAME
-            truefalse_yesno GATEWAY_IMAP_ONLY_MAIL_FOLDERS
-            truefalse_yesno GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS
-            truefalse_yesno GATEWAY_SSL_PREFER_SERVER_CIPHERS
-            truefalse_yesno GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH
             cat <<EOF > "${CONFIG_PATH}"/gateway.cfg
 ## Custom Generated Kopano Gateway Configuration! Do not edit, instead set ENV Vars
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
@@ -525,7 +513,7 @@ EOF
 ${gateway_interfaces}
 ssl_private_key_file = ${GATEWAY_SSL_KEY_FILE}
 ssl_certificate_file = ${GATEWAY_SSL_CERT_FILE}
-ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
+ssl_prefer_server_ciphers = $(translate_config ${GATEWAY_SSL_PREFER_SERVER_CIPHERS})
 server_socket = ${GATEWAY_SOCKET_SERVER}
 
 ## Performance
@@ -537,13 +525,13 @@ log_file = ${LOG_PATH_KOPANO}${LOG_FILE_GATEWAY}
 log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Gateway settings
-bypass_auth = ${GATEWAY_BYPASS_AUTHENTICATION_ADMIN}
-disable_plaintext_auth = ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH}
-imap_only_mailfolders = ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS}
-imap_public_folders = ${GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS}
+bypass_auth = $(translate_config ${GATEWAY_BYPASS_AUTHENTICATION_ADMIN})
+disable_plaintext_auth = $(translate_config ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH})
+imap_only_mailfolders = $(translate_config ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS})
+imap_public_folders = $(translate_config ${GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS})
 imap_max_messagesize = ${GATEWAY_IMAP_MAX_MESSAGE_SIZE}
 imap_max_fail_commands = ${GATEWAY_IMAP_MAX_FAIL_COMMANDS}
-server_hostname_greeting = ${GATEWAY_GREETING_SHOW_HOSTNAME}
+server_hostname_greeting = $(translate_config ${GATEWAY_GREETING_SHOW_HOSTNAME})
 server_hostname = ${GATEWAY_HOSTNAME}
 
 EOF
@@ -1371,10 +1359,6 @@ EOF
 
             mkdir -p "${SEARCH_INDEX_PATH}"
             chown -R kopano: "${SEARCH_INDEX_PATH}"
-            truefalse_yesno SEARCH_INDEX_ATTACHMENTS
-            truefalse_yesno SEARCH_INDEX_DRAFTS
-            truefalse_yesno SEARCH_INDEX_JUNK
-            truefalse_yesno SEARCH_SUGGESTIONS
             cat <<EOF > "${CONFIG_PATH}"/search.cfg
 ## Custom Generated Kopano Search Indexer Configuration! Do not edit, instead set ENV Vars
 ## If you want to use your own configuration files set SETUP_TYPE=MANUAL when starting container
@@ -1393,13 +1377,13 @@ log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Search Options
 index_attachment_max_size = ${SEARCH_INDEX_ATTACHMENTS_MAX_SIZE}
-index_attachments = ${SEARCH_INDEX_ATTACHMENTS}
-index_drafts = ${SEARCH_INDEX_DRAFTS}
-index_junk = ${SEARCH_INDEX_JUNK}
+index_attachments = $(translate_config ${SEARCH_INDEX_ATTACHMENTS})
+index_drafts = $(translate_config ${SEARCH_INDEX_DRAFTS})
+index_junk = $(translate_config ${SEARCH_INDEX_JUNK})
 index_path = ${SEARCH_INDEX_PATH}
 index_processes = ${SEARCH_INDEX_PROCESSES}
 limit_results = ${SEARCH_LIMIT_RESULTS}
-suggestions = ${SEARCH_SUGGESTIONS}
+suggestions = $(translate_config ${SEARCH_SUGGESTIONS})
 term_cache_size = ${SEARCH_CACHE_SIZE_TERM}
 
 EOF
@@ -1474,11 +1458,10 @@ EOF
 
 
             if var_true "${SERVER_ENABLE_SSO}" ; then
-                truefalse_yesno SERVER_OIDC_DISABLE_TLS_VALIDATION
                 server_oidc=$(cat<<EOF
 #### OIDC
 kcoidc_issuer_identifier = ${SERVER_OIDC_IDENTIFIER}
-kcoidc_insecure_skip_verify = ${SERVER_OIDC_DISABLE_TLS_VALIDATION}
+kcoidc_insecure_skip_verify = $(translate_config ${SERVER_OIDC_DISABLE_TLS_VALIDATION})
 kcoidc_initialize_timeout = ${SERVER_OIDC_TIMEOUT_INITIALIZE}
 EOF
                             )
@@ -1493,19 +1476,6 @@ statsclient_interval=${STATS_INTERVAL}
 EOF
                             )
             fi
-
-            truefalse_yesno SERVER_ALLOW_LOCAL_USERS
-            truefalse_yesno SERVER_ATTACHMENT_BACKEND_FILES_FSYNC
-            truefalse_yesno SERVER_ENABLE_GAB
-            truefalse_yesno SERVER_ENABLE_MULTI_SERVER
-            truefalse_yesno SERVER_ENABLE_MULTI_TENANT
-            truefalse_yesno SERVER_ENABLE_OPTIMIZED_SQL
-            truefalse_yesno SERVER_ENABLE_SEARCH
-            truefalse_yesno SERVER_ENABLE_SSO
-            truefalse_yesno SERVER_GAB_HIDE_EVERYONE
-            truefalse_yesno SERVER_GAB_HIDE_SYSTEM
-            truefalse_yesno SERVER_GAB_SYNC_REALTIME
-            truefalse_yesno SERVER_USER_SAFE_MODE
 
             case "${SERVER_ATTACHMENT_BACKEND,,}" in
                 "files" | "files_v2" )
@@ -1602,8 +1572,8 @@ hide_system = $(translate_config ${SERVER_GAB_HIDE_SYSTEM})
 sync_gab_realtime = $(translate_config ${SERVER_GAB_SYNC_REALTIME})
 
 ### Multi Server / Tenancy
-enable_distributed_kopano = ${SERVER_ENABLE_MULTI_SERVER}
-enable_hosted_kopano = ${SERVER_ENABLE_MULTI_TENANT}
+enable_distributed_kopano = $(translate_config ${SERVER_ENABLE_MULTI_SERVER})
+enable_hosted_kopano = $(translate_config ${SERVER_ENABLE_MULTI_TENANT})
 loginname_format = ${SERVER_MULTI_TENANT_LOGINNAME_FORMAT}
 storename_format = ${SERVER_MULTI_TENANT_STORENAME_FORMAT}
 
@@ -1614,7 +1584,7 @@ quota_hard = ${SERVER_QUOTA_HARD}
 companyquota_warn = ${SERVER_QUOTA_COMPANY_WARN}
 
 ### Search
-search_enabled = ${SERVER_ENABLE_SEARCH}
+search_enabled = $(translate_config ${SERVER_ENABLE_SEARCH})
 search_socket = ${SOCKET_SEARCH}
 search_timeout = ${SEARCH_TIMEOUT}
 
@@ -1635,10 +1605,10 @@ ${server_stats}
 ### User
 user_plugin = ${SERVER_USER_PLUGIN}
 user_plugin_config = ${CONFIG_PATH}/ldap.cfg
-allow_local_users = ${SERVER_ALLOW_LOCAL_USERS}
+allow_local_users = $(translate_config ${SERVER_ALLOW_LOCAL_USERS})
 local_admin_users = ${SERVER_LOCAL_ADMIN_USERS}
 system_email_address = ${SERVER_SYSTEM_EMAIL_ADDRESS}
-user_safe_mode = ${SERVER_USER_SAFE_MODE}
+user_safe_mode = $(translate_config ${SERVER_USER_SAFE_MODE})
 EOF
         else
             print_info "Server: Skipping Auto Configuration"
@@ -1709,15 +1679,6 @@ configure_spooler() {
             chown -R kopano: "${SPOOLER_PATH_RAW_MESSAGES}"
         fi
 
-        truefalse_yesno SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST
-        truefalse_yesno SPOOLER_ALLOW_REDIRECT_SPOOFING
-        truefalse_yesno SPOOLER_ALLOW_SEND_TO_EVERYONE
-        truefalse_yesno SPOOLER_ALWAYS_SEND_DELEGATES
-        truefalse_yesno SPOOLER_ENABLE_DSN
-        truefalse_yesno SPOOLER_EXPAND_GROUPS
-        truefalse_yesno SPOOLER_LOG_RAW_MESSAGE_STAGE1
-        truefalse_yesno SPOOLER_PLUGIN_ENABLED
-
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
             print_notice "Spooler: Auto Configuring"
 
@@ -1765,19 +1726,19 @@ max_threads = ${SPOOLER_MAX_THREADS}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SPOOLER}
 log_level = ${SPOOLER_LOG_LEVEL}
 log_raw_message_path = ${SPOOLER_PATH_RAW_MESSAGES}
-log_raw_message_stage1 = ${SPOOLER_LOG_RAW_MESSAGE_STAGE1}
+log_raw_message_stage1 = $(translate_config ${SPOOLER_LOG_RAW_MESSAGE_STAGE1})
 log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Plugins
-plugin_enabled = ${SPOOLER_PLUGIN_ENABLED}
+plugin_enabled = $(translate_config ${SPOOLER_PLUGIN_ENABLED})
 plugin_path = ${SPOOLER_PATH_PLUGIN}
 
 ## Spooler Options
-enable_dsn = ${SPOOLER_ENABLE_DSN}
-always_send_delegates = ${SPOOLER_ALWAYS_SEND_DELEGATES}
-allow_redirect_spoofing = ${SPOOLER_ALLOW_REDIRECT_SPOOFING}
-allow_delegate_meeting_request = ${SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST}
-allow_send_to_everyone = ${SPOOLER_ALLOW_SEND_TO_EVERYONE}
+enable_dsn = $(translate_config ${SPOOLER_ENABLE_DSN})
+always_send_delegates = $(translate_config ${SPOOLER_ALWAYS_SEND_DELEGATES})
+allow_redirect_spoofing = $(translate_config ${SPOOLER_ALLOW_REDIRECT_SPOOFING})
+allow_delegate_meeting_request = $(translate_config ${SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST})
+allow_send_to_everyone = $(translate_config ${SPOOLER_ALLOW_SEND_TO_EVERYONE})
 ${spooler_stats}
 EOF
         else
