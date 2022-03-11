@@ -110,7 +110,7 @@ syslogsocket = auto
 socket = /var/run/fail2ban/fail2ban.sock
 pidfile = /var/run/fail2ban/fail2ban.pid
 # Values: [ None :memory: FILE ] Default: /var/lib/fail2ban/fail2ban.sqlite3
-dbfile = ${FAIL2BAN_DB_PATH}${FAIL2BAN_DB_FILE}
+dbfile = ${FAIL2BAN_DB_PATH}/${FAIL2BAN_DB_FILE}
 dbpurgeage = ${FAIL2BAN_DB_PURGE_AGE}
 EOF
 	fi
@@ -200,7 +200,7 @@ EOF
 
 fail2ban_jail_create() {
 	if [ "${SETUP_TYPE,,}" = "auto" ]; then
-		source /tmp/state/.mode-env
+		source /tmp/.container/kopano/.mode-env
 		if var_true "${ENABLE_GATEWAY}" ; then
 			print_debug "Fail2Ban: Adding Jail - Kopano Gateway"
 			cat <<EOF >> "${FAIL2BAN_CONFIG_PATH}"/jail.local
@@ -208,7 +208,7 @@ fail2ban_jail_create() {
 enabled = ${GATEWAY_ENABLE_FAIL2BAN}
 port    = imap,imaps,pop3,pop3s
 filter  = kopano-gateway-auth
-logpath = ${LOG_PATH_KOPANO}${LOG_FILE_GATEWAY}
+logpath = ${LOG_PATH_KOPANO}/${LOG_FILE_GATEWAY}
 
 EOF
 		fi
@@ -220,7 +220,7 @@ EOF
 enabled = ${ICAL_ENABLE_FAIL2BAN}
 port    = http, https
 filter  = kopano-ical-auth
-logpath = ${LOG_PATH_KOPANO}${LOG_FILE_ICAL}
+logpath = ${LOG_PATH_KOPANO}/${LOG_FILE_ICAL}
 
 EOF
 		fi
@@ -232,7 +232,7 @@ EOF
 enabled = ${KDAV_ENABLE_FAIL2BAN}
 port    = http,https
 filter  = kopano-kdav-auth
-logpath = ${LOG_PATH_KOPANO}${LOG_FILE_KDAV}
+logpath = ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
 
 EOF
 		fi
@@ -256,7 +256,7 @@ EOF
 enabled  = ${ZPUSH_ENABLE_FAIL2BAN}
 port     = http,https
 filter   = z-push
-logpath  = ${LOG_PATH_ZPUSH}${LOG_FILE_ZPUSH_ERROR}
+logpath  = ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_ERROR}
 
 EOF
 		fi
