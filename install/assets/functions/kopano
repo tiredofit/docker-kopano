@@ -2871,7 +2871,7 @@ parse_config() {
 }
 
 translate_config() {
-     if [ "${$1,,}" = "true" ] || [ "${$1,,}" = "yes" ] || [ "${$1,,}" = "on" ] ; then
+     if [ "${1,,}" = "true" ] || [ "${1,,}" = "yes" ] || [ "${1,,}" = "on" ] ; then
         case "${KC_BASE}" in
             8.7.* )
                 echo "yes"
@@ -2883,7 +2883,7 @@ translate_config() {
                 echo "true"
             ;;
         esac
-    elif [ "${$1,,}" = "false" ] || [ "${$1,,}" = "no" ] || [ "${$1,,}" = "off" ] ; then
+    elif [ "${1,,}" = "false" ] || [ "${1,,}" = "no" ] || [ "${1,,}" = "off" ] ; then
         case "${KC_BASE}" in
             8.7.* )
                 echo "yes"
