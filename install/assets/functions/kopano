@@ -2904,6 +2904,7 @@ setup_container_mode() {
         print_debug "Importing MODE environment generated variables"
         source /tmp/.container/kopano/.mode-env
     else
+        mkdir -p /tmp/.container/kopano/
         if [ "${MODE,,}" = "core" ] ; then
             print_debug "Container Mode: CORE"
             print_debug "Creating MODE environment generated variables"
