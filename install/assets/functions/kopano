@@ -885,6 +885,7 @@ EOF
 configure_logging() {
     if var_true "$create_log_kopano" ; then
         if [ ! -f "/tmp/.container/kopano/.log.kopano" ] ; then
+            mkdir -p /tmp/.container/kopano/
             print_debug "Logging: Configuring Kopano"
             if [ "${LOG_TYPE,,}" = "file" ]; then
                 print_debug "Logging: Kopano set to ${LOG_TYPE}"
@@ -896,6 +897,7 @@ configure_logging() {
     fi
 
     if [ ! -f "/tmp/.container/kopano/.log.zpush" ] ; then
+        mkdir -p /tmp/.container/kopano/
         if var_true "${ENABLE_ZPUSH}" || var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
             print_debug "Logging: Configuring Z-Push"
             if [ "${LOG_TYPE,,}" = "file" ]; then
