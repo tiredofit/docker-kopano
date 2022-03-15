@@ -497,6 +497,7 @@ EOF
 imaps_listen = ${GATEWAY_LISTEN_HOST_IMAP_SECURE}:${GATEWAY_LISTEN_PORT_IMAP_SECURE}
 EOF
                                     )
+            else
                 print_debug "Gateway: Disabling IMAPS"
                 gateway_interfaces=$(echo "${gateway_interfaces}" ; cat<<EOF
 imaps_listen =
