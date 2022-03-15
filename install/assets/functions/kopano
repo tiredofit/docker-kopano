@@ -1519,7 +1519,6 @@ EOF
 ${server_interfaces}
 server_pipe_name = ${SERVER_PIPE_NAME}
 server_pipe_priority = ${SERVER_PIPE_PRIORITY_NAME}
-
 server_name = ${SERVER_SERVER_NAME}
 server_hostname = ${SERVER_HOSTNAME}
 
@@ -2888,13 +2887,13 @@ translate_config() {
     elif [ "${1,,}" = "false" ] || [ "${1,,}" = "no" ] || [ "${1,,}" = "off" ] ; then
         case "${KC_BASE}" in
             8.7.* )
-                echo "yes"
+                echo "no"
             ;;
             10.* )
-                echo "true"
+                echo "false"
             ;;
             11.* )
-                echo "true"
+                echo "false"
             ;;
         esac
     fi
