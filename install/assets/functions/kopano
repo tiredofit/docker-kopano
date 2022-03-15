@@ -474,7 +474,6 @@ EOF
 pop3s_listen =
 EOF
                                     )
-
             fi
 
             if var_true "${GATEWAY_ENABLE_IMAP}" ; then
