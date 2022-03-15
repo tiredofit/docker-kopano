@@ -20,7 +20,6 @@ ENABLE_SPAMD=${ENABLE_SPAMD:-"FALSE"}
 ENABLE_SPOOLER=${ENABLE_SPOOLER:-"FALSE"}
 ENABLE_WEBAPP=${ENABLE_WEBAPP:-"FALSE"}
 ENABLE_ZPUSH=${ENABLE_ZPUSH:-"FALSE"}
-KC_BASE="$(grep 'Kopano Server reported version:' /assets/.changelogs/kopano-core.version | cut -d : -f 2 | xargs)"
 LOG_FILE_BACKUP=${LOG_FILE_BACKUP:-"backup.log"}
 LOG_FILE_DAGENT=${LOG_FILE_DAGENT:-"dagent.log"}
 LOG_FILE_GATEWAY=${LOG_FILE_GATEWAY:-"gateway.log"}
@@ -102,3 +101,7 @@ else
     SOCKET_SEARCH=${SOCKET_SEARCH:-"file:///var/run/kopano-search/search.sock"}
 fi
 
+KC_BASE="$(grep 'Kopano Server reported version:' /assets/.changelogs/kopano-core.version | cut -d : -f 2 | xargs)"
+if [ ${KC_BASE} = "" ] ; then
+    KC_BASE=$(kopano-server -V | awk '{print $2}')
+fi
