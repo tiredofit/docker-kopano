@@ -1,3 +1,9 @@
+## 2.12.4 2022-05-14 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Additional version changes
+
+
 ## 2.12.3 2022-05-14 <dave at tiredofit dot ca>
 
    ### Changed

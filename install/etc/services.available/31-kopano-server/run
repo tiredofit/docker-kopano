@@ -1,7 +1,8 @@
 #!/command/with-contenv bash
 
 source /assets/functions/00-container
-prepare_service functions kopano
+source /assets/defaults/kopano-global
+source /assets/functions/kopano
 
 PROCESS_NAME="kopano-server"
 check_container_initialized
