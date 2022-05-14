@@ -1,3 +1,9 @@
+## 2.12.1 2022-05-14 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Z_PUSH_OVERRIDE environment variable to quickly swap between Z_PUSH versions for a running container for troubleshootnig purposes.
+
+
 ## 2.12.0 2022-03-04 <dave at tiredofit dot ca>
 
    ### Added
