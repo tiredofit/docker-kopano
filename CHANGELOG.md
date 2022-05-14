@@ -1,3 +1,9 @@
+## 2.12.3 2022-05-14 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Bugfix for 2.12.2
+
+
 ## 2.12.2 2022-05-14 <dave at tiredofit dot ca>
 
    ### Added

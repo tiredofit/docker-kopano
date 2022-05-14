@@ -12,5 +12,14 @@ rm -rf /var/run/kopano/search.pid
 wait_for_server search
 sleep 3
 
+case "${KC_BASE}" in
+    8.7.* )
+        version_args="-F"
+    ;;
+    10.*|11.*)
+        :
+    ;;
+esac
+
 print_start "Starting Kopano Search"
-kopano-search "${SEARCH_ADDITIONAL_ARGS}"
+kopano-search "${SEARCH_ADDITIONAL_ARGS}" "${version_args}"
