@@ -12,5 +12,14 @@ rm -rf /var/run/kopano/spamd.pid
 wait_for_server spamd
 sleep 3
 
+case "${KC_BASE}" in
+    8.7.* )
+        version_args="-F"
+    ;;
+    10.*|11.*)
+        :
+    ;;
+esac
+
 print_start "Starting Kopano Spamd Service"
-kopano-spamd "${SPAMD_ADDITIONAL_ARGS}"
+kopano-spamd "${SPAMD_ADDITIONAL_ARGS}" "${version_args}"

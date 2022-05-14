@@ -12,5 +12,14 @@ rm -rf /var/run/kopano/spooler.pid
 wait_for_server spooler
 sleep 3
 
+case "${KC_BASE}" in
+    8.7.* )
+        version_args="-F"
+    ;;
+    10.*|11.*)
+        :
+    ;;
+esac
+
 print_start "Starting Kopano Spooler"
-kopano-spooler
+kopano-spooler "${version_args}"

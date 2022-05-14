@@ -10,5 +10,14 @@ liftoff
 wait_for_server ical
 sleep 3
 
+case "${KC_BASE}" in
+    8.7.* )
+        version_args="-F"
+    ;;
+    10.*|11.*)
+        :
+    ;;
+esac
+
 print_start "Starting Kopano ICAL Server"
-kopano-ical "${ICAL_ADDITIONAL_ARGS}"
+kopano-ical "${ICAL_ADDITIONAL_ARGS}" "${version_args}"

@@ -9,5 +9,14 @@ liftoff
 
 rm -rf /var/run/kopano/server.pid
 
+case "${KC_BASE}" in
+    8.7.* )
+        version_args="-F"
+    ;;
+    10.*|11.*)
+        :
+    ;;
+esac
+
 print_start "Starting Kopano Server"
-kopano-server "${SERVER_ADDITIONAL_ARGS}"
+kopano-server "${SERVER_ADDITIONAL_ARGS}" "${version_args}"

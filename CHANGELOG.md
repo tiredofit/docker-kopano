@@ -1,3 +1,9 @@
+## 2.12.2 2022-05-14 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add some startup differences for KC 8.7/10/11 versions
+
+
 ## 2.12.1 2022-05-14 <dave at tiredofit dot ca>
 
    ### Added

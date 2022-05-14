@@ -11,5 +11,14 @@ rm -rf /var/run/kopano/dagent.pid
 
 wait_for_server dagent
 
+case "${KC_BASE}" in
+    8.7.* )
+        version_args="-F"
+    ;;
+    10.*|11.*)
+        :
+    ;;
+esac
+
 print_start "Starting Kopano Dagent"
-kopano-dagent -l "${DAGENT_ADDITIONAL_ARGS}"
+kopano-dagent -l "${DAGENT_ADDITIONAL_ARGS}" "${version_args}"
