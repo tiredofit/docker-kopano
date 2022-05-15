@@ -1,5 +1,5 @@
 FROM docker.io/tiredofit/kopano-core:debian-buster-php7.3-kc8.7-latest as kopano-core
-FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.1 as kopano-webservices
+FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.3 as kopano-webservices
 ##
 
 FROM docker.io/tiredofit/nginx-php-fpm:debian-7.3-buster
@@ -197,10 +197,7 @@ RUN set -x && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /etc/apt/sources.list.d/kopano*.list && \
     rm -rf /usr/src/* && \
-    rm -rf /etc/logrotate.d/unattended-upgrades && \
-    rm -rf /etc/logrotate.d/apache* && \
-    rm -rf /etc/logrotate.d/fail2ban && \
-    rm -rf /etc/logrotate.d/kopano && \
+    rm -rf /etc/logrotate.d/* && \
     rm -rf /var/log/*
 
 ### Assets Install

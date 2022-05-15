@@ -570,12 +570,12 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `SERVER_CACHE_USERDETAILS_LIFETIME`      | Lifetime for User Details                                         | `0`                           |
 | `SERVER_CACHE_USERDETAILS`               | User Details Values                                               | `3M`                          |
 | `SERVER_CACHE_USER`                      | User ID Values                                                    | `1M`                          |
-| `SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY` |                                                                   | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_CREATEGROUP`   |                                                                   | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_CREATEUSER`    |                                                                   | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY` |                                                                   | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_DELETEGROUP`   |                                                                   | `internal`                    |
-| `SERVER_CUSTOM_USERSCRIPT_DELETEUSER`    |                                                                   | `internal`                    |
+| `SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY` |                                                                   | `default`                     |
+| `SERVER_CUSTOM_USERSCRIPT_CREATEGROUP`   |                                                                   | `default`                     |
+| `SERVER_CUSTOM_USERSCRIPT_CREATEUSER`    |                                                                   | `default`                     |
+| `SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY` |                                                                   | `default`                     |
+| `SERVER_CUSTOM_USERSCRIPT_DELETEGROUP`   |                                                                   | `default`                     |
+| `SERVER_CUSTOM_USERSCRIPT_DELETEUSER`    |                                                                   | `default`                     |
 | `SERVER_CUSTOM_USERSCRIPT_PATH`          | Where to find user scripts for performing add/del user actions    | `/etc/kopano/userscripts/`    |
 | `SERVER_DISABLED_FEATURES`               |                                                                   |                               |
 | `SERVER_ENABLE_CUSTOM_USERSCRIPTS`       | Enable Custom Userscripts in /config/userscripts                  | `TRUE`                        |

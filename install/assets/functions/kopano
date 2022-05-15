@@ -1458,7 +1458,6 @@ EOF
                                     )
             fi
 
-
             if var_true "${SERVER_ENABLE_SSO}" ; then
                 server_oidc=$(cat<<EOF
 #### OIDC
@@ -1509,6 +1508,56 @@ EOF
             esac
 
             configure_user_backend
+
+            print_debug "Configuring User/Company/Group Scripts"
+            if [ "${SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY}" = "default" ] ; then
+                case "${KC_BASE}" in
+                    8.7.* ) server_script_create_company="${SERVER_CUSTOM_USERSCRIPT_PATH}/createcompany"  ;;
+                    10.*|11.*) server_script_create_company="internal"  ;;
+                esac
+            else
+                    server_script_create_company="${SERVER_CUSTOM_USERSCRIPT_PATH}/${SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY}"
+            fi
+            if [ "${SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY}" = "default" ] ; then
+                case "${KC_BASE}" in
+                    8.7.* ) server_script_delete_company="${SERVER_CUSTOM_USERSCRIPT_PATH}/deletecompany"  ;;
+                    10.*|11.*) server_script_delete_company="internal"  ;;
+                esac
+            else
+                    server_script_delete_company="${SERVER_CUSTOM_USERSCRIPT_PATH}/${SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY}"
+            fi
+            if [ "${SERVER_CUSTOM_USERSCRIPT_CREATEGROUP}" = "default" ] ; then
+                case "${KC_BASE}" in
+                    8.7.* ) server_script_create_group="${SERVER_CUSTOM_USERSCRIPT_PATH}/creategroup"  ;;
+                    10.*|11.*) server_script_create_group="internal"  ;;
+                esac
+            else
+                    server_script_create_group="${SERVER_CUSTOM_USERSCRIPT_PATH}/${SERVER_CUSTOM_USERSCRIPT_CREATEGROUP}"
+            fi
+            if [ "${SERVER_CUSTOM_USERSCRIPT_DELETEGROUP}" = "default" ] ; then
+                case "${KC_BASE}" in
+                    8.7.* ) server_script_delete_group="${SERVER_CUSTOM_USERSCRIPT_PATH}/deletegroup"  ;;
+                    10.*|11.*) server_script_delete_group="internal"  ;;
+                esac
+            else
+                    server_script_delete_group="${SERVER_CUSTOM_USERSCRIPT_PATH}/${SERVER_CUSTOM_USERSCRIPT_DELETEGROUP}"
+            fi
+            if [ "${SERVER_CUSTOM_USERSCRIPT_CREATEUSER}" = "default" ] ; then
+                case "${KC_BASE}" in
+                    8.7.* ) server_script_create_user="${SERVER_CUSTOM_USERSCRIPT_PATH}/createuser"  ;;
+                    10.*|11.*) server_script_create_user="internal"  ;;
+                esac
+            else
+                    server_script_create_user="${SERVER_CUSTOM_USERSCRIPT_PATH}/${SERVER_CUSTOM_USERSCRIPT_CREATEUSER}"
+            fi
+            if [ "${SERVER_CUSTOM_USERSCRIPT_DELETEUSER}" = "default" ] ; then
+                case "${KC_BASE}" in
+                    8.7.* ) server_script_delete_user="${SERVER_CUSTOM_USERSCRIPT_PATH}/deleteuser"  ;;
+                    10.*|11.*) server_script_delete_user="internal"  ;;
+                esac
+            else
+                    server_script_delete_user="${SERVER_CUSTOM_USERSCRIPT_PATH}/${SERVER_CUSTOM_USERSCRIPT_DELETEUSER}"
+            fi
 
             cat <<EOF > "${CONFIG_PATH}"/server.cfg
 ## Custom Generated Kopano Server Configuration! Do not edit, instead set ENV Vars
@@ -1594,12 +1643,12 @@ enable_sso = $(translate_config ${SERVER_ENABLE_SSO})
 ${server_oidc}
 
 ### Scripts
-createuser_script = ${SERVER_CUSTOM_USERSCRIPT_CREATEUSER}
-deleteuser_script = ${SERVER_CUSTOM_USERSCRIPT_DELETEUSER}
-creategroup_script = ${SERVER_CUSTOM_USERSCRIPT_CREATEGROUP}
-deletegroup_script = ${SERVER_CUSTOM_USERSCRIPT_DELETEGROUP}
-createcompany_script = ${SERVER_CUSTOM_USERSCRIPT_CREATECOMPANY}
-deletecompany_script = ${SERVER_CUSTOM_USERSCRIPT_DELETECOMPANY}
+createuser_script = ${server_script_create_user}
+deleteuser_script = ${server_script_delete_user}
+creategroup_script = ${server_script_create_group}
+deletegroup_script = ${server_script_delete_group}
+createcompany_script = ${server_script_create_company}
+deletecompany_script = ${server_script_delete_company}
 
 ${server_stats}
 
@@ -1791,9 +1840,9 @@ configure_webapp() {
           "none")
             :
           ;;
-         *)
+          *)
             print_warn "Unknown AUTHENTICATION_TYPE option. Relying on Application Authentication"
-         ;;
+          ;;
         esac
 
         if var_true "${WEBAPP_ENABLE_REMOTE_PASSWORD}" ; then

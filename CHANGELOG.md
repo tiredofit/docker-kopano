@@ -1,3 +1,9 @@
+## 2.12.5 2022-05-14 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Change user scripts environment variables to support both KC8.7 and 10/11 - Defaults are now 'default' and will automatically adjust. If using a script name, all will still work the same way as before.
+
+
 ## 2.12.4 2022-05-14 <dave at tiredofit dot ca>
 
    ### Changed
