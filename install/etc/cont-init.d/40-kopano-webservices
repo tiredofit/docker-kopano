@@ -82,7 +82,7 @@ if var_true "${ENABLE_ZPUSH}" ; then
 	if [ -n "${Z_PUSH_VERSION_OVERRIDE}" ] ; then
 		print_notice "Overriding Z-Push version with '${Z_PUSH_VERSION_OVERRIDE}"
 		rm -rf /usr/share/zpush/*
-    	curl -sSLk https://github.com/Z-Hub/Z-Push/archive/${Z_PUSH_VERSION_OVERRIDE}.tar.gz | tar xvfz - --strip 1 -C /usr/share/zpush && \
+    	curl -sSLk https://github.com/Z-Hub/Z-Push/archive/${Z_PUSH_VERSION_OVERRIDE}.tar.gz | tar xfz - --strip 1 -C /usr/share/zpush && \
 	    chown -R ${NGINX_USER}:${NGINX_GROUP} /usr/share/zpush
     fi
 	configure_zpush
