@@ -1,3 +1,12 @@
+## 2.12.6 2022-06-02 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add remove_stale_devices.sh for Zpush state cleanup
+
+   ### Changed
+      - Fix Z-Push version from not showing
+
+
 ## 2.12.5 2022-05-14 <dave at tiredofit dot ca>
 
    ### Changed
