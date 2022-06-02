@@ -1,3 +1,9 @@
+## 2.12.7 2022-06-02 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Update remove_stale_devices.sh to read container environment variables and not be so self contained
+
+
 ## 2.12.6 2022-06-02 <dave at tiredofit dot ca>
 
    ### Added

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/command/with-contenv bash
 ## Delete Old Devices from Z-Push after a set amount of days
 
 if [ -n "$1" ] ; then SYNC_PURGE_DAYS=$1 ; fi
@@ -10,7 +10,7 @@ REMOVE_NEVER=${REMOVE_NEVER:-"TRUE"}
 
 lastsync_report=$(mktemp)
 touch "${LOG_PATH}"/"${LOG_FILE}"
-zpush-admin -a lastsync | tail -n +7 > $lastsync_report
+zpush-admin -a lastsync | tail -n +7 > "${lastsync_report}"
 
 while IFS= read -r line
 do
