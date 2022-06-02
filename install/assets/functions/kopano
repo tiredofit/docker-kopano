@@ -2396,6 +2396,13 @@ configure_webapp_plugin_texttemplates() {
 configure_zpush() {
     if var_true "${ENABLE_ZPUSH}" ; then
         print_notice "Z-Push: Enabled"
+        if [ -n "${Z_PUSH_VERSION_OVERRIDE}" ] ; then
+            zp_ver="${Z_PUSH_VERSION_OVERRIDE}"
+        else
+            zp_ver="$(cat /assets/.changelogs/zpush.version | awk '{ print $2 }')"
+        fi
+        sed -i "s|define(\"ZPUSH_VERSION\", \"GIT\"|define(\"ZPUSH_VERSION\", \"${zp_ver}\"|g" /usr/share/zpush/src/version.php
+
         case "${ZPUSH_SERVE_MODE,,}" in
             "nginx" )
                 ### Configure Nginx
@@ -2500,10 +2507,6 @@ EOF
             print_debug "Z-Push: Autoconfiguring"
             rm -rf /usr/share/zpush/src/config.php
             ln -sf "${CONFIG_PATH}"/"${ZPUSH_CONFIG_FILE}" /usr/share/zpush/src/config.php
-            if [ -n "${Z_PUSH_VERSION_OVERRIDE}" ] ; then
-                zp_ver="${Z_PUSH_VERSION_OVERRIDE}"
-            else
-                zp-ver="$(cat /assets/.changelogs/zpush.version | awk '{ print $2 }')"
             cat <<EOF > "${CONFIG_PATH}"/"${ZPUSH_CONFIG_FILE}"
 <?php
 // Custom Generated ZPush Configuration! Do not edit, instead set ENV Vars
