@@ -2444,7 +2444,7 @@ configure_zpush() {
 
             ### Z-Push IPC Provider Configuration
             case "${ZPUSH_IPC_PROVIDER,,}" in
-                "memcached" | "memcache" )
+                memcache* )
                     print_debug "Z-Push: Configuring Memcached State Type"
                     zpush_ipc_provider="IpcMemcachedProvider"
                     sanity_var ZPUSH_MEMCACHED_HOST "Z-Push Memcached Host"
@@ -2500,6 +2500,10 @@ EOF
             print_debug "Z-Push: Autoconfiguring"
             rm -rf /usr/share/zpush/src/config.php
             ln -sf "${CONFIG_PATH}"/"${ZPUSH_CONFIG_FILE}" /usr/share/zpush/src/config.php
+            if [ -n "${Z_PUSH_VERSION_OVERRIDE}" ] ; then
+                zp_ver="${Z_PUSH_VERSION_OVERRIDE}"
+            else
+                zp-ver="$(cat /assets/.changelogs/zpush.version | awk '{ print $2 }')"
             cat <<EOF > "${CONFIG_PATH}"/"${ZPUSH_CONFIG_FILE}"
 <?php
 // Custom Generated ZPush Configuration! Do not edit, instead set ENV Vars
