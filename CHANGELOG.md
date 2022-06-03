@@ -1,3 +1,9 @@
+## 2.12.9 2022-06-03 <dave at tiredofit dot ca>
+
+   ### Added
+      - Improve logging of Z-Push sync deletions script
+
+
 ## 2.12.8 2022-06-03 <dave at tiredofit dot ca>
 
    ### Reverted

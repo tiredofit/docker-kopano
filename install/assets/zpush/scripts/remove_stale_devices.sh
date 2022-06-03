@@ -21,14 +21,14 @@ do
   if [ "${syncdate}" = "never" ] ; then
      if [ "${REMOVE_NEVER,,}" = "true" ] ; then
         zpush-admin -a remove -u ${username} -d ${deviceid}
-        echo "$(TZ=${TIMEZONE} date +'%Y-%m-%d.%H:%M:%S %Z') REMOVE ${username} ${deviceid} NEVER" >> "${LOG_PATH}"/"${LOG_FILE}"
+        echo "$(TZ=${TIMEZONE} date +'%Y-%m-%d.%H:%M:%S %z') | REMOVE ${username} ${deviceid} NEVER" >> "${LOG_PATH}"/"${LOG_FILE}"
      fi
   fi
 
   days_diff=$(( (`date -d "00:00" +%s` - `date -d "${syncdate}" +%s`) / (24*3600) ))
   if [[ "${days_diff}" -gt ${SYNC_PURGE_DAYS} ]] ; then
      zpush-admin -a remove -u ${username} -d ${deviceid}
-     echo "$(TZ=${TIMEZONE} date +'%Y-%m-%d.%H:%M:%S %Z') REMOVE ${username} ${deviceid} ${days_diff}" >> "${LOG_PATH}"/"${LOG_FILE}"
+     echo "$(TZ=${TIMEZONE} date +'%Y-%m-%d.%H:%M:%S %z') | REMOVE ${username} ${deviceid} ${days_diff}" >> "${LOG_PATH}"/"${LOG_FILE}"
   fi
 done < "$lastsync_report"
 
