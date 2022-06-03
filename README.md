@@ -97,10 +97,9 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 | `SETUP_TYPE`       | `MANUAL` or `AUTO` to auto generate cofniguration for services on bootup, otherwise let admin control configuration. | `AUTO`     |
 | `MODE`             | Container Mode - Which services to use - Multiple modes can occur by seperating with comma e.g. `DAGENT,SPAMD`       | `CORE`     |
 |                    | Options _(not all will work on their own, you may need multiple modes defined)_:                                 |            |
-|                    | `AIO` All in one - Kopano Core, Webapp, Zpush, Konnect, Meet                                                         |            |
+|                    | `AIO` All in one - Kopano Core, Webapp, Zpush, Konnect                                                               |            |
 |                    | `Core` Autorespond, Backup, Dagent, Gateway, ICAL, KDAV, Monitor, Server, Spamd, Spooler, Webapp, Z-Push             |            |
 |                    | `WEB` Webapp, Z-Push                                                                                                 |            |
-|                    | `MEET` GRAPI, KAPI, Konnect, KWMSever, Meet Webapp                                                                   |            |
 |                    | `AUTORESPOND` - Autoresponder                                                                                        |            |
 |                    | `BACKUP` - Backup                                                                                                    |            |
 |                    | `DAGENT` - DAgent                                                                                                    |            |
@@ -701,9 +700,7 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `WEBAPP_HOSTNAME`                                    | Hostname of Webmail service                                       | `webapp.example.com`                                                                                                      |
 | `WEBAPP_ICONSET`                                     | Set Default Icons                                                 | `breeze`                                                                                                                  |
 | `WEBAPP_INSECURE_COOKIES`                            | Allow Insecure Cookies                                            | `FALSE`                                                                                                                   |
-| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |
-|                                                      |
-| `WEBAPP_LISTEN_PORT`                                 | Port to listen for Webapp requests on                             | `80`                                                                                                                      |  |  |
+| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |  |
 | `WEBAPP_LOG_LEVEL`                                   | Override master `LOG_LEVEL` environment for this specific service |                                                                                                                           |
 | `WEBAPP_LOG_SUCCESSFUL_LOGINS`                       |                                                                   | `FALSE`                                                                                                                   |
 | `WEBAPP_LOG_USERS`                                   |                                                                   |                                                                                                                           |
@@ -860,103 +857,6 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 | ------------------------------------ | ------------- | ------- |
 | `WEBAPP_PLUGIN_ENABLE_TEXTTEMPLATES` | Enable Plugin | `FALSE` |
 
-#### Meet Video Conferencing
-
-##### GRAPI Options
-
-| Parameter                             | Description                               | Default                 |
-| ------------------------------------- | ----------------------------------------- | ----------------------- |
-| `ENABLE_GRAPI`                        | Enable Service                            | `TRUE`                  |
-| `GRAPI_WORKERS`                       | Amount of Worker Processes                | `8`                     |
-| `GRAPI_PATH`                          | Path for Storing GRAPI Data               | `/data/grapi/`          |
-| `GRAPI_CONFIG_FILE`                   | Configuration File                        | `grapi.cfg`             |
-| `GRAPI_DISABLE_TLS_VALIDATION`        | Don't validate client certificates        | `FALSE`                 |
-| `GRAPI_ENABLE_EXPERIMENTAL_ENDPOINTS` | Enable experimental endpoints             | `FALSE`                 |
-| `GRAPI_SOCKET_SERVER`                 | What should service use to contact server | `${SOCKET_SERVER}`      |
-| `SOCKET_GRAPI`                        | Socket file                               | `/var/run/kopano-grapi` |
-
-###### KAPI Options (needs work)
-
-| Parameter                     | Description        | Default                                  |
-| ----------------------------- | ------------------ | ---------------------------------------- |
-| `ENABLE_KAPI`                 | Enable Service     | `TRUE`                                   |
-| `KAPI_CONFIG_FILE`            | Configuration File | `kapi.cfg`                               |
-| `KAPI_DISABLE_TLS_VALIDATION` |                    | `FALSE`                                  |
-| `KAPI_HOST_SECURE`            |                    | `FALSE`                                  |
-| `KAPI_KVS_DB_SQLITE_FILE`     |                    | `/data/kapi/kvs/kvs.db`                  |
-| `KAPI_KVS_DB_TYPE`            |                    | `SQLITE3`                                |
-| `KAPI_KVS_PATH_DB_MIGRATIONS` |                    | `/usr/lib/kopano/kapi-kvs/db/migrations` |
-| `KAPI_LISTEN_HOST`            |                    | `127.0.0.1`                              |
-| `KAPI_LISTEN_PORT`            |                    | `8039`                                   |
-| `KAPI_PATH_PLUGINS`           |                    | `/usr/lib/kopano/kapid-plugins`          |
-| `KAPI_PLUGINS`                |                    | `grapi kvs pubs`                         |
-| `KAPI_PUBS_SECRET_KEY_FILE`   |                    | `/certs/kapi/kapid-pubs-secret.key`      |
-
-###### Konnect Options (needs work)
-
-| Parameter                                     | Description                               | Default                                        |
-| --------------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
-| `ENABLE_KONNECT`                              | Enable Service                            | `TRUE`                                         |
-| `KONNECT_BACKEND`                             | Konnect Backend                           | `KC`                                           |
-| `KONNECT_CONFIG_FILE_IDENTIFIER_REGISTRATION` |                                           | `konnectd-identifier-registration.yml`         |
-| `KONNECT_CONFIG_FILE_IDENTIFIER_SCOPES`       |                                           | `konnectd-identifier-scopes.yaml`              |
-| `KONNECT_CONFIG_FILE`                         | Configuration File                        | `konnectd.cfg`                                 |
-| `KONNECT_DISABLE_TLS_VALIDATION`              |                                           | `FALSE`                                        |
-| `KONNECT_ENABLE_CLIENT_DYNAMIC_REGISTRATION`  |                                           | `FALSE`                                        |
-| `KONNECT_ENABLE_CLIENT_GUESTS`                |                                           | `FALSE`                                        |
-| `KONNECT_HOST_SECURE`                         |                                           | `FALSE`                                        |
-| `KONNECT_HOSTNAME`                            | Konnect Service Hostname                  |                                                |
-| `KONNECT_IDENTITY_MANAGER_ARGUMENTS`          |                                           |                                                |
-| `KONNECT_JWT_METHOD`                          |                                           | `PS256`                                        |
-| `KONNECT_LISTEN_HOST`                         |                                           | `127.0.0.1`                                    |
-| `KONNECT_LISTEN_PORT`                         |                                           | `8777`                                         |
-| `KONNECT_SIGNING_KEY_FILE`                    |                                           | `/certs/konnect/konnect-signing-key.pem`       |
-| `KONNECT_SIGNING_SECRET_FILE`                 |                                           | `/certs/konnect/konnect-encryption-secret.key` |
-| `KONNECT_SOCKET_SERVER`                       | What should service use to contact server | `${SOCKET_SERVER}`                             |
-| `KONNECT_TIMEOUT_SESSION_KOPANO`              |                                           | `240`                                          |
-| `KONNECT_VALIDATION_KEYS_PATH`                |                                           | `/certs/konnect/konnect-validation`            |
-| `KONNECT_WEBROOT`                             |                                           | `/usr/share/kopano-konnect`                    |
-| `LOG_FILE_KONNECT`                            | Logfile Name                              | `konnect.log`                                  |
-
-##### KWM Server Options (needs work)
-
-| Parameter                        | Description        | Default                                       |
-| -------------------------------- | ------------------ | --------------------------------------------- |
-| `ENABLE_KWM`                     | Enable Service     | `TRUE`                                        |
-| `KWM_CONFIG_FILE`                | Configuration File | `kwmserverd.cfg`                              |
-| `KWM_CONFIG_FILE_REGISTRATION`   |                    | `kwmserverd-registration.yml`                 |
-| `KWM_DISABLE_TLS_VALIDATION`     |                    | `FALSE`                                       |
-| `KWM_ENABLE_API_GUEST`           |                    | `FALSE`                                       |
-| `KWM_ENABLE_API_MCU`             |                    | `FALSE`                                       |
-| `KWM_ENABLE_API_RTM`             |                    | `TRUE`                                        |
-| `KWM_GUEST_ALLOW_JOIN_EMPTY`     |                    | `FALSE`                                       |
-| `KWM_GUEST_PUBLIC_ACCESS_REGEXP` |                    | `^group/public/.*`                            |
-| `KWM_HOST_SECURE`                |                    | `FALSE`                                       |
-| `KWM_LISTEN_HOST`                |                    | `127.0.0.1`                                   |
-| `KWM_LISTEN_PORT`                |                    | `8778`                                        |
-| `KWM_TOKENS_SECRET_KEY_FILE`     |                    | `/certs/kwm/kwm-tokens-secret.key`            |
-| `KWM_TURN_AUTH_SECRET_FILE`      |                    | `/certs/kwm/kwm-turn-auth-secret.secret`      |
-| `KWM_TURN_AUTH_SERVER_FILE`      |                    | `/certs/kwm/kwm-turn-auth-server.secret`      |
-| `KWM_TURN_URL`                   |                    | `https://turnauth.kopano.com/turnserverauth/` |
-
-##### Meet Options
-
-| Parameter                         | Description                           | Default                                                                                |
-| --------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------- |
-| `MEET_CONFIG_FILE`                | Configuration File                    | `meet.json`                                                                            |
-| `MEET_ENABLE_GUESTS`              | Enable Guests to join meetings        | `TRUE`                                                                                 |
-| `MEET_EXTERNAL_APPS`              | What applications to show in Apps bar | `kopano-calendar,kopano-contacts,kopano-meet,kopano-mail,kopano-connect,kopano-webapp` |
-| `MEET_EXTERNAL_CALENDAR_HOSTNAME` | URL for Calendar Hostname in app bar  |                                                                                        |
-| `MEET_EXTERNAL_CONTACTS_HOSTNAME` | URL for Contacts Hostname in app bar  |                                                                                        |
-| `MEET_EXTERNAL_KONNECT_HOSTNAME`  | URL for Konnect Hostname in app bar   |                                                                                        |
-| `MEET_EXTERNAL_MAIL_HOSTNAME`     | URL for Mail Hostname in app bar      |                                                                                        |
-| `MEET_EXTERNAL_WEBAPP_HOSTNAME`   | URL for Webapp Hostname in app bar    |                                                                                        |
-| `MEET_GUESTS_DEFAULT_USER`        |                                       | `null`                                                                                 |
-| `MEET_HOSTNAME`                   | Hostname to use for Kopano Meet       |                                                                                        |
-| `MEET_KWM_URL`                    | KWM URL                               |                                                                                        |
-| `MEET_OIDC_ISS`                   | OIDC ISS                              |                                                                                        |
-| `MEET_WEBROOT`                    | For Nginx configuration               | `/usr/share/kopano-meet/meet-webapp`                                                   |
-
 #### Z-Push Activesync
 
 ##### Z-Push Database Options
@@ -1041,7 +941,7 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 | `ZPUSH_SEARCH_PROVIDER`                    | Backend Search Provider                                                       | `BackendKopano`                                       |
 | `ZPUSH_SEARCH_TIME`                        | Search Timeout                                                                | `10`                                                  |
 | `ZPUSH_SOCKET_SERVER`                      | What should service use to contact server                                     | `${SOCKET_SERVER}`                                    |
-| `ZPUSH_STATE_FILE_PATH`                    |                                                                               | `/data/zpush/`                                        |
+| `ZPUSH_STATE_FILE_PATH`                    | WWhere to store sync states when type `FILE`                                  | `/data/zpush/`                                        |
 | `ZPUSH_STATE_TYPE`                         | State Type                                                                    | `FILE`                                                |
 | `ZPUSH_SYNC_ENABLE_PARTIAL_FOLDERSYNC`     | Allow Partial Folder Synchronization                                          | `FALSE`                                               |
 | `ZPUSH_SYNC_MAX_CONTACTS_PICTURE_SIZE`     | Max size for Contacts Picture                                                 | `5242880`                                             |
@@ -1050,7 +950,7 @@ Message template will be auto generated for you and saved in ${CONFIG_PATH}/weba
 | `ZPUSH_SYNC_RETRY_DELAY`                   | Retry when failure in seconds                                                 | `300`                                                 |
 | `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_LONG`      | Show leniency for these devices                                               | `iPod, iPad, iPhone, WP, WindowsOutlook, WindowsMail` |
 | `ZPUSH_SYNC_TIMEOUT_DEVICETYPES_MEDIUM`    | Show medium leniency for these devices                                        | `SAMSUNGTI`                                           |
-| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    | Should we sync undefined MAPI properties                                      | `FALSE`                                               |
+| `ZPUSH_SYNC_UNSET_UNDEFINED_PROPERTIES`    | Should we unset ndefined MAPI properties                                      | `FALSE`                                               |
 
 ### Networking
 

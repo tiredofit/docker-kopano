@@ -1,3 +1,9 @@
+## 2.12.8 2022-06-03 <dave at tiredofit dot ca>
+
+   ### Reverted
+      - Removal of traces of Kopano Meet as it's been discontinued
+
+
 ## 2.12.7 2022-06-02 <dave at tiredofit dot ca>
 
    ### Changed
