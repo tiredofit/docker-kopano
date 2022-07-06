@@ -1,3 +1,9 @@
+## 2.12.10 2022-07-06 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update to support tiredofit/nginx:7.xx and nginx-php-fpm/6.x.x featureset
+
+
 ## 2.12.9 2022-06-03 <dave at tiredofit dot ca>
 
    ### Added

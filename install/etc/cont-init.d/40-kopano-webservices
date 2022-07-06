@@ -15,7 +15,7 @@ configure_logging
 if var_true "${ENABLE_CALENDAR}" || var_true "${ENABLE_KDAV}" || var_true "${ENABLE_WEBAPP}" || var_true "${ENABLE_ZPUSH}" || var_true "${ENABLE_ZPUSH_AUTODISCOVER}" ; then
 	source /assets/defaults/10-nginx
 	source /assets/defaults/20-php-fpm
-	rm -rf /etc/nginx/conf.d/default.conf
+    source /assets/functions/10-nginx
 else
     service_stop 10-nginx
     service_stop 11-nginx-config-reload

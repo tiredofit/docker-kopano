@@ -1,13 +1,13 @@
-### Application Level Image CI
-### Dave Conroy <dave at tiredofit dot ca>
+# Manual Workflow (Application)
 
-name: 'build'
+name: manual
+
 on:
-  push:
-    paths:
-    - '**'
-    - '!README.md'
-    - '!manual.yml'
+  workflow_dispatch:
+    inputs:
+      Manual Build:
+        description: 'Manual Build'
+        required: false
 jobs:
   kc87_php80_debian_buster:
     env:

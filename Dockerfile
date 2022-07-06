@@ -1,8 +1,8 @@
 FROM docker.io/tiredofit/kopano-core:debian-buster-php7.3-kc8.7-latest as kopano-core
-FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.3 as kopano-webservices
+FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.4 as kopano-webservices
 ##
 
-FROM docker.io/tiredofit/nginx-php-fpm:debian-7.3-buster
+FROM docker.io/tiredofit/nginx-php-fpm:7.3-debian_buster
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ADD build-assets/ /build-assets
@@ -18,9 +18,11 @@ COPY --from=kopano-core /*.md /assets/.changelogs/
 COPY --from=kopano-webservices /kopano-webservices/* /usr/src/kopano-webservices/
 COPY --from=kopano-webservices /*.md /assets/.changelogs/
 
-ENV NGINX_LOG_ACCESS_LOCATION=/logs/nginx \
+ENV NGINX_APPLICATION_CONFIGURATION=FALSE \
+    NGINX_LOG_ACCESS_LOCATION=/logs/nginx \
     NGINX_LOG_BLOCKED_LOCATION=/logs/nginx \
     NGINX_LOG_ERROR_LOCATION=/logs/nginx \
+    NGINX_SITE_ENABLED=null \
     NGINX_WEBROOT=/usr/share/kopano-webapp \
     PHP_CREATE_SAMPLE_PHP=FALSE \
     PHP_ENABLE_GETTEXT=TRUE \

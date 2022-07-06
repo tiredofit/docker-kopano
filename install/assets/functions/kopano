@@ -285,16 +285,16 @@ configure_calendar() {
 
         ### Configure Nginx
         if [ "${CALENDAR_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
-            sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/calendar.template;" /etc/nginx/conf.available/webapp.template
+            sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/calendar.conf;" /etc/nginx/sites.available/webapp.conf
         else
-            sed -i "s|<CALENDAR_HOSTNAME>|${CALENDAR_HOSTNAME}|g" /etc/nginx/conf.available/calendar.template
-            ln -s /etc/nginx/conf.available/calendar.template /etc/nginx/conf.d/calendar.conf
+            sed -i "s|<CALENDAR_HOSTNAME>|${CALENDAR_HOSTNAME}|g" /etc/nginx/sites.available/calendar.conf
+            nginx_site_enable calendar
         fi
-        sed -i "s|<CALENDAR_LISTEN_PORT>|${CALENDAR_LISTEN_PORT}|g" /etc/nginx/conf.available/calendar.template
-        sed -i "s|<WEBROOT_CALENDAR>|${CALENDAR_WEBROOT}|g" /etc/nginx/conf.available/calendar.template
-        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/calendar.template
-        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/calendar.template
-        ln -sf /etc/nginx/conf.available/calendar.template /etc/nginx/conf.d/calendar.conf
+        sed -i "s|<CALENDAR_LISTEN_PORT>|${CALENDAR_LISTEN_PORT}|g" /etc/nginx/sites.available/calendar.conf
+        sed -i "s|<WEBROOT_CALENDAR>|${CALENDAR_WEBROOT}|g" /etc/nginx/sites.available/calendar.conf
+        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/calendar.conf
+        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/calendar.conf
+        nginx_site_enable calendar
 
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
             print_notice "Calendar: Auto Configuring"
@@ -1169,16 +1169,16 @@ configure_kdav() {
             ### Configure Nginx
             print_debug "Using Nginx for KDAV"
             if [ "${KDAV_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
-                sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/kdav-webapp.template;" /etc/nginx/conf.available/webapp.template
+                sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/kdav-webapp.conf;" /etc/nginx/sites.available/webapp.conf
             else
-                sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/nginx/conf.available/kdav.template
-                ln -s /etc/nginx/conf.available/kdav.template /etc/nginx/conf.d/kdav.conf
+                sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/nginx/sites.available/kdav.conf
+                nginx_site_enable kdav
             fi
-            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/nginx/conf.available/kdav.template
-            sed -i "s|<WEBROOT>|/usr/share/kdav|g" /etc/nginx/conf.available/kdav.template
-            sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/kdav.template
-            sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/kdav.template
-            ln -sf /etc/nginx/conf.available/kdav.template /etc/nginx/conf.d/kdav.conf
+            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/nginx/sites.available/kdav.conf
+            sed -i "s|<WEBROOT>|/usr/share/kdav|g" /etc/nginx/sites.available/kdav.conf
+            sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/kdav.conf
+            sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/kdav.conf
+            nginx_site_enable kdav
         fi
 
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
@@ -1823,18 +1823,18 @@ configure_webapp() {
         mkdir -p "${WEBAPP_TMP_PATH}"
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" "${WEBAPP_TMP_PATH}"
         ### Nginx
-        sed -i "s|<WEBAPP_HOSTNAME>|${WEBAPP_HOSTNAME}|g" /etc/nginx/conf.available/webapp.template
-        sed -i "s|<WEBAPP_LISTEN_PORT>|${WEBAPP_LISTEN_PORT}|g" /etc/nginx/conf.available/webapp.template
-        sed -i "s|<WEBROOT>|/usr/share/kopano-webapp|g" /etc/nginx/conf.available/webapp.template
-        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/webapp.template
-        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/webapp.template
+        sed -i "s|<WEBAPP_HOSTNAME>|${WEBAPP_HOSTNAME}|g" /etc/nginx/sites.available/webapp.conf
+        sed -i "s|<WEBAPP_LISTEN_PORT>|${WEBAPP_LISTEN_PORT}|g" /etc/nginx/sites.available/webapp.conf
+        sed -i "s|<WEBROOT>|/usr/share/kopano-webapp|g" /etc/nginx/sites.available/webapp.conf
+        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/webapp.conf
+        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/webapp.conf
         case "${NGINX_AUTHENTICATION_TYPE,,}" in
           "llng")
               print_notice "Setting Webapp LLNG Authentication"
-              sed -i '/server {/a\ \ \ \ \  include /etc/nginx/nginx.conf.d/authentication/llng_location_block;' /etc/nginx/conf.available/webapp.template
-              sed -i '/server {/a\ \ \ \ \  ### LLNG Authentication Checkpoint' /etc/nginx/conf.available/webapp.template
-              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ include /etc/nginx/nginx.conf.d/authentication/llng_auth_request;' /etc/nginx/conf.available/webapp.template
-              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ ### LLNG Authentication handler' /etc/nginx/conf.available/webapp.template
+              sed -i '/server {/a\ \ \ \ \  include /etc/nginx/snippets/authentication/llng_location_block;' /etc/nginx/sites.available/webapp.conf
+              sed -i '/server {/a\ \ \ \ \  ### LLNG Authentication Checkpoint' /etc/nginx/sites.available/webapp.conf
+              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ include /etc/nginx/snippets/authentication/llng_auth_request;' /etc/nginx/sites.available/webapp.conf
+              sed -i '/location \/ {/a\ \ \ \ \ \ \ \ ### LLNG Authentication handler' /etc/nginx/sites.available/webapp.conf
               ;;
           "none")
             :
@@ -1849,7 +1849,7 @@ configure_webapp() {
             sed -i "s|WebAppAuthentication::login(\$username, '');|WebAppAuthentication::login(\$username, \$_SERVER['REMOTE_PASSWORD']);|g" /usr/share/kopano-webapp/server/includes/core/class.webappauthentication.php
         fi
 
-        ln -s /etc/nginx/conf.available/webapp.template /etc/nginx/conf.d/webapp.conf
+        nginx_site_enable webapp
 
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
             print_notice "Webapp: AutoConfiguring"
@@ -2408,8 +2408,8 @@ configure_zpush() {
                 case "${NGINX_AUTHENTICATION_TYPE,,}" in
                 "llng")
                     print_notice "Setting Webapp LLNG Authentication"
-                    sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
-                    sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush.template
+                    sed "/llng/d" /etc/nginx/snippets/php-fpm.conf > /etc/nginx/snippets/php-fpm-nollng.conf
+                    sed -i "s|include /etc/nginx/snippets/php-fpm.conf;|include /etc/nginx/snippets/php-fpm-nollng.conf;|g" /etc/nginx/sites.available/zpush.conf
                     ;;
                 "none")
                     :
@@ -2420,21 +2420,21 @@ configure_zpush() {
                 esac
 
                 if [ "${ZPUSH_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
-                    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/webapp.template
+                    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/zpush-activesync.conf;" /etc/nginx/sites.available/webapp.conf
                 else
-                    sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/nginx/conf.available/zpush.template
-                    sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush.template
-                    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/zpush-activesync.template;" /etc/nginx/conf.available/zpush.template
-                    ln -s /etc/nginx/conf.available/zpush.template /etc/nginx/conf.d/zpush.conf
+                    sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/nginx/sites.available/zpush.conf
+                    sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/nginx/sites.available/zpush.conf
+                    sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/zpush-activesync.conf;" /etc/nginx/sites.available/zpush.conf
+                    nginx_site_enable zpush
                 fi
-                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-activesync.template
-                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-activesync.template
+                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/zpush-activesync.conf
+                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/zpush-activesync.conf
                 zpush_content_body_size=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 0-9)
                 zpush_content_body_size_unit=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 'a-zA-Z')
                 zpush_content_body_size_overhead="$(echo "$(scale=1; echo "${zpush_content_body_size}"*1.33 | bc | awk '{printf "%.0f\n", $1}')")"
                 print_debug "Setting Z-Push Content Body overhead to '${zpush_content_body_size_overhead}${zpush_content_body_size_unit}' from message size '${ZPUSH_CONTENT_BODY_SIZE}'"
-                sed -i "s|<ZPUSH_CONTENT_BODY_SIZE>|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/conf.available/zpush-activesync.template
-                sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/nginx/conf.available/zpush-activesync.template
+                sed -i "s|<ZPUSH_CONTENT_BODY_SIZE>|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/sites.available/zpush-activesync.conf
+                sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/nginx/sites.available/zpush-activesync.conf
             ;;
             "apache" )
                 ### Configure Apache
@@ -2776,8 +2776,8 @@ configure_zpush_autodiscover() {
                 case "${NGINX_AUTHENTICATION_TYPE,,}" in
                 "llng")
                     print_notice "Setting Webapp LLNG Authentication"
-                    sed "/llng/d" /etc/nginx/nginx.conf.d/php-fpm.conf > /etc/nginx/nginx.conf.d/php-fpm-nollng.conf
-                    sed -i "s|include /etc/nginx/nginx.conf.d/php-fpm.conf;|include /etc/nginx/nginx.conf.d/php-fpm-nollng.conf;|g" /etc/nginx/conf.available/zpush-autodiscover.template
+                    sed "/llng/d" /etc/nginx/snippets/php-fpm.conf > /etc/nginx/snippets/php-fpm-nollng.conf
+                    sed -i "s|include /etc/nginx/snippets/php-fpm.conf;|include /etc/nginx/snippets/php-fpm-nollng.conf;|g" /etc/nginx/sites.available/zpush-autodiscover.conf
                     ;;
                 "none")
                     :
@@ -2787,11 +2787,11 @@ configure_zpush_autodiscover() {
                 ;;
                 esac
 
-                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/conf.available/zpush-autodiscover.template
-                ln -sf /etc/nginx/conf.available/zpush-autodiscover.template /etc/nginx/conf.d/zpush-autodiscover.conf
+                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
+                sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
+                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
+                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
+                nginx_site_enable zpush-autodiscover
             ;;
             "apache" )
                 ### Configure Apache
