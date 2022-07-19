@@ -1,8 +1,14 @@
-FROM docker.io/tiredofit/kopano-core:debian-buster-php7.3-kc8.7-latest as kopano-core
-FROM docker.io/tiredofit/kopano-webservices:debian-buster-php7.3-2.4.4 as kopano-webservices
-##
+ARG KOPANO_CORE_IMAGE_VERSION=latest
+ARG KOPANO_CORE_VERSION=8.7
+ARG KOPANO_WEBSERVICES_IMAGE_VERSION=2.4.4
+ARG PHP_BASE=7.3
+ARG DISTRO=debian
+ARG DISTRO_VARIANT=buster
 
-FROM docker.io/tiredofit/nginx-php-fpm:7.3-debian_buster
+FROM docker.io/tiredofit/kopano-core:${DISTRO}-${DISTRO_VARIANT}-php${PHP_BASE}-kc${KOPANO_CORE_VERSION}-${KOPANO_CORE_IMAGE_VERSION} as kopano-core
+FROM docker.io/tiredofit/kopano-webservices:${DISTRO}-${DISTRO_VARIANT}-php${PHP_BASE}-${KOPANO_WEBSERVICES_IMAGE_VERSION} as kopano-webservices
+FROM docker.io/tiredofit/nginx-php-fpm:${PHP_BASE}-${DISTRO}_${DISTRO_VARIANT}
+
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ADD build-assets/ /build-assets
@@ -39,7 +45,7 @@ ENV NGINX_APPLICATION_CONFIGURATION=FALSE \
     PHP_ENABLE_XMLWRITER=TRUE \
     PHP_ENABLE_TOKENIZER=TRUE \
     PHP_LOG_LOCATION=/logs/php-fpm \
-    IMAGE_NAME="tiredofit/kopano" \
+    IMAGE_NAME="tiredofit/kopano:${KOPANO_CORE_VERSION}" \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-kopano/"
 
 RUN set -x && \
