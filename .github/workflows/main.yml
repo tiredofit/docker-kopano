@@ -106,9 +106,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc87_php80_debian_buster_latest:
@@ -202,15 +202,15 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc87_php74_debian_buster:
     env:
-      KC_VERSION: "8.7"
-      PHP_VERSION: "7.4"
+      KC_VERSION: 8.7
+      PHP_VERSION: 7.4
       DISTRO: "debian"
       DISTRO_VARIANT: "buster"
     runs-on: ubuntu-latest
@@ -304,9 +304,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc87_php74_debian_buster_latest:
@@ -400,9 +400,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc87_php73_debian_buster:
@@ -502,9 +502,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc87_php73_debian_buster_latest:
@@ -598,9 +598,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc10_php74_debian_buster:
@@ -700,9 +700,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc10_php74_debian_buster_latest:
@@ -796,9 +796,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc10_php73_debian_buster:
@@ -898,9 +898,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc10_php73_debian_buster_latest:
@@ -994,9 +994,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc11_php80_debian_buster:
@@ -1096,9 +1096,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc11_php80_debian_buster_latest:
@@ -1192,9 +1192,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
 
@@ -1295,9 +1295,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc11_php74_debian_buster_latest:
@@ -1391,9 +1391,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc11_php73_debian_buster:
@@ -1493,9 +1493,9 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           build-args: |
-             DISTRO={{ env.DISTRO }}
-             DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-             KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+             DISTRO=${{ env.DISTRO }}
+             DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+             KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
              PHP_BASE=${{ env.PHP_VERSION }}
 
   kc11_php73_debian_buster_latest:
@@ -1589,7 +1589,7 @@ jobs:
         push: true
         tags: ${{ steps.prep.outputs.tags }}
         build-args: |
-           DISTRO={{ env.DISTRO }}
-           DISTRO_VARIANT={{ env.DISTRO_VARIANT }}
-           KOPANO_CORE_VERSION={{ env.KC_VERSION }}
+           DISTRO=${{ env.DISTRO }}
+           DISTRO_VARIANT=${{ env.DISTRO_VARIANT }}
+           KOPANO_CORE_VERSION=${{ env.KC_VERSION }}
            PHP_BASE=${{ env.PHP_VERSION }}
