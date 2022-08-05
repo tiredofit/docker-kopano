@@ -440,6 +440,64 @@ EOF
     fi
 }
 
+configure_fail2ban_kopano() {
+    source /assets/defaults/07-firewall
+    if var_true "${ENABLE_GATEWAY}" ; then
+        print_debug "Fail2Ban: Adding Jail - Kopano Gateway"
+        cat <<EOF > "${FAIL2BAN_CONFIG_PATH}"/jail.d/
+[kopano-gateway]
+enabled = ${GATEWAY_ENABLE_FAIL2BAN}
+port    = imap,imaps,pop3,pop3s
+filter  = kopano-gateway-auth
+logpath = ${LOG_PATH_KOPANO}/${LOG_FILE_GATEWAY}
+EOF
+    fi
+
+    if var_true "${ENABLE_ICAL}" ; then
+        print_debug "Fail2Ban: Adding Jail - Kopano ICAL"
+        cat <<EOF > "${FAIL2BAN_CONFIG_PATH}"/jail.d/kopano-ical.conf
+[kopano-ical]
+enabled = ${ICAL_ENABLE_FAIL2BAN}
+port    = http, https,${ICAL_LISTEN_PORT},${ICAL_LISTEN_PORT_SECURE}
+filter  = kopano-ical-auth
+logpath = ${LOG_PATH_KOPANO}/${LOG_FILE_ICAL}
+EOF
+    fi
+
+    if var_true "${ENABLE_KDAV}" ; then
+        print_debug "Fail2Ban: Adding Jail - Kopano DAV"
+        cat <<EOF > "${FAIL2BAN_CONFIG_PATH}"/jail.d/kopano-kdav.conf
+[kopano-kdav]
+enabled = ${KDAV_ENABLE_FAIL2BAN}
+port    = http,https
+filter  = kopano-kdav-auth
+logpath = ${LOG_PATH_KOPANO}/${LOG_FILE_KDAV}
+EOF
+    fi
+
+    if var_true "${ENABLE_WEBAPP}" ; then
+        print_debug "Fail2Ban: Adding Jail - Kopano Webapp"
+        cat <<EOF > "${FAIL2BAN_CONFIG_PATH}"/jail.d/kopano-webapp.conf
+[kopano-webapp]
+enabled = ${WEBAPP_ENABLE_FAIL2BAN}
+port    = http,https
+filter  = kopano-webapp-auth
+logpath = ${NGINX_LOG_ERROR_LOCATION}/webapp-error.log
+
+EOF
+    fi
+
+    if var_true "${ENABLE_ZPUSH}" ; then
+        print_debug "Fail2Ban: Adding Jail - Z-Push"
+        cat <<EOF > "${FAIL2BAN_CONFIG_PATH}"/jail.d/z-push.conf
+[z-push]
+enabled  = ${ZPUSH_ENABLE_FAIL2BAN}
+port     = http,https
+filter   = z-push
+logpath  = ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_ERROR}
+EOF
+}
+
 configure_gateway() {
     if var_true "${ENABLE_GATEWAY}" ; then
         certificates "${GATEWAY_SSL_CERT_FILE}"

@@ -1,3 +1,9 @@
+## 2.13.0 2022-08-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove Fail2ban from image and reconfigure based on upstream base image
+
+
 ## 2.12.10 2022-07-06 <dave at tiredofit dot ca>
 
    ### Added

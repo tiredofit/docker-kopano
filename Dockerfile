@@ -81,8 +81,6 @@ RUN set -x && \
     \
     KOPANO_DEPS=" \
                 bc \
-                fail2ban \
-                iptables \
                 libany-uri-escape-perl \
                 libdata-uniqid-perl \
                 libdb5.3++ \
@@ -200,8 +198,6 @@ RUN set -x && \
     \
     apt-get autoremove -y && \
     apt-get clean && \
-    cd /etc/fail2ban && \
-    rm -rf fail2ban.conf fail2ban.d jail.conf jail.d paths-*.conf && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /etc/apt/sources.list.d/kopano*.list && \
     rm -rf /usr/src/* && \

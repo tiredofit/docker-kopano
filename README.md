@@ -8,8 +8,6 @@
 
 This will build a container for the [Kopano Core Groupware](https://kopano.io/) suite.
 
-**At current time this image has the potential of making you cry - Do not use for production use. I am not a Kopano expert yet using this opportunity to understand the ins and outs of the software to potentially use for a non-profit educational institution. I am constantly relying on the expertise of the community in the Kopano.io Community forums and the manuals, and still have a long way to go**
-
 * Automatic configuration of various services
 * Automatic certificate and CA generation
 * Configured for LDAP usage, no other backend
@@ -96,7 +94,7 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- | ---------- |
 | `SETUP_TYPE`       | `MANUAL` or `AUTO` to auto generate cofniguration for services on bootup, otherwise let admin control configuration. | `AUTO`     |
 | `MODE`             | Container Mode - Which services to use - Multiple modes can occur by seperating with comma e.g. `DAGENT,SPAMD`       | `CORE`     |
-|                    | Options _(not all will work on their own, you may need multiple modes defined)_:                                 |            |
+|                    | Options _(not all will work on their own, you may need multiple modes defined)_:                                     |            |
 |                    | `AIO` All in one - Kopano Core, Webapp, Zpush, Konnect                                                               |            |
 |                    | `Core` Autorespond, Backup, Dagent, Gateway, ICAL, KDAV, Monitor, Server, Spamd, Spooler, Webapp, Z-Push             |            |
 |                    | `WEB` Webapp, Z-Push                                                                                                 |            |
@@ -119,33 +117,6 @@ Along with the Environment Variables from the [Base image](https://hub.docker.co
 | `ENABLE_COREDUMPS` | Enable Coredumps for services                                                                                        | `FALSE`    |
 | `STATS_INTERVAL`   | If sending statistics to StatsD or using Prometheus Exporter, interval to send in seconds                            | `59`       |
 
-#### Fail2ban Options
-
-In order to take advantage of host blocking you will need to add the `NET_ADMIN` capability when starting the container.
-
-| Parameter                 | Description                                                | Default                       |
-| ------------------------- | ---------------------------------------------------------- | ----------------------------- |
-| `ENABLE_FAIL2BAN`         | Enable Fail2ban Service                                    | `TRUE`                        |
-| `FAIL2BAN_BACKEND`        | Backend                                                    | `AUTO`                        |
-| `FAIL2BAN_CONFIG_PATH`    | Configuration Files Location                               | `/config/fail2ban/`           |
-| `FAIL2BAN_DB_FILE`        | Database File                                              | `fail2ban.sqlite3`            |
-| `FAIL2BAN_DB_PATH`        | Path for Database                                          | `/data/fail2ban/`             |
-| `FAIL2BAN_DB_PURGE_AGE`   | Purge Records from DB in seconds                           | `86400`                       |
-| `FAIL2BAN_DB_TYPE`        | Database Type                                              | `FILE`                        |
-| `FAIL2BAN_IGNORE_IP`      | Ignore IPs                                                 | `127.0.0.1/8 ::1`             |
-| `FAIL2BAN_IGNORE_SELF`    | Ignore Self IP                                             | `TRUE`                        |
-| `FAIL2BAN_LOG_FILE`       | Log File Name                                              | `/logs/fail2ban/fail2ban.log` |
-| `FAIL2BAN_LOG_LEVEL`      | Log level                                                  | `INFO`                        |
-| `FAIL2BAN_LOG_TYPE`       | Log Type `FILE` `CONSOLE`                                  | `FILE`                        |
-| `FAIL2BAN_MAX_RETRY`      | Max time of retries before banning                         | `5`                           |
-| `FAIL2BAN_TIME_BAN`       | Time to ban host                                           | `10m`                         |
-| `FAIL2BAN_TIME_FIND`      | How many times in window to calculate `FAIL2BAN_MAX_RETRY` | `10m`                         |
-| `FAIL2BAN_USE_DNS`        | Use DNS Lookups                                            | `warn`                        |
-| `GATEWAY_ENABLE_FAIL2BAN` | Block Gateway Attempts                                     | `TRUE`                        |
-| `ICAL_ENABLE_FAIL2BAN`    | Block ICAL Attempts                                        | `TRUE`                        |
-| `KDAV_ENABLE_FAIL2BAN`    | Block KDAV Attempts                                        | `TRUE`                        |
-| `WEBAPP_ENABLE_FAIL2BAN`  | Block Webapp Attempts                                      | `TRUE`                        |
-| `ZPUSH_ENABLE_FAIL2BAN`   | Block Z-Push Attempts                                      | `TRUE`                        |
 
 #### Logging Options
 
@@ -700,7 +671,7 @@ When enabling `MODE=migrator` you can spawn a seperate local copy of Kopano Gate
 | `WEBAPP_HOSTNAME`                                    | Hostname of Webmail service                                       | `webapp.example.com`                                                                                                      |
 | `WEBAPP_ICONSET`                                     | Set Default Icons                                                 | `breeze`                                                                                                                  |
 | `WEBAPP_INSECURE_COOKIES`                            | Allow Insecure Cookies                                            | `FALSE`                                                                                                                   |
-| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |  |
+| `WEBAPP_LOGINNAME_STRIP_DOMAIN`                      | Strip Doman/Prefix from username                                  |                                                                                                                           |
 | `WEBAPP_LOG_LEVEL`                                   | Override master `LOG_LEVEL` environment for this specific service |                                                                                                                           |
 | `WEBAPP_LOG_SUCCESSFUL_LOGINS`                       |                                                                   | `FALSE`                                                                                                                   |
 | `WEBAPP_LOG_USERS`                                   |                                                                   |                                                                                                                           |

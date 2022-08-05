@@ -11,6 +11,7 @@ PROCESS_NAME="kopano-core"
 
 mkdir -p "${CONFIG_PATH}"
 configure_logging
+if var_true "${CONTAINER_ENABLE_FIREWALL}" && var_true "${CONTAINER_ENABLE_FAIL2BAN}" ; then configure_fail2ban_kopano ; fi
 
 ### Prometheus Exporter Config
 if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
@@ -246,6 +247,7 @@ EOF
 else
 	service_stop 32-kopano-spooler
 fi
+
 
 custom_files /assets/custom /
 custom_scripts /assets/custom-scripts
