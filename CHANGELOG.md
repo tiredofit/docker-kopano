@@ -1,3 +1,9 @@
+## 2.13.1 2022-08-06 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Bugfix for Fail2ban
+
+
 ## 2.13.0 2022-08-05 <dave at tiredofit dot ca>
 
    ### Changed

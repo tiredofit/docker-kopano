@@ -496,7 +496,9 @@ port     = http,https
 filter   = z-push
 logpath  = ${LOG_PATH_ZPUSH}/${LOG_FILE_ZPUSH_ERROR}
 EOF
+    fi
 }
+
 
 configure_gateway() {
     if var_true "${ENABLE_GATEWAY}" ; then
