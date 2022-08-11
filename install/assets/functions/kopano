@@ -408,27 +408,27 @@ server_socket = ${DAGENT_SOCKET_SERVER}
 ${dagent_sslkey}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 lmtp_max_threads = ${DAGENT_LMTP_MAX_THREADS}
 
 ## Logging
 log_level = ${DAGENT_LOG_LEVEL}
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_DAGENT}
-log_timestamp = $(translate_config ${LOG_TIMESTAMPS})
+log_timestamp = $(translate_config "${LOG_TIMESTAMPS}")
 log_raw_message = ${dagent_log_raw_message}
 log_raw_message_path = ${DAGENT_PATH_RAW_MESSAGES}
 
 ## Plugins
-plugin_enabled = $(translate_config ${DAGENT_ENABLE_PLUGIN})
+plugin_enabled = $(translate_config "${DAGENT_ENABLE_PLUGIN}")
 plugin_path = ${DAGENT_PATH_PLUGIN}
 
 ## DAgent settings
-archive_on_delivery = $(translate_config ${DAGENT_ARCHIVE_ON_DELIVERY})
+archive_on_delivery = $(translate_config "${DAGENT_ARCHIVE_ON_DELIVERY}")
 inhibit_auto_reply_headers = ${DAGENT_INHIBIT_AUTOREPLY_HEADERS}
 inhibit_forward_headers = ${DAGENT_INHIBIT_FORWARD_HEADERS}
-insecure_html_join = $(translate_config ${DAGENT_INSECURE_HTML_JOIN})
-no_double_forward = $(translate_config ${DAGENT_NO_DOUBLE_FORWARD})
-set_rule_headers = $(translate_config ${DAGENT_SET_RULE_HEADERS})
+insecure_html_join = $(translate_config "${DAGENT_INSECURE_HTML_JOIN}")
+no_double_forward = $(translate_config "${DAGENT_NO_DOUBLE_FORWARD}")
+set_rule_headers = $(translate_config "${DAGENT_SET_RULE_HEADERS}")
 spam_header_name = ${DAGENT_SPAM_HEADER_NAME}
 ${dagent_forward_whitelist}
 ${dagent_spam_header_value}
@@ -572,11 +572,11 @@ EOF
 ${gateway_interfaces}
 ssl_private_key_file = ${GATEWAY_SSL_KEY_FILE}
 ssl_certificate_file = ${GATEWAY_SSL_CERT_FILE}
-ssl_prefer_server_ciphers = $(translate_config ${GATEWAY_SSL_PREFER_SERVER_CIPHERS})
+ssl_prefer_server_ciphers = $(translate_config "${GATEWAY_SSL_PREFER_SERVER_CIPHERS}")
 server_socket = ${GATEWAY_SOCKET_SERVER}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 
 ## Logging
 log_level = ${GATEWAY_LOG_LEVEL}
@@ -584,13 +584,13 @@ log_file = ${LOG_PATH_KOPANO}${LOG_FILE_GATEWAY}
 log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Gateway settings
-bypass_auth = $(translate_config ${GATEWAY_BYPASS_AUTHENTICATION_ADMIN})
-disable_plaintext_auth = $(translate_config ${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH})
-imap_only_mailfolders = $(translate_config ${GATEWAY_IMAP_ONLY_MAIL_FOLDERS})
-imap_public_folders = $(translate_config ${GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS})
+bypass_auth = $(translate_config "${GATEWAY_BYPASS_AUTHENTICATION_ADMIN}")
+disable_plaintext_auth = $(translate_config "${GATEWAY_SSL_REQUIRE_PLAINTEXT_AUTH}")
+imap_only_mailfolders = $(translate_config "${GATEWAY_IMAP_ONLY_MAIL_FOLDERS}")
+imap_public_folders = $(translate_config "${GATEWAY_IMAP_SHOW_PUBLIC_FOLDERS}")
 imap_max_messagesize = ${GATEWAY_IMAP_MAX_MESSAGE_SIZE}
 imap_max_fail_commands = ${GATEWAY_IMAP_MAX_FAIL_COMMANDS}
-server_hostname_greeting = $(translate_config ${GATEWAY_GREETING_SHOW_HOSTNAME})
+server_hostname_greeting = $(translate_config "${GATEWAY_GREETING_SHOW_HOSTNAME}")
 server_hostname = ${GATEWAY_HOSTNAME}
 
 EOF
@@ -649,7 +649,7 @@ ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
 server_socket = ${ICAL_SOCKET_SERVER}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 
 ## Logging
 log_level = ${ICAL_LOG_LEVEL}
@@ -1298,7 +1298,7 @@ ssl_certificate_file = ${GATEWAY_SSL_CERT_FILE}
 ssl_prefer_server_ciphers = ${GATEWAY_SSL_PREFER_SERVER_CIPHERS}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 
 ## Logging
 log_level = ${MIGRATOR_LOG_LEVEL}
@@ -1346,7 +1346,7 @@ server_socket = ${MONITOR_SOCKET_SERVER}
 ${monitor_sslkey}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 
 ## Logging
 log_level = ${MONITOR_LOG_LEVEL}
@@ -1438,13 +1438,13 @@ log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Search Options
 index_attachment_max_size = ${SEARCH_INDEX_ATTACHMENTS_MAX_SIZE}
-index_attachments = $(translate_config ${SEARCH_INDEX_ATTACHMENTS})
-index_drafts = $(translate_config ${SEARCH_INDEX_DRAFTS})
-index_junk = $(translate_config ${SEARCH_INDEX_JUNK})
+index_attachments = $(translate_config "${SEARCH_INDEX_ATTACHMENTS}")
+index_drafts = $(translate_config "${SEARCH_INDEX_DRAFTS}")
+index_junk = $(translate_config "${SEARCH_INDEX_JUNK}")
 index_path = ${SEARCH_INDEX_PATH}
 index_processes = ${SEARCH_INDEX_PROCESSES}
 limit_results = ${SEARCH_LIMIT_RESULTS}
-suggestions = $(translate_config ${SEARCH_SUGGESTIONS})
+suggestions = $(translate_config "${SEARCH_SUGGESTIONS}")
 term_cache_size = ${SEARCH_CACHE_SIZE_TERM}
 
 EOF
@@ -1521,7 +1521,7 @@ EOF
                 server_oidc=$(cat<<EOF
 #### OIDC
 kcoidc_issuer_identifier = ${SERVER_OIDC_IDENTIFIER}
-kcoidc_insecure_skip_verify = $(translate_config ${SERVER_OIDC_DISABLE_TLS_VALIDATION})
+kcoidc_insecure_skip_verify = $(translate_config "${SERVER_OIDC_DISABLE_TLS_VALIDATION}")
 kcoidc_initialize_timeout = ${SERVER_OIDC_TIMEOUT_INITIALIZE}
 EOF
                             )
@@ -1541,7 +1541,7 @@ EOF
                 "files" | "files_v2" )
                     print_debug "Selecting Files as Attachment Storage Backend"
                     mkdir -p "${SERVER_ATTACHMENT_BACKEND_FILES_PATH}"
-                    chown -R kopano: "${SERVER_ATTACHMENT_BACKEND_FILES_PATH}"
+                    chown kopano: "${SERVER_ATTACHMENT_BACKEND_FILES_PATH}"
                     server_attachment=$(cat <<EOF
 attachment_path = ${SERVER_ATTACHMENT_BACKEND_FILES_PATH}
 EOF
@@ -1637,7 +1637,7 @@ mysql_port = ${DB_PORT}
 mysql_user = ${DB_USER}
 mysql_password = ${DB_PASS}
 mysql_database = ${DB_NAME}
-enable_sql_procedures = $(translate_config ${SERVER_ENABLE_OPTIMIZED_SQL})
+enable_sql_procedures = $(translate_config "${SERVER_ENABLE_OPTIMIZED_SQL}")
 
 ## Logging
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SERVER}
@@ -1645,7 +1645,7 @@ log_level = ${SERVER_LOG_LEVEL}
 log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 server_recv_timeout = ${SERVER_TIMEOUT_RECIEVE}
 server_send_timeout = ${SERVER_TIMEOUT_SEND}
 threads = ${SERVER_THREADS}
@@ -1675,14 +1675,14 @@ ${server_attachment}
 disabled_features = ${SERVER_DISABLED_FEATURES}
 
 ### Global Address Book
-enable_gab = $(translate_config ${SERVER_ENABLE_GAB})
-hide_everyone = $(translate_config ${SERVER_GAB_HIDE_EVERYONE})
-hide_system = $(translate_config ${SERVER_GAB_HIDE_SYSTEM})
-sync_gab_realtime = $(translate_config ${SERVER_GAB_SYNC_REALTIME})
+enable_gab = $(translate_config "${SERVER_ENABLE_GAB}")
+hide_everyone = $(translate_config "${SERVER_GAB_HIDE_EVERYONE}")
+hide_system = $(translate_config "${SERVER_GAB_HIDE_SYSTEM}")
+sync_gab_realtime = $(translate_config "${SERVER_GAB_SYNC_REALTIME}")
 
 ### Multi Server / Tenancy
-enable_distributed_kopano = $(translate_config ${SERVER_ENABLE_MULTI_SERVER})
-enable_hosted_kopano = $(translate_config ${SERVER_ENABLE_MULTI_TENANT})
+enable_distributed_kopano = $(translate_config "${SERVER_ENABLE_MULTI_SERVER}")
+enable_hosted_kopano = $(translate_config "${SERVER_ENABLE_MULTI_TENANT}")
 loginname_format = ${SERVER_MULTI_TENANT_LOGINNAME_FORMAT}
 storename_format = ${SERVER_MULTI_TENANT_STORENAME_FORMAT}
 
@@ -1693,12 +1693,12 @@ quota_hard = ${SERVER_QUOTA_HARD}
 companyquota_warn = ${SERVER_QUOTA_COMPANY_WARN}
 
 ### Search
-search_enabled = $(translate_config ${SERVER_ENABLE_SEARCH})
+search_enabled = $(translate_config "${SERVER_ENABLE_SEARCH}")
 search_socket = ${SOCKET_SEARCH}
 search_timeout = ${SEARCH_TIMEOUT}
 
 ### Single Sign On
-enable_sso = $(translate_config ${SERVER_ENABLE_SSO})
+enable_sso = $(translate_config "${SERVER_ENABLE_SSO}")
 ${server_oidc}
 
 ### Scripts
@@ -1714,10 +1714,10 @@ ${server_stats}
 ### User
 user_plugin = ${SERVER_USER_PLUGIN}
 user_plugin_config = ${CONFIG_PATH}/ldap.cfg
-allow_local_users = $(translate_config ${SERVER_ALLOW_LOCAL_USERS})
+allow_local_users = $(translate_config "${SERVER_ALLOW_LOCAL_USERS}")
 local_admin_users = ${SERVER_LOCAL_ADMIN_USERS}
 system_email_address = ${SERVER_SYSTEM_EMAIL_ADDRESS}
-user_safe_mode = $(translate_config ${SERVER_USER_SAFE_MODE})
+user_safe_mode = $(translate_config "${SERVER_USER_SAFE_MODE}")
 EOF
         else
             print_info "Server: Skipping Auto Configuration"
@@ -1828,26 +1828,26 @@ server_socket = ${SPOOLER_SOCKET_SERVER}
 ${spooler_sslkey}
 
 ## Performance
-coredump_enabled = $(translate_config ${ENABLE_COREDUMPS})
+coredump_enabled = $(translate_config "${ENABLE_COREDUMPS}")
 max_threads = ${SPOOLER_MAX_THREADS}
 
 ## Logging
 log_file = ${LOG_PATH_KOPANO}${LOG_FILE_SPOOLER}
 log_level = ${SPOOLER_LOG_LEVEL}
 log_raw_message_path = ${SPOOLER_PATH_RAW_MESSAGES}
-log_raw_message_stage1 = $(translate_config ${SPOOLER_LOG_RAW_MESSAGE_STAGE1})
+log_raw_message_stage1 = $(translate_config "${SPOOLER_LOG_RAW_MESSAGE_STAGE1}")
 log_timestamp = ${LOG_TIMESTAMPS}
 
 ## Plugins
-plugin_enabled = $(translate_config ${SPOOLER_PLUGIN_ENABLED})
+plugin_enabled = $(translate_config "${SPOOLER_PLUGIN_ENABLED}")
 plugin_path = ${SPOOLER_PATH_PLUGIN}
 
 ## Spooler Options
-enable_dsn = $(translate_config ${SPOOLER_ENABLE_DSN})
-always_send_delegates = $(translate_config ${SPOOLER_ALWAYS_SEND_DELEGATES})
-allow_redirect_spoofing = $(translate_config ${SPOOLER_ALLOW_REDIRECT_SPOOFING})
-allow_delegate_meeting_request = $(translate_config ${SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST})
-allow_send_to_everyone = $(translate_config ${SPOOLER_ALLOW_SEND_TO_EVERYONE})
+enable_dsn = $(translate_config "${SPOOLER_ENABLE_DSN}")
+always_send_delegates = $(translate_config "${SPOOLER_ALWAYS_SEND_DELEGATES}")
+allow_redirect_spoofing = $(translate_config "${SPOOLER_ALLOW_REDIRECT_SPOOFING}")
+allow_delegate_meeting_request = $(translate_config "${SPOOLER_ALLOW_DELEGATE_MEETING_REQUEST}")
+allow_send_to_everyone = $(translate_config "${SPOOLER_ALLOW_SEND_TO_EVERYONE}")
 ${spooler_stats}
 EOF
         else

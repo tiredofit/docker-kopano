@@ -106,3 +106,4 @@ KC_BASE="$(grep 'Kopano Server reported version:' /assets/.changelogs/kopano-cor
 if [ "${KC_BASE}" = "" ] ; then
     KC_BASE=$(kopano-server -V | awk '{print $2}')
 fi
+
