@@ -23,4 +23,4 @@ case "${KC_BASE}" in
 esac
 
 print_start "Starting Kopano Spamd Service"
-kopano-spamd "${SPAMD_ADDITIONAL_ARGS}" "${version_args}"
+exec kopano-spamd "${SPAMD_ADDITIONAL_ARGS}" "${version_args}"

@@ -20,4 +20,4 @@ case "${KC_BASE}" in
 esac
 
 print_start "Starting Kopano Server"
-kopano-server "${SERVER_ADDITIONAL_ARGS}" "${version_args}"
+exec kopano-server "${SERVER_ADDITIONAL_ARGS}" "${version_args}"

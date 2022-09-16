@@ -23,4 +23,4 @@ case "${KC_BASE}" in
 esac
 
 print_start "Starting Kopano Spooler"
-kopano-spooler "${version_args}"
+exec kopano-spooler "${version_args}"

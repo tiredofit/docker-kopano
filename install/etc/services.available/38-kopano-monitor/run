@@ -23,4 +23,4 @@ case "${KC_BASE}" in
 esac
 
 print_start "Starting Kopano Monitoring Service"
-kopano-monitor "${MONITOR_ADDITIONAL_ARGS}" "${version_args}"
+exec kopano-monitor "${MONITOR_ADDITIONAL_ARGS}" "${version_args}"

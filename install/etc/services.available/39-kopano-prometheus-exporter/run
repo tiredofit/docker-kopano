@@ -11,7 +11,7 @@ liftoff
 
 wait_for_server server
 print_start "Starting Kopano Prometheus Exporter $(/usr/sbin/prometheus-kopano-exporter version | head -n1 | awk '{print $3}')"
-sudo -u kopano /usr/sbin/prometheus-kopano-exporter \
+exec sudo -u kopano /usr/sbin/prometheus-kopano-exporter \
                 serve \
                 --listen-address $(cat ${CONFIG_PATH}/prometheus_exporter.cfg | grep "listen =" | awk '{print $3}') \
                 --listen-socket $(cat ${CONFIG_PATH}/prometheus_exporter.cfg | grep "socket =" | awk '{print $3}' | sed "s|unix:||g" ) \

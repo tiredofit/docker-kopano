@@ -1,3 +1,9 @@
+## 2.13.3 2022-09-16 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for Webapp Plugin Files not generating 64 character keys
+
+
 ## 2.13.2 2022-08-11 <dave at tiredofit dot ca>
 
    ### Changed

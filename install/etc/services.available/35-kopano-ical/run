@@ -21,4 +21,4 @@ case "${KC_BASE}" in
 esac
 
 print_start "Starting Kopano ICAL Server"
-kopano-ical "${ICAL_ADDITIONAL_ARGS}" "${version_args}"
+exec kopano-ical "${ICAL_ADDITIONAL_ARGS}" "${version_args}"
