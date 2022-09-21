@@ -71,6 +71,10 @@ fi
 if var_true "${ENABLE_WEBAPP}" ; then
 	source /assets/defaults/kopano-webapp
 	configure_webapp
+    if [ "${LOG_TYPE,,}" = "file" ] ; then
+        create_logrotate kopano-webapp-nginx-access ${NGINX_LOG_ACCESS_LOCATION}/webapp-access.log nginx-${NGINX_LOG_ACCESS_FORMAT} ${NGINX_USER} ${NGINX_GROUP}
+        create_logrotate kopano-webapp-nginx-error ${NGINX_LOG_ACCESS_LOCATION}/webapp-error.log nginx-error-standard,nginx-error-alt-standard ${NGINX_USER} ${NGINX_GROUP}
+    fi
 	if var_true "${WEBAPP_ENABLE_PLUGINS}" ; then
 		configure_webapp_plugins
 	fi

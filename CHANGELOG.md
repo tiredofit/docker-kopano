@@ -1,3 +1,9 @@
+## 2.13.4 2022-09-21 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for logrotate not working for webapp-error/access.logs
+
+
 ## 2.13.3 2022-09-16 <dave at tiredofit dot ca>
 
    ### Changed
