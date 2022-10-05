@@ -1,3 +1,10 @@
+## 2.14.0 2022-10-05 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Cleanup some shellcheck warnings
+      - Migrate legacy configuration for nginx and apache
+
+
 ## 2.13.4 2022-09-21 <dave at tiredofit dot ca>
 
    ### Changed

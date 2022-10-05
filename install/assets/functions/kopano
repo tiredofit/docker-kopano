@@ -200,8 +200,9 @@ EOF
 
     chmod +x /etc/services.available/41-apache/run
 
-    sed -i "s|<PHP_MEMORY_LIMIT>|${PHP_MEMORY_LIMIT}|g" /etc/apache2/sites-available/*.conf
-    sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/apache2/sites-available/*.conf
+    update_template "/etc/apache2/sites-available/*.conf" \
+                                                            PHP_MEMORY_LIMIT \
+                                                            PHP_TIMEOUT
 
     if var_true "${CONTAINER_ENABLE_MONITORING}" ; then
         echo "Listen 7373" >> /etc/apache2/ports.conf
@@ -287,14 +288,14 @@ configure_calendar() {
         if [ "${CALENDAR_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
             sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/calendar.conf;" /etc/nginx/sites.available/webapp.conf
         else
-            sed -i "s|<CALENDAR_HOSTNAME>|${CALENDAR_HOSTNAME}|g" /etc/nginx/sites.available/calendar.conf
+            update_template /etc/nginx/sites.available/calendar.conf CALENDAR_HOSTNAME
             nginx_site_enable calendar
         fi
-        sed -i "s|<CALENDAR_LISTEN_PORT>|${CALENDAR_LISTEN_PORT}|g" /etc/nginx/sites.available/calendar.conf
-        sed -i "s|<WEBROOT_CALENDAR>|${CALENDAR_WEBROOT}|g" /etc/nginx/sites.available/calendar.conf
-        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/calendar.conf
-        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/calendar.conf
-        nginx_site_enable calendar
+        update_template /etc/nginx/sites.available/calendar.conf \
+                                                                    CALENDAR_LISTEN_PORT \
+                                                                    CALENDAR_WEBROOT \
+                                                                    NGINX_LOG_ACCESS_LOCATION \
+                                                                    NGINX_LOG_ERROR_LOCATION
 
         if [ "${SETUP_TYPE,,}" = "auto" ]; then
             print_notice "Calendar: Auto Configuring"
@@ -1219,8 +1220,9 @@ configure_kdav() {
         if [ "${KDAV_SERVE_MODE,,}" = "apache" ]; then
             print_debug "Using Apache for KDAV"
             ### Configure Apache
-            sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/apache2/sites-available/kdav.conf
-            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/apache2/sites-available/kdav.conf
+            update_template /etc/nginx/sites.available/kdav.conf \
+                                                                KDAV_HOSTNAME \
+                                                                KDAV_LISTEN_PORT
             ln -s /etc/apache2/sites-available/kdav.conf /etc/apache2/sites-enabled/
             echo "Listen ${KDAV_LISTEN_PORT}" >> /etc/apache2/ports.conf
             touch "${LOG_PATH_KOPANO}"/"${LOG_FILE_KDAV}"
@@ -1231,13 +1233,13 @@ configure_kdav() {
             if [ "${KDAV_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
                 sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/conf.available\/kdav-webapp.conf;" /etc/nginx/sites.available/webapp.conf
             else
-                sed -i "s|<KDAV_HOSTNAME>|${KDAV_HOSTNAME}|g" /etc/nginx/sites.available/kdav.conf
+                update_template /etc/nginx/sites.available/kdav.conf KDAV_HOSTNAME
                 nginx_site_enable kdav
             fi
-            sed -i "s|<KDAV_LISTEN_PORT>|${KDAV_LISTEN_PORT}|g" /etc/nginx/sites.available/kdav.conf
-            sed -i "s|<WEBROOT>|/usr/share/kdav|g" /etc/nginx/sites.available/kdav.conf
-            sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/kdav.conf
-            sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/kdav.conf
+            update_template /etc/nginx/sites.available/kdav.conf \
+                                                                    KDAV_LISTEN_PORT \
+                                                                    NGINX_LOG_ACCESS_LOCATION \
+                                                                    NGINX_LOG_ERROR_LOCATION
             nginx_site_enable kdav
         fi
 
@@ -1883,11 +1885,11 @@ configure_webapp() {
         mkdir -p "${WEBAPP_TMP_PATH}"
         chown -R "${NGINX_USER}":"${NGINX_GROUP}" "${WEBAPP_TMP_PATH}"
         ### Nginx
-        sed -i "s|<WEBAPP_HOSTNAME>|${WEBAPP_HOSTNAME}|g" /etc/nginx/sites.available/webapp.conf
-        sed -i "s|<WEBAPP_LISTEN_PORT>|${WEBAPP_LISTEN_PORT}|g" /etc/nginx/sites.available/webapp.conf
-        sed -i "s|<WEBROOT>|/usr/share/kopano-webapp|g" /etc/nginx/sites.available/webapp.conf
-        sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/webapp.conf
-        sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/webapp.conf
+        update_template /etc/nginx/sites.available/webapp.conf \
+                                                                NGINX_LOG_ACCESS_LOCATION \
+                                                                NGINX_LOG_ERROR_LOCATION \
+                                                                WEBAPP_HOSTNAME \
+                                                                WEBAPP_LISTEN_PORT
         case "${NGINX_AUTHENTICATION_TYPE,,}" in
           "llng")
               print_notice "Setting Webapp LLNG Authentication"
@@ -2483,24 +2485,27 @@ configure_zpush() {
                 if [ "${ZPUSH_HOSTNAME}" = "${WEBAPP_HOSTNAME}" ] ; then
                     sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/zpush-activesync.conf;" /etc/nginx/sites.available/webapp.conf
                 else
-                    sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/nginx/sites.available/zpush.conf
-                    sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/nginx/sites.available/zpush.conf
+                    update_template /etc/nginx/sites.available/zpush.conf \
+                                                                            ZPUSH_HOSTNAME \
+                                                                            ZPUSH_LISTEN_PORT
                     sed -i "/### Includes/a\ \ \ \ \ \ include \/etc\/nginx\/sites.available\/zpush-activesync.conf;" /etc/nginx/sites.available/zpush.conf
                     nginx_site_enable zpush
                 fi
-                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/zpush-activesync.conf
-                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/zpush-activesync.conf
+                update_template /etc/nginx/sites.available/zpush-activesync.conf \
+                                                                                    NGINX_LOG_ACCESS_LOCATION \
+                                                                                    NGINX_LOG_ERROR_LOCATION
                 zpush_content_body_size=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 0-9)
                 zpush_content_body_size_unit=$(echo "${ZPUSH_CONTENT_BODY_SIZE}" | tr -dc 'a-zA-Z')
                 zpush_content_body_size_overhead="$(echo "$(scale=1; echo "${zpush_content_body_size}"*1.33 | bc | awk '{printf "%.0f\n", $1}')")"
                 print_debug "Setting Z-Push Content Body overhead to '${zpush_content_body_size_overhead}${zpush_content_body_size_unit}' from message size '${ZPUSH_CONTENT_BODY_SIZE}'"
-                sed -i "s|<ZPUSH_CONTENT_BODY_SIZE>|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/sites.available/zpush-activesync.conf
-                sed -i "s|<PHP_TIMEOUT>|${PHP_TIMEOUT}|g" /etc/nginx/sites.available/zpush-activesync.conf
+                sed -i "s|{{ZPUSH_CONTENT_BODY_SIZE}}|${zpush_content_body_size_overhead}${zpush_content_body_size_unit}|g" /etc/nginx/sites.available/zpush-activesync.conf
+                sed -i "s|{{PHP_TIMEOUT}}|${PHP_TIMEOUT}|g" /etc/nginx/sites.available/zpush-activesync.conf
             ;;
             "apache" )
                 ### Configure Apache
-                sed -i "s|<ZPUSH_HOSTNAME>|${ZPUSH_HOSTNAME}|g" /etc/apache2/sites-available/zpush.conf
-                sed -i "s|<ZPUSH_LISTEN_PORT>|${ZPUSH_LISTEN_PORT}|g" /etc/apache2/sites-available/zpush.conf
+                update_template /etc/apache2/sites-available/zpush.conf \
+                                                                        ZPUSH_HOSTNAME \
+                                                                        ZPUSH_LISTEN_PORT
                 ln -s /etc/apache2/sites-available/zpush.conf /etc/apache2/sites-enabled/
                 echo "Listen ${ZPUSH_LISTEN_PORT}" >> /etc/apache2/ports.conf
             ;;
@@ -2848,16 +2853,18 @@ configure_zpush_autodiscover() {
                 ;;
                 esac
 
-                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
-                sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
-                sed -i "s|<LOG_ACCESS_LOCATION>|${NGINX_LOG_ACCESS_LOCATION}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
-                sed -i "s|<LOG_ERROR_LOCATION>|${NGINX_LOG_ERROR_LOCATION}|g" /etc/nginx/sites.available/zpush-autodiscover.conf
+                update_template /etc/nginx/sites.available/zpush-autodiscover.conf \
+                                                                                    ZPUSH_AUTODISCOVER_HOSTNAME \
+                                                                                    ZPUSH_AUTODISCOVER_LISTEN_PORT \
+                                                                                    NGINX_LOG_ACCESS_LOCATION \
+                                                                                    NGINX_LOG_ERROR_LOCATION
                 nginx_site_enable zpush-autodiscover
             ;;
             "apache" )
                 ### Configure Apache
-                sed -i "s|<AUTODISCOVER_HOSTNAME>|${ZPUSH_AUTODISCOVER_HOSTNAME}|g" /etc/apache2/sites-available/zpush-autodiscover.conf
-                sed -i "s|<AUTODISCOVER_LISTEN_PORT>|${ZPUSH_AUTODISCOVER_LISTEN_PORT}|g" /etc/apache2/sites-available/zpush-autodiscover.conf
+                update_template /etc/apache2/sites-available/zpush-autodiscover.conf \
+                                                                                    ZPUSH_AUTODISCOVER_HOSTNAME \
+                                                                                    ZPUSH_AUTODISCOVER_LISTEN_PORT
                 ln -s /etc/apache2/sites-available/zpush-autodiscover.conf /etc/apache2/sites-enabled/
                 echo "Listen ${ZPUSH_AUTODISCOVER_LISTEN_PORT}" >> /etc/apache2/ports.conf
             ;;

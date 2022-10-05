@@ -8,45 +8,45 @@ source /assets/functions/kopano
 setup_container_mode
 
 PROCESS_NAME="kopano-core"
+if [ ! -f "/tmp/.container/container-restart" ] ; then
+    mkdir -p "${CONFIG_PATH}"
+    configure_logging
+    if var_true "${CONTAINER_ENABLE_FIREWALL}" && var_true "${CONTAINER_ENABLE_FAIL2BAN}" ; then configure_fail2ban_kopano ; fi
 
-mkdir -p "${CONFIG_PATH}"
-configure_logging
-if var_true "${CONTAINER_ENABLE_FIREWALL}" && var_true "${CONTAINER_ENABLE_FAIL2BAN}" ; then configure_fail2ban_kopano ; fi
-
-### Prometheus Exporter Config
-if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
-	print_debug "Configuring Prometheus Exporter"
-	source /assets/defaults/kopano-prometheus-exporter
-	configure_prometheus_exporter
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-prometheus-exporter ${LOG_PATH_KOPANO}/${LOG_FILE_PROMETHEUS_EXPORTER} none kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-prometheus_exporter.conf
+    ### Prometheus Exporter Config
+    if var_true "${ENABLE_PROMETHEUS_EXPORTER}" ; then
+        print_debug "Configuring Prometheus Exporter"
+        source /assets/defaults/kopano-prometheus-exporter
+        configure_prometheus_exporter
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-prometheus-exporter "${LOG_PATH_KOPANO}"/"${LOG_FILE_PROMETHEUS_EXPORTER}" none kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-prometheus_exporter.conf
 # Zabbix Kopano Prometheus Exporter Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kprometheus
 
 UserParameter=kopano.prometheusexporter.version,prometheus-kopano-exporter version | head -n 1 | awk '{print \$3}'
 EOF
-	print_debug "Finished Configuring Prometheus Exporter"
-else
-	service_stop 39-kopano-prometheus-exporter
-fi
+        print_debug "Finished Configuring Prometheus Exporter"
+    else
+        service_stop 39-kopano-prometheus-exporter
+    fi
 
-### Server Config
-if var_true "${ENABLE_SERVER}" ; then
-	print_debug "Configuring Kopano Server"
-    source /assets/defaults/kopano-server
-	source /assets/defaults/kopano-search
-	sanity_db
-	db_ready mariadb
-	create_user_scripts
-	configure_cron_purge_deleted
-	configure_server
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-server ${LOG_PATH_KOPANO}/${LOG_FILE_SERVER} kopano-server kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-server.conf
+    ### Server Config
+    if var_true "${ENABLE_SERVER}" ; then
+        print_debug "Configuring Kopano Server"
+        source /assets/defaults/kopano-server
+        source /assets/defaults/kopano-search
+        sanity_db
+        db_ready mariadb
+        create_user_scripts
+        configure_cron_purge_deleted
+        configure_server
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-server "${LOG_PATH_KOPANO}"/"${LOG_FILE_SERVER}" kopano-server kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-server.conf
 # Zabbix Kopano Server Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kserver
@@ -55,45 +55,45 @@ UserParameter=kopano.server.get_statistics,echo \$(date) ; kopano-stats --system
 UserParameter=kopano.server.version,kopano-server -V | awk '{print \$2}'
 
 EOF
-	print_debug "Finished Configuring Kopano Server"
-else
-	service_stop 31-kopano-server
-    service_stop 90-post-server-startup-routines
-fi
+        print_debug "Finished Configuring Kopano Server"
+    else
+        service_stop 31-kopano-server
+        service_stop 90-post-server-startup-routines
+    fi
 
-### Autorespond Config
-if var_true "${ENABLE_AUTORESPOND}" ; then
-	print_debug "Configuring Autorespond"
-	source /assets/defaults/kopano-autorespond
-	configure_autorespond
-	print_debug "Finished Configuring Autorespond"
-fi
+    ### Autorespond Config
+    if var_true "${ENABLE_AUTORESPOND}" ; then
+        print_debug "Configuring Autorespond"
+        source /assets/defaults/kopano-autorespond
+        configure_autorespond
+        print_debug "Finished Configuring Autorespond"
+    fi
 
-### Backup Config
-if var_true "${ENABLE_BACKUP}" ; then
-	print_debug "Configuring Backup"
-	source /assets/defaults/kopano-backup
-	configure_backup
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-backup ${LOG_PATH_KOPANO}/${LOG_FILE_BACKUP} kopano-backup kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-backup.conf
+    ### Backup Config
+    if var_true "${ENABLE_BACKUP}" ; then
+        print_debug "Configuring Backup"
+        source /assets/defaults/kopano-backup
+        configure_backup
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-backup "${LOG_PATH_KOPANO}"/"${LOG_FILE_BACKUP}" kopano-backup kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-backup.conf
 # Zabbix Kopano Backup Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kbackup
 EOF
-	print_debug "Finished Configuring Backup"
-fi
+    	print_debug "Finished Configuring Backup"
+    fi
 
-### DAgent Config
-if var_true "${ENABLE_DAGENT}" ; then
-	print_debug "Configuring DAgent"
-	source /assets/defaults/kopano-dagent
-	configure_dagent
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-dagent ${LOG_PATH_KOPANO}/${LOG_FILE_DAGENT} kopano-dagent kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-dagent.conf
+    ### DAgent Config
+    if var_true "${ENABLE_DAGENT}" ; then
+        print_debug "Configuring DAgent"
+        source /assets/defaults/kopano-dagent
+        configure_dagent
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-dagent "${LOG_PATH_KOPANO}"/"${LOG_FILE_DAGENT}" kopano-dagent kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-dagent.conf
 # Zabbix Kopano DAgent Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kdagent
@@ -101,140 +101,140 @@ if var_true "${ENABLE_DAGENT}" ; then
 UserParameter=kopano.dagent.get_statistics,echo $(date) ; curl -s ${PROMETHEUS_EXPORTER_LISTEN_PROTOCOL}://${PROMETHEUS_EXPORTER_LISTEN_HOST}:${PROMETHEUS_EXPORTER_LISTEN_PORT} | grep ^kopano_dagent | sort
 UserParameter=kopano.dagent.version,kopano-dagent -V | awk '{print \$2}' | tail -n 1
 EOF
-	print_debug "Finished Configuring DAgent"
-else
-	service_stop 34-kopano-dagent
-fi
+        print_debug "Finished Configuring DAgent"
+    else
+        service_stop 34-kopano-dagent
+    fi
 
-### Gateway Config
-if var_true "${ENABLE_GATEWAY}" ; then
-	print_debug "Configuring Gateway"
-	source /assets/defaults/kopano-gateway
-	configure_gateway
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-gateway ${LOG_PATH_KOPANO}/${LOG_FILE_GATEWAY} kopano-gateway kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-gateway.conf
+    ### Gateway Config
+    if var_true "${ENABLE_GATEWAY}" ; then
+        print_debug "Configuring Gateway"
+        source /assets/defaults/kopano-gateway
+        configure_gateway
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-gateway "${LOG_PATH_KOPANO}"/"${LOG_FILE_GATEWAY}" kopano-gateway kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-gateway.conf
 # Zabbix Kopano Gateway Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kgateway
 
 UserParameter=kopano.gateway.version,kopano-gateway -V | awk '{print \$2}' | tail -n 1
 EOF
-	print_debug "Finished Configuring Gateway"
-else
-    service_stop 33-kopano-gateway
-fi
+        print_debug "Finished Configuring Gateway"
+    else
+        service_stop 33-kopano-gateway
+    fi
 
-### ICAL Config
-if var_true "${ENABLE_ICAL}" ; then
-	print_debug "Configuring ICAL"
-	source /assets/defaults/kopano-ical
-	configure_ical
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-ical ${LOG_PATH_KOPANO}/${LOG_FILE_ICAL} kopano-ical kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-ical.conf
+    ### ICAL Config
+    if var_true "${ENABLE_ICAL}" ; then
+        print_debug "Configuring ICAL"
+        source /assets/defaults/kopano-ical
+        configure_ical
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-ical "${LOG_PATH_KOPANO}"/"${LOG_FILE_ICAL}" kopano-ical kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-ical.conf
 # Zabbix Kopano ICAL Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kical
 
 UserParameter=kopano.ical.version,kopano-ical -V | awk '{print \$2}' | tail -n 1
 EOF
-	print_debug "Finished Configuring ICAL"
-else
-	service_stop 35-kopano-ical
-fi
+        print_debug "Finished Configuring ICAL"
+    else
+        service_stop 35-kopano-ical
+    fi
 
-### Migrator Config
-if var_true "${ENABLE_MIGRATOR}" ; then
-	print_debug "Configuring Migrator"
-	source /assets/defaults/kopano-gateway
-	configure_migrator
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-migrator ${LOG_PATH_KOPANO}/${LOG_FILE_MIGRATOR} kopano-gateway kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-migrator.conf
+    ### Migrator Config
+    if var_true "${ENABLE_MIGRATOR}" ; then
+        print_debug "Configuring Migrator"
+        source /assets/defaults/kopano-gateway
+        configure_migrator
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-migrator "${LOG_PATH_KOPANO}"/"${LOG_FILE_MIGRATOR}" kopano-gateway kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-migrator.conf
 # Zabbix Kopano Migrator Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kmigrator
 
 UserParameter=kopano.migrator.version,kopano-migrator -V | awk '{print $2}' | tail -n 1
 EOF
-	print_debug "Finished Configuring Migrator"
-else
-	service_stop 92-kopano-gateway-migrator
-fi
+        print_debug "Finished Configuring Migrator"
+    else
+        service_stop 92-kopano-gateway-migrator
+    fi
 
-### Monitor Config
-if var_true "${ENABLE_MONITOR}" ; then
-	print_debug "Configuring Monitor"
-	source /assets/defaults/kopano-monitor
-	create_quota_templates
-	configure_monitor
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-monitor ${LOG_PATH_KOPANO}/${LOG_FILE_MONITOR} none kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-monitor.conf
+    ### Monitor Config
+    if var_true "${ENABLE_MONITOR}" ; then
+        print_debug "Configuring Monitor"
+        source /assets/defaults/kopano-monitor
+        create_quota_templates
+        configure_monitor
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-monitor "${LOG_PATH_KOPANO}"/"${LOG_FILE_MONITOR}" none kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-monitor.conf
 # Zabbix Kopano Monitor Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kmonitor
 
 UserParameter=kopano.monitor.version,kopano-monitor -V | awk '{print \$2}' | tail -n 1
 EOF
-	print_debug "Finished Configuring Monitor"
-else
-	service_stop 38-kopano-monitor
-fi
+        print_debug "Finished Configuring Monitor"
+    else
+        service_stop 38-kopano-monitor
+    fi
 
-### Search Config
-if var_true "${ENABLE_SEARCH}" ; then
-	print_debug "Configuring Search"
-	source /assets/defaults/kopano-search
-	configure_search
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-search ${LOG_PATH_KOPANO}/${LOG_FILE_SEARCH} kopano-search kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-search.conf
+    ### Search Config
+    if var_true "${ENABLE_SEARCH}" ; then
+        print_debug "Configuring Search"
+        source /assets/defaults/kopano-search
+        configure_search
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-search "${LOG_PATH_KOPANO}"/"${LOG_FILE_SEARCH}" kopano-search kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-search.conf
 # Zabbix Kopano Search Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=ksearch
 
 UserParameter=kopano.search.version,kopano-search --version
 EOF
-	print_debug "Finished Configuring Search"
-else
-	service_stop 37-kopano-search
-fi
+        print_debug "Finished Configuring Search"
+    else
+        service_stop 37-kopano-search
+    fi
 
-### SPAMD Config
-if var_true "${ENABLE_SPAMD}" ; then
-	print_debug "Configuring Spamd"
-	source /assets/defaults/kopano-dagent
-	source /assets/defaults/kopano-spamd
-	configure_spamd
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-spamd ${LOG_PATH_KOPANO}/${LOG_FILE_SPAMD} kopano-spamd kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-spamd.conf
+    ### SPAMD Config
+    if var_true "${ENABLE_SPAMD}" ; then
+        print_debug "Configuring Spamd"
+        source /assets/defaults/kopano-dagent
+        source /assets/defaults/kopano-spamd
+        configure_spamd
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-spamd "${LOG_PATH_KOPANO}"/"${LOG_FILE_SPAMD}" kopano-spamd kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-spamd.conf
 # Zabbix Kopano Spamd Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kspamd
 EOF
-	print_debug "Finished Configuring Spamd"
-else
-	service_stop 36-kopano-spamd
-fi
+        print_debug "Finished Configuring Spamd"
+    else
+        service_stop 36-kopano-spamd
+    fi
 
 ### Spooler Config
-if var_true "${ENABLE_SPOOLER}" ; then
-	print_debug "Configuring Spooler"
-	source /assets/defaults/kopano-spooler
-	configure_spooler
-	if [ "${LOG_TYPE,,}" = "file" ] ; then
-		create_logrotate kopano-spooler ${LOG_PATH_KOPANO}/${LOG_FILE_SPOOLER} kopano-spooler kopano kopano
-	fi
-	cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-spooler.conf
+    if var_true "${ENABLE_SPOOLER}" ; then
+        print_debug "Configuring Spooler"
+        source /assets/defaults/kopano-spooler
+        configure_spooler
+        if [ "${LOG_TYPE,,}" = "file" ] ; then
+            create_logrotate kopano-spooler "${LOG_PATH_KOPANO}"/"${LOG_FILE_SPOOLER}" kopano-spooler kopano kopano
+        fi
+        cat <<EOF > "${ZABBIX_CONFIG_PATH}"/"${ZABBIX_CONFIG_FILE}".d/kopano-spooler.conf
 # Zabbix Kopano Spooler Configuration - Automatically Generated
 # Find Companion Zabbix Server Templates at https://github.com/tiredofit/docker-kopano
 # Autoregister=kspooler
@@ -243,13 +243,13 @@ UserParameter=kopano.spooler.get_statistics,echo \$(date) ; curl -s ${PROMETHEUS
 UserParameter=kopano.spooler.version,kopano-spooler -V | awk '{print \$2}' | tail -n 1
 
 EOF
-	print_debug "Finished Configuring Spooler"
-else
-	service_stop 32-kopano-spooler
+        print_debug "Finished Configuring Spooler"
+    else
+        service_stop 32-kopano-spooler
+    fi
+
+    custom_files /assets/custom /
+    custom_scripts /assets/custom-scripts
 fi
-
-
-custom_files /assets/custom /
-custom_scripts /assets/custom-scripts
 
 liftoff
