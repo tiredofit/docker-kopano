@@ -2,7 +2,6 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/kopano.svg)](https://hub.docker.com/r/tiredofit/kopano)
 [![Docker Stars](https://img.shields.io/docker/stars/tiredofit/kopano.svg)](https://hub.docker.com/r/tiredofit/kopano)
-[![Docker Layers](https://images.microbadger.com/badges/image/tiredofit/kopano.svg)](https://microbadger.com/images/tiredofit/kopano)
 
 ## About
 
