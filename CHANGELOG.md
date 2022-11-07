@@ -1,3 +1,9 @@
+## 2.15.0 2022-11-07 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add Cleanup and Archiving routines for DAgent and Spooler if raw_logs are enabled
+
+
 ## 2.14.0 2022-10-05 <dave at tiredofit dot ca>
 
    ### Changed

@@ -61,6 +61,13 @@ EOF
         service_stop 90-post-server-startup-routines
     fi
 
+    ### Archive Config
+    if var_true "${ENABLE_ARCHIVER}" ; then
+        print_debug "Configuring Archiver"
+    else
+        service_stop 91-archive-management
+    fi
+
     ### Autorespond Config
     if var_true "${ENABLE_AUTORESPOND}" ; then
         print_debug "Configuring Autorespond"

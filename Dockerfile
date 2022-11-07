@@ -11,7 +11,7 @@ FROM docker.io/tiredofit/nginx-php-fpm:${PHP_BASE}-${DISTRO}_${DISTRO_VARIANT}
 
 LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
-ADD build-assets/ /build-assets
+COPY build-assets/ /build-assets
 
 ### Move Kopano Dependencies from Core image
 COPY --from=kopano-core /kopano-dependencies/* /usr/src/kopano-dependencies/
@@ -138,6 +138,7 @@ RUN set -x && \
                 rsync \
                 sqlite3 \
                 unzip \
+                zstd \
                 " && \
     \
     apt-get install -y --no-install-recommends \
@@ -206,4 +207,4 @@ RUN set -x && \
 
 ### Assets Install
 COPY CHANGELOG.md /assets/.changelogs/tiredofit_docker-kopano.md
-ADD install /
+COPY install /
