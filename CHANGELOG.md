@@ -1,3 +1,9 @@
+## 2.15.1 2022-11-07 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Simplify archive management
+
+
 ## 2.15.0 2022-11-07 <dave at tiredofit dot ca>
 
    ### Added
