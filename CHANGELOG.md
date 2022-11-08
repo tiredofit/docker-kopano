@@ -1,3 +1,9 @@
+## 2.15.2 2022-11-07 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix for hourminute timestamp
+
+
 ## 2.15.1 2022-11-07 <dave at tiredofit dot ca>
 
    ### Changed
