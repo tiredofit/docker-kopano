@@ -1,3 +1,9 @@
+## 2.15.4 2022-11-26 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Rebuild with updated tiredofit/kopano-core image
+
+
 ## 2.15.3 2022-11-26 <dave at tiredofit dot ca>
 
    ### Added
