@@ -1,3 +1,9 @@
+## 2.15.3 2022-11-26 <dave at tiredofit dot ca>
+
+   ### Added
+      - Add python3-prettytable
+
+
 ## 2.15.2 2022-11-07 <dave at tiredofit dot ca>
 
    ### Changed

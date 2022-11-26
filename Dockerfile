@@ -124,6 +124,7 @@ RUN set -x && \
                 python3-pip \
                 python3-pkg-resources \
                 python3-prctl \
+                python3-prettytable \
                 python3-requests \
                 python3-setproctitle \
                 python3-setuptools \
